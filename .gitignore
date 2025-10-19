@@ -17,6 +17,8 @@
 /wp-*.php
 /xmlrpc.php
 
+/wp-content/themes/.sass-cache
+
 # Configuration
 wp-config.php
 
@@ -28,6 +30,8 @@ wp-config.php
 
 # Uploads
 /wp-content/uploads/
+
+/wp-content/wpvividbackups
 
 # Log files
 *.log
