@@ -16,7 +16,6 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 	 * Class Astra_Addon_Builder_UI_Controller.
 	 */
 	final class Astra_Addon_Builder_UI_Controller {
-
 		/**
 		 * Astra Flags SVGs.
 		 *
@@ -108,7 +107,7 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 										<?php } ?>
 									</a>
 								</li>
-								<?php } ?>
+							<?php } ?>
 							</ul></nav>
 							<?php
 						}
@@ -158,10 +157,11 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 								foreach ( $items as $item ) {
 									if ( $item['enabled'] ) {
 
-										$link = ( '' !== $item['url'] ) ? $item['url'] : '';
+										$link = '' !== $item['url'] ? $item['url'] : '';
+										$role = $link === '' ? 'button' : 'link';
 										?>
 										<li class="ast-builder-language-switcher-menu-item-<?php echo esc_attr( $builder_type ); ?>">
-											<a href="<?php echo esc_url( $link ); ?>" aria-label="<?php echo esc_attr( $item['label'] ); ?>" class="ast-builder-language-switcher-item">
+											<a href="<?php echo esc_url( $link ); ?>" aria-label="<?php echo esc_attr( $item['label'] ); ?>" role="<?php echo esc_attr( $role ); ?>" class="ast-builder-language-switcher-item">
 												<?php if ( $show_flag && 'zz-other' !== $item['id'] ) { ?>
 													<span class="ast-lswitcher-item-<?php echo esc_attr( $builder_type ); ?>">
 														<?php
@@ -186,6 +186,58 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 						}
 					}
 					?>
+				</div>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Render color switcher markup.
+		 *
+		 * @param string $index       The index of the color switcher.
+		 * @param string $builder_type The type of the builder.
+		 *
+		 * @since x.x.
+		 */
+		public static function render_color_switcher_markup( $index = 'header-color-switcher', $builder_type = 'header' ) {
+			$default_icon  = astra_get_option( 'color-switcher-icon' );
+			$switched_icon = astra_get_option( 'color-switcher-icon-switched' );
+			$default_text  = astra_get_i18n_option( 'color-switcher-text', _x( '%astra%', 'Color Switcher: Default Text', 'astra-addon' ) );
+			$switched_text = astra_get_i18n_option( 'color-switcher-text-switched', _x( '%astra%', 'Color Switcher: Switched Text', 'astra-addon' ) );
+			$is_switched   = Astra_Header_Color_Switcher_Component_Loader::is_switched();
+
+			/* Translators: %s is the name of the default color palette text. */
+			$aria_label_default_text = sprintf( __( 'Switch to %s palette', 'astra-addon' ), $switched_text ?: __( 'default', 'astra-addon' ) );
+
+			/* Translators: %s is the name of the switched palette text. */
+			$aria_label_switched_text = sprintf( __( 'Switch to %s palette', 'astra-addon' ), $default_text ?: __( 'next', 'astra-addon' ) );
+
+			$aria_label = $is_switched ? $aria_label_default_text : $aria_label_switched_text;
+
+			?>
+			<div class="ast-color-switcher-wrapper">
+				<?php
+				if ( is_customize_preview() ) {
+					self::render_customizer_edit_button();
+				}
+				?>
+				<div class="ast-builder-color-switcher">
+					<button
+						class="ast-switcher-button"
+						aria-pressed="<?php echo $is_switched ? 'true' : 'false'; ?>"
+						aria-label="<?php echo esc_attr( $aria_label ); ?>"
+						data-default-text="<?php echo esc_attr( $aria_label_default_text ); ?>"
+						data-switched-text="<?php echo esc_attr( $aria_label_switched_text ); ?>"
+					>
+						<span class="ast-switcher-icon <?php echo esc_attr( $is_switched ? '' : 'ast-current' ); ?>">
+							<?php astra_icon_selector_svg( $default_icon, true ); ?>
+							<?php echo empty( $default_text ) ? '' : '<span class="ast-switcher-text">' . esc_html( $default_text ) . '</span>'; ?>
+						</span>
+						<span class="ast-switcher-icon <?php echo esc_attr( $is_switched ? 'ast-current' : '' ); ?>">
+							<?php astra_icon_selector_svg( $switched_icon, true ); ?>
+							<?php echo empty( $switched_text ) ? '' : '<span class="ast-switcher-text">' . esc_html( $switched_text ) . '</span>'; ?>
+						</span>
+					</button>
 				</div>
 			</div>
 			<?php

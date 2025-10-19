@@ -24,8 +24,6 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 		 */
 		private static $instance;
 
-
-
 		/**
 		 *  Initiator
 		 */
@@ -43,7 +41,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 
 			add_filter(
 				'astra_footer_row_layout',
-				function( $layout ) {
+				static function( $layout ) {
 					// Modify Layouts here.
 					return $layout;
 				}
@@ -79,7 +77,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				}
 
 				$header_items[ 'divider-' . $index ] = array(
-					'name'    => ( 1 === $num_of_header_divider ) ? 'Divider' : 'Divider ' . $index,
+					'name'    => 1 === $num_of_header_divider ? 'Divider' : 'Divider ' . $index,
 					'icon'    => 'minus',
 					'section' => $header_divider_section,
 					'clone'   => true,
@@ -92,6 +90,12 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				'name'    => __( 'Language Switcher', 'astra-addon' ),
 				'icon'    => 'translation',
 				'section' => 'section-hb-language-switcher',
+			);
+
+			$header_items['color-switcher'] = array(
+				'name'    => __( 'Color Switcher', 'astra-addon' ),
+				'icon'    => 'art',
+				'section' => 'section-hb-color-switcher',
 			);
 
 			if ( version_compare( ASTRA_THEME_VERSION, '3.2.0', '>' ) ) {
@@ -134,7 +138,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				}
 
 				$mobile_items[ 'divider-' . $index ] = array(
-					'name'    => ( 1 === $num_of_header_divider ) ? 'Divider' : 'Divider ' . $index,
+					'name'    => 1 === $num_of_header_divider ? 'Divider' : 'Divider ' . $index,
 					'icon'    => 'minus',
 					'section' => $header_mobile_divider_section,
 					'clone'   => true,
@@ -147,6 +151,12 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				'name'    => __( 'Language Switcher', 'astra-addon' ),
 				'icon'    => 'translation',
 				'section' => 'section-hb-language-switcher',
+			);
+
+			$mobile_items['color-switcher'] = array(
+				'name'    => __( 'Color Switcher', 'astra-addon' ),
+				'icon'    => 'art',
+				'section' => 'section-hb-color-switcher',
 			);
 
 			return $mobile_items;
@@ -174,7 +184,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				}
 
 				$footer_items[ 'divider-' . $index ] = array(
-					'name'    => ( 1 === $num_of_footer_divider ) ? 'Divider' : 'Divider ' . $index,
+					'name'    => 1 === $num_of_footer_divider ? 'Divider' : 'Divider ' . $index,
 					'icon'    => 'minus',
 					'section' => $footer_divider_section,
 					'clone'   => true,
@@ -231,7 +241,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				<?php
 			} elseif ( 0 === strpos( $slug, 'widget' ) ) {
 				?>
-				<aside
+				<aside role="region"
 					<?php
 					echo wp_kses_post(
 						astra_attr(
@@ -308,8 +318,17 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 					?>
 					</div>
 				<?php
+			} elseif ( strpos( $slug, 'color-switcher' ) === 0 ) {
+				$layout_class = astra_get_option( 'header-' . $slug . '-layout' );
+				?>
+				<div class="ast-builder-layout-element site-header-focus-item ast-header-color-switcher-element ast-header-<?php echo esc_attr( $slug ); ?> ast-hb-color-switcher-layout-<?php echo esc_attr( $layout_class ); ?>" data-section="section-hb-<?php echo esc_attr( $slug ); ?>">
+					<?php
+					$action_name = 'astra_header_' . str_replace( '-', '_', $slug );
+					do_action( $action_name );
+					?>
+				</div>
+				<?php
 			}
-
 		}
 
 		/**
@@ -339,7 +358,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				<?php
 			} elseif ( 0 === strpos( $slug, 'widget' ) ) {
 				?>
-				<aside
+				<aside role="region"
 				<?php
 				echo wp_kses_post(
 					astra_attr(
@@ -404,7 +423,6 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 					</div>
 				<?php
 			}
-
 		}
 
 	}

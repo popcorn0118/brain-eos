@@ -13,7 +13,6 @@ if ( ! class_exists( 'Astra_Addon_Header_Account_Markup' ) ) {
 	 * @since 4.3.1
 	 */
 	class Astra_Addon_Header_Account_Markup {
-
 		/**
 		 * Member Variable
 		 *
@@ -48,8 +47,9 @@ if ( ! class_exists( 'Astra_Addon_Header_Account_Markup' ) ) {
 		 */
 		public function localize_variables( $localize_vars ) {
 
-			$localize_vars['hf_account_show_menu_on'] = astra_get_option( 'header-account-action-menu-display-on' );
-			$localize_vars['hf_account_action_type']  = astra_get_option( 'header-account-action-type' );
+			$localize_vars['hf_account_show_menu_on']  = astra_get_option( 'header-account-action-menu-display-on' );
+			$localize_vars['hf_account_action_type']   = astra_get_option( 'header-account-action-type' );
+			$localize_vars['hf_account_logout_action'] = astra_get_option( 'header-account-logout-action' );
 
 			return $localize_vars;
 		}
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Astra_Addon_Header_Account_Markup' ) ) {
 							<span class="ast-svg-iconset">
 								<?php
 								if ( is_callable( 'Astra_Builder_UI_Controller', 'fetch_svg_icon' ) ) {
-									echo Astra_Builder_UI_Controller::fetch_svg_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									echo Astra_Builder_UI_Controller::fetch_svg_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG content needs to remain raw for correct rendering; escaping would break the markup.
 								}
 								?>
 							</span>
@@ -97,7 +97,7 @@ if ( ! class_exists( 'Astra_Addon_Header_Account_Markup' ) ) {
 							?>
 						</div>
 
-						<?php if ( $show_register || $show_lost_password ) : ?>
+						<?php if ( $show_register || $show_lost_password ) { ?>
 							<div class="ast-hb-account-login-form-footer">
 								<?php
 								if ( $show_register ) {
@@ -119,7 +119,7 @@ if ( ! class_exists( 'Astra_Addon_Header_Account_Markup' ) ) {
 								}
 								?>
 							</div>
-						<?php endif; ?>
+						<?php } ?>
 					</div>
 				</div>
 			</div>

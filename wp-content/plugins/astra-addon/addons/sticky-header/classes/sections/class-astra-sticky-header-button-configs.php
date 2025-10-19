@@ -39,10 +39,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 
 			$html_config = array();
 
-			$main_stick  = astra_get_option( 'header-main-stick' );
-			$above_stick = astra_get_option( 'header-above-stick' );
-			$below_stick = astra_get_option( 'header-below-stick' );
-
 			$component_limit = astra_addon_builder_helper()->component_limit;
 			for ( $index = 1; $index <= $component_limit; $index++ ) {
 
@@ -63,7 +59,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 						'settings' => array(),
 						'priority' => 100,
 						'context'  => astra_addon_builder_helper()->design_tab,
-						'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+						'divider'  => array( 'ast_class' => 'ast-top-divider' ),
 					),
 					/**
 					 * Group: Primary Header Button Colors Group
@@ -97,8 +93,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 					),
 
 					/**
-					* Option: Button Text Color
-					*/
+					 * Option: Button Text Color
+					 */
 					array(
 						'name'       => 'sticky-header-' . $_prefix . '-text-color',
 						'transport'  => 'postMessage',
@@ -116,8 +112,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 					),
 
 					/**
-					* Option: Button Text Hover Color
-					*/
+					 * Option: Button Text Hover Color
+					 */
 					array(
 						'name'       => 'sticky-header-' . $_prefix . '-text-h-color',
 						'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-text-h-color' ),
@@ -135,8 +131,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 					),
 
 					/**
-					* Option: Button Background Color
-					*/
+					 * Option: Button Background Color
+					 */
 					array(
 						'name'       => 'sticky-header-' . $_prefix . '-back-color',
 						'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-back-color' ),
@@ -154,8 +150,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 					),
 
 					/**
-					* Option: Button Button Hover Color
-					*/
+					 * Option: Button Button Hover Color
+					 */
 					array(
 						'name'       => 'sticky-header-' . $_prefix . '-back-h-color',
 						'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-back-h-color' ),
@@ -192,11 +188,12 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 							'left'   => __( 'Left', 'astra-addon' ),
 						),
 						'context'           => astra_addon_builder_helper()->design_tab,
+						'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
 					),
 
 					/**
-					* Option: Button Border Size
-					*/
+					 * Option: Button Border Size
+					 */
 					array(
 						'name'           => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-border-size]',
 						'default'        => astra_get_option( 'sticky-header-' . $_prefix . '-border-size' ),
@@ -227,12 +224,11 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 						'transport'  => 'postMessage',
 						'context'    => astra_addon_builder_helper()->design_tab,
 						'responsive' => true,
-						'divider'    => array( 'ast_class' => 'ast-bottom-section-divider' ),
 					),
 
 					/**
-					* Option: Button Border Color
-					*/
+					 * Option: Button Border Color
+					 */
 					array(
 						'name'       => 'sticky-header-' . $_prefix . '-border-color',
 						'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-border-color' ),
@@ -249,8 +245,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 					),
 
 					/**
-					* Option: Button Border Hover Color
-					*/
+					 * Option: Button Border Hover Color
+					 */
 					array(
 						'name'       => 'sticky-header-' . $_prefix . '-border-h-color',
 						'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-border-h-color' ),
@@ -296,15 +292,10 @@ if ( ! class_exists( 'Astra_Sticky_Header_Button_Configs' ) ) {
 				$html_config[] = $_configs;
 			}
 
-			$html_config    = call_user_func_array( 'array_merge', $html_config + array( array() ) );
-			$configurations = array_merge( $configurations, $html_config );
-
-			return $configurations;
+			$html_config = call_user_func_array( 'array_merge', $html_config + array( array() ) );
+			return array_merge( $configurations, $html_config );
 		}
 	}
 }
 
 new Astra_Sticky_Header_Button_Configs();
-
-
-

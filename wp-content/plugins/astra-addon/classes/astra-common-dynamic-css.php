@@ -54,7 +54,7 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 	}
 
 	if ( astra_addon_check_reveal_effect_condition() ) {
-		$desktop_max_css['.ast-fade-up, .woocommerce ul.products li.product.ast-fade-up, .woocommerce-page ul.products li.product.ast-fade-up'] = array(
+		$desktop_max_css[ astra_parse_selector( '.ast-fade-up, .woocommerce ul.products li.product.ast-fade-up, .woocommerce-page ul.products li.product.ast-fade-up', 'wc' ) ] = array(
 			'opacity'             => '0',
 			'transition-property' => 'opacity,transform',
 			'transform'           => 'translate3d(0,100px,0)',
@@ -219,10 +219,9 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 			'display' => 'flex',
 		),
 		'.ast-plain-container .ast-grid-2 .ast-article-post:last-child, .ast-plain-container .ast-grid-3 .ast-article-post:last-child, .ast-plain-container .ast-grid-4 .ast-article-post:last-child, .ast-page-builder-template .ast-grid-2 .ast-article-post:last-child, .ast-page-builder-template .ast-grid-3 .ast-article-post:last-child, .ast-page-builder-template .ast-grid-4 .ast-article-post:last-child' => array(
-			'margin-bottom' => '2.5em',
+			'margin-bottom' => '1.5em',
 		),
 	);
-
 
 	if ( 'blog-layout-1' === astra_addon_get_blog_layout() || astra_get_option( 'blog-equal-grid' ) ) {
 		$tablet_min_css['.ast-separate-container .ast-grid-2 > .site-main > .ast-row, .ast-separate-container .ast-grid-3 > .site-main > .ast-row, .ast-separate-container .ast-grid-4 > .site-main > .ast-row'] = array(

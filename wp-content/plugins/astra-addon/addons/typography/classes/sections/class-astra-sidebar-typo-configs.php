@@ -49,8 +49,8 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'priority' => 24,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
-					'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+					'context'  => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
@@ -63,11 +63,11 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'Title Font', 'astra-addon' ),
+					'is_font'   => true,
 					'section'   => 'section-sidebars',
 					'transport' => 'postMessage',
 					'priority'  => 24,
-					'divider'   => array( 'ast_class' => 'ast-section-spacing' ),
-					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'context'   => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
@@ -84,7 +84,7 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'font-family-widget-title' ),
 					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-widget-title]',
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'default'           => astra_get_option( 'font-weight-widget-title' ),
 					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'font-family-widget-title',
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -164,10 +164,11 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'Content Font', 'astra-addon' ),
+					'is_font'   => true,
 					'section'   => 'section-sidebars',
 					'transport' => 'postMessage',
 					'priority'  => 24,
-					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'context'   => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
@@ -184,7 +185,7 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'font-family-widget-content' ),
 					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-widget-content]',
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -201,7 +202,7 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'default'           => astra_get_option( 'font-weight-widget-content' ),
 					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'font-family-widget-content',
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -294,7 +295,7 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 						),
 					),
 					'divider'           => array( 'ast_class' => 'ast-top-section-divider ast-bottom-section-divider' ),
-					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'context'           => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
@@ -320,7 +321,7 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 							'max'  => 5,
 						),
 					),
-					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'context'           => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 			);

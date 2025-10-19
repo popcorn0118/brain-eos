@@ -1,7 +1,7 @@
 <?php 
 defined( 'ABSPATH' ) || exit;
 return array (
-  'homepage' => 'https://woocommerce-1264690-5931258.cloudwaysapps.com',
+  'homepage' => 'http://localhost:8888',
   'cache_options' => 
   array (
     'breeze-active' => '1',

@@ -18,7 +18,7 @@ if ( ! class_exists( 'Astra_Customizer_Config_Base' ) ) {
 	return;
 }
 
-if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
+if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) {
 
 	/**
 	 * The Customizer class.
@@ -163,7 +163,6 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 			}
 
 			return $configurations;
-
 		}
 
 		/**
@@ -177,7 +176,7 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 
 			switch ( $context ) {
 				case 'custom-header':
-					$notice = '<div class="ast-customizer-notice wp-ui-highlight"><p>The header on the page you are previewing is built using Custom Layouts. Options given below will not work here.</p><p> <a href="' . $this->get_custom_layout_edit_link() . '" target="_blank">Click here</a> to modify the header on this page.<p></div>';
+					$notice = '<span>The header on the page you are previewing is built using Custom Layouts. Options given below will not work here.</span><a style="display: block;" href="' . $this->get_custom_layout_edit_link() . '" target="_blank">Click here</a> to modify the header on this page.';
 					break;
 
 				default:
@@ -201,7 +200,7 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 		 * Decide if Notice for Header Built using Custom Layout should be displayed.
 		 * This runs teh target rules to check if the page neing previewed has a header built using Custom Layout.
 		 *
-		 * @return boolean  True - If the notice should be displayed, False - If the notice should be hidden.
+		 * @return bool  True - If the notice should be displayed, False - If the notice should be hidden.
 		 */
 		public function is_custom_layout_header() {
 
@@ -227,7 +226,6 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 
 	}
 
-endif;
-
+}
 
 new Astra_Customizer_Notices_Configs();

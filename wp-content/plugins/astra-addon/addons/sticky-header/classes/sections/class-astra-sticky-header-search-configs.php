@@ -53,7 +53,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Search_Configs' ) ) {
 					'settings' => array(),
 					'priority' => 10,
 					'context'  => astra_addon_builder_helper()->design_tab,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-top-divider' ),
 				),
 
 				/**
@@ -189,6 +189,3 @@ if ( ! class_exists( 'Astra_Sticky_Header_Search_Configs' ) ) {
 }
 
 new Astra_Sticky_Header_Search_Configs();
-
-
-

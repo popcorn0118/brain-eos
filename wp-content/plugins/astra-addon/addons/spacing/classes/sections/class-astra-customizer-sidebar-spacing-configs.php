@@ -54,8 +54,8 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'priority' => 25,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
-					'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+					'context'  => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
@@ -70,13 +70,12 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 					'control'           => 'ast-responsive-spacing',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
 					'section'           => 'section-sidebars',
-					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'context'           => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					'priority'          => 25,
 					'title'             => __( 'Outside', 'astra-addon' ),
 					'linked_choices'    => true,
 					'unit_choices'      => array( 'px', 'em', '%' ),
-					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider ast-section-spacing' ),
 					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
@@ -97,7 +96,7 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
 					'section'           => 'section-sidebars',
 					'priority'          => 25,
-					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					'context'           => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					'title'             => __( 'Inside', 'astra-addon' ),
 					'linked_choices'    => true,
@@ -108,6 +107,7 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 						'bottom' => __( 'Bottom', 'astra-addon' ),
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
+					'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 			);
 

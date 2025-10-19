@@ -67,6 +67,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header_Builder' ) ) {
 						'context'    => astra_addon_builder_helper()->design_tab,
 						'responsive' => true,
 						'divider'    => array(
+							'ast_class' => 'ast-top-section-divider',
 							'ast_title' => __( 'Submenu Color', 'astra-addon' ),
 						),
 					),
@@ -197,6 +198,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header_Builder' ) ) {
 							'transport' => 'postMessage',
 							'control'   => 'ast-color-group',
 							'title'     => __( 'Mega Menu Heading', 'astra-addon' ),
+							'is_font'   => true,
 							'section'   => $_section,
 							'priority'  => 100,
 							'context'   => astra_addon_builder_helper()->design_tab,
@@ -242,8 +244,8 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header_Builder' ) ) {
 			$html_config[] = array(
 
 				/**
-				* Option: Account Colors tab
-				*/
+				 * Option: Account Colors tab
+				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[header-account-menu-heading]',
 					'type'     => 'control',
@@ -268,7 +270,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header_Builder' ) ) {
 							),
 						),
 					),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				array(
@@ -735,7 +737,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header_Builder' ) ) {
 						),
 						astra_addon_builder_helper()->design_tab_config,
 					),
-					'divider'   => array( 'ast_class' => 'ast-bottom-section-divider ast-section-spacing' ),
+					'divider'   => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[section-fb-language-switcher-color]',
@@ -758,10 +760,8 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header_Builder' ) ) {
 				),
 			);
 
-			$html_config    = call_user_func_array( 'array_merge', $html_config + array( array() ) );
-			$configurations = array_merge( $configurations, $html_config );
-
-			return $configurations;
+			$html_config = call_user_func_array( 'array_merge', $html_config + array( array() ) );
+			return array_merge( $configurations, $html_config );
 		}
 	}
 }

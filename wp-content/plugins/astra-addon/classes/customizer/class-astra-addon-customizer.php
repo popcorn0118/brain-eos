@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
+if ( ! class_exists( 'Astra_Addon_Customizer' ) ) {
 
 	/**
 	 * Astra_Addon_Customizer
@@ -14,7 +14,6 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 	 * @since 1.0.0
 	 */
 	class Astra_Addon_Customizer {
-
 		/**
 		 * Instance
 		 *
@@ -44,11 +43,15 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		 * @since 1.4.0
 		 */
 		public function __construct() {
+			// Bail early if it is not astra customizer.
+			if ( is_callable( 'Astra_Customizer::is_astra_customizer()' ) && ! Astra_Customizer::is_astra_customizer() ) {
+				return;
+			}
 
 			add_action( 'customize_register', array( $this, 'customize_register' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_action( 'customize_register', array( $this, 'customize_register_new' ), 3 );
-
+			add_action( 'customize_preview_init', array( $this, 'preview_helper_scripts' ) );
 		}
 
 		/**
@@ -60,7 +63,6 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		public function customize_register_new( $wp_customize ) {
 
 			require ASTRA_EXT_DIR . 'classes/customizer/class-astra-customizer-notices-configs.php';
-
 		}
 
 		/**
@@ -89,7 +91,20 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 
 			// Control Class files.
 			require ASTRA_EXT_DIR . 'classes/customizer/controls/class-astra-control-customizer-refresh.php';
+		}
 
+		/**
+		 * Generates an array with responsive values for desktop, tablet and mobile.
+		 *
+		 * @param int $desktop Desktop value.
+		 * @param int $tablet Tablet value.
+		 * @param int $mobile Mobile value.
+		 *
+		 * @return array Array with responsive values.
+		 * @since 4.10.0
+		 */
+		public static function responsive_values( $desktop = '', $tablet = '', $mobile = '' ) {
+			return compact( 'desktop', 'tablet', 'mobile' );
 		}
 
 		/**
@@ -252,11 +267,18 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		 */
 		public function enqueue_scripts() {
 
-			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
-			$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
-			$js_uri      = ASTRA_EXT_URI . 'classes/customizer/assets/js/';
+			$js_uri = ASTRA_EXT_URI . 'classes/customizer/assets/js/';
 
-			wp_enqueue_style( 'ast-ext-admin-settings', ASTRA_EXT_URI . 'admin/assets/css/customizer-controls.css', array(), ASTRA_EXT_VER );
+			/* Directory and Extension */
+			$file_prefix = SCRIPT_DEBUG ? '' : '.min';
+			$dir_name    = SCRIPT_DEBUG ? 'unminified' : 'minified';
+
+			wp_enqueue_style(
+				'ast-ext-admin-settings',
+				ASTRA_EXT_URI . 'admin/assets/css/' . $dir_name . '/customizer-controls' . $file_prefix . '.css',
+				array(),
+				ASTRA_EXT_VER
+			);
 
 			if ( ! SCRIPT_DEBUG ) {
 				// Enqueue Customizer script.
@@ -287,7 +309,36 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 				);
 
 				wp_enqueue_script( 'astra-addon-custom-control-react-script', ASTRA_EXT_URI . 'classes/customizer/extend-controls/build/index.js', $custom_controls_react_deps, ASTRA_EXT_VER, true );
+				wp_set_script_translations( 'astra-addon-custom-control-react-script', 'astra-addon' );
 			}
+		}
+
+		/**
+		 * Enqueue preview helper scripts for the customizer.
+		 *
+		 * @since 4.10.0
+		 */
+		public function preview_helper_scripts() {
+			$script_handle = 'astra-addon-customizer-preview-helper';
+			$folder        = SCRIPT_DEBUG ? 'unminified' : 'minified';
+			$prefix        = SCRIPT_DEBUG ? '.js' : '.min.js';
+
+			wp_enqueue_script(
+				$script_handle,
+				ASTRA_EXT_URI . 'classes/customizer/assets/js/' . $folder . '/customizer-preview-helper' . $prefix,
+				array( 'customize-preview' ),
+				ASTRA_EXT_VER,
+				true
+			);
+
+			wp_localize_script(
+				$script_handle,
+				'astraPreviewHelper',
+				array(
+					'tabletBreakPoint' => astra_addon_get_tablet_breakpoint(),
+					'mobileBreakPoint' => astra_addon_get_mobile_breakpoint(),
+				)
+			);
 		}
 	}
 
@@ -296,4 +347,4 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 	 */
 	Astra_Addon_Customizer::get_instance();
 
-endif;
+}

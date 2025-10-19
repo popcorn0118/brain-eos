@@ -11,7 +11,7 @@
 define( 'BSF_REMOVE_astra-addon_FROM_REGISTRATION_LISTING', true );
 // @codingStandardsIgnoreEnd
 
-if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
+if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) {
 
 	/**
 	 * Brainstorm Update
@@ -43,7 +43,7 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 		public function __construct() {
 
 			self::version_check();
-			add_action( 'init', array( $this, 'load' ), 999 );
+			add_action( 'init', array( $this, 'load' ), 98 );
 			add_filter( 'bsf_display_product_activation_notice_astra', '__return_false' );
 			add_filter( 'bsf_get_license_message_astra-addon', array( $this, 'license_message_astra_addon' ), 10, 2 );
 			add_filter( 'bsf_is_product_bundled', array( $this, 'remove_astra_pro_bundled_products' ), 20, 3 );
@@ -54,30 +54,6 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 			add_filter( 'bsf_enable_product_autoupdates_astra', array( $this, 'enable_astra_beta_updates' ) );
 			add_filter( 'bsf_allow_beta_updates_astra', array( $this, 'enable_beta_updates' ) );
 			add_filter( 'bsf_allow_beta_updates_astra-addon', array( $this, 'enable_beta_updates' ) );
-
-			/*
-			* BSF Analytics.
-			*/
-			if ( ! class_exists( 'BSF_Analytics_Loader' ) ) {
-				require_once ASTRA_EXT_DIR . 'admin/bsf-analytics/class-bsf-analytics-loader.php';
-			}
-
-			$astra_addon_bsf_analytics = BSF_Analytics_Loader::get_instance();
-
-			$astra_addon_bsf_analytics->set_entity(
-				array(
-					'bsf' => array(
-						'product_name'    => 'Astra Pro',
-						'path'            => ASTRA_EXT_DIR . 'admin/bsf-analytics',
-						'author'          => 'Brainstorm Force',
-						'time_to_display' => '+24 hours',
-					),
-				)
-			);
-
-			add_filter( 'bsf_core_stats', array( $this, 'astra_addon_get_specific_stats' ) );
-			add_action( 'astra_addon_get_addon_usage', array( $this, 'astra_addon_get_addon_usage' ) );
-			add_filter( 'init', array( $this, 'astra_addon_run_scheduled_analytic_job' ) );
 		}
 
 		/**
@@ -129,8 +105,8 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 		 * Enable autoupdates for Astra Theme if beta updates option is selected or currently installed theme/pro versions are beta or alpha.
 		 *
 		 * @since 1.5.1
-		 * @param boolean $status True if updates are tobe enabled. False if updates are to be disabled.
-		 * @return boolean True if updates are tobe enabled. False if updates are to be disabled.
+		 * @param bool $status True if updates are tobe enabled. False if updates are to be disabled.
+		 * @return bool True if updates are tobe enabled. False if updates are to be disabled.
 		 */
 		public function enable_astra_beta_updates( $status ) {
 			if ( BSF_Update_Manager::bsf_allow_beta_updates( 'astra' ) || $this->is_using_beta() ) {
@@ -144,7 +120,7 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 		 * Check if Astra Theme or Astra Pro are using beta/alpha versions
 		 *
 		 * @since 1.6.0
-		 * @return boolean True if Astra Theme or Pro are using beta/alpha versions. False is both theme and pro are using stable versions.
+		 * @return bool True if Astra Theme or Pro are using beta/alpha versions. False is both theme and pro are using stable versions.
 		 */
 		private function is_using_beta() {
 			return strpos( ASTRA_EXT_VER, 'beta' ) ||
@@ -157,8 +133,8 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 		 * Enable/Disable beta updates for Astra Theme and Astra Pro.
 		 *
 		 * @since 1.5.1
-		 * @param boolean $status True - If beta updates are enabled. False - If beta updates are disabled.
-		 * @return boolean
+		 * @param bool $status True - If beta updates are enabled. False - If beta updates are disabled.
+		 * @return bool
 		 */
 		public function enable_beta_updates( $status ) {
 			$allow_beta = Astra_Admin_Helper::get_admin_settings_option( '_astra_beta_updates', true, 'disable' );
@@ -234,8 +210,7 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 
 			$purchase_url = apply_filters( 'astra_addon_licence_url', $purchase_url );
 
-			$message = "<p><a target='_blank' href='" . esc_url( $purchase_url ) . "'>" . esc_html__( 'Get the license »', 'astra-addon' ) . '</a></p>';
-			return $message;
+			return "<p><a target='_blank' href='" . esc_url( $purchase_url ) . "'>" . esc_html__( 'Get the license »', 'astra-addon' ) . '</a></p>';
 		}
 
 		/**
@@ -249,84 +224,6 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 				include_once realpath( $bsf_core_path . '/index.php' );
 			}
 		}
-
-		/**
-		 * Pass addon specific stats to BSF analytics.
-		 *
-		 * @since 2.6.4
-		 * @param array $default_stats Default stats array.
-		 * @return array $default_stats Default stats with addon specific stats array.
-		 */
-		public function astra_addon_get_specific_stats( $default_stats ) {
-			$astra_settings                  = get_option( 'astra-settings', array() );
-			$default_stats['astra_settings'] = array(
-				'astra-addon-version' => ASTRA_EXT_VER,
-				'astra-theme-version' => ASTRA_THEME_VERSION,
-				'breadcrumb-position' => isset( $astra_settings['breadcrumb-position'] ) ? $astra_settings['breadcrumb-position'] : 'none',
-				'mega-menu-details'   => get_option( 'ast_extension_data', array() ),
-			);
-			return $default_stats;
-		}
-
-		/**
-		 * Prepare Astra's megamenu data to pass BSF-Analytics.
-		 *
-		 * @since 3.9.3
-		 *
-		 * @return void
-		 */
-		public function astra_addon_get_addon_usage() {
-
-			$all_menus               = wp_get_nav_menus();
-			$megamenu_analytics_data = array();
-
-			if ( ! is_array( $all_menus ) && empty( $all_menus ) ) {
-				return;
-			}
-
-			foreach ( $all_menus as $key => $menu_term ) {
-				$menu_items = wp_get_nav_menu_items( $menu_term->term_id );
-				foreach ( $menu_items as $menu_item ) {
-					// Enable Megamenu.
-					$is_enable = isset( $menu_item->megamenu ) ? $menu_item->megamenu : '';
-					if ( 'megamenu' === $is_enable ) {
-						$megamenu_analytics_data['megamenu-is-enabled'][] = 'yes';
-					}
-
-					// Width type.
-					$width_type = isset( $menu_item->megamenu_width ) ? $menu_item->megamenu_width : '';
-					if ( '' !== $width_type ) {
-						$megamenu_analytics_data['menu-container-types'][] = $width_type;
-					}
-
-					// Content source.
-					$content_source = isset( $menu_item->megamenu_content_src ) ? $menu_item->megamenu_content_src : '';
-					if ( '' !== $content_source ) {
-						$megamenu_analytics_data['sub-menus-content-source'][] = $content_source;
-					}
-
-					// Enabled heading.
-					$enabled_heading = isset( $menu_item->megamenu_enable_heading ) ? $menu_item->megamenu_enable_heading : '';
-					if ( '' !== $enabled_heading ) {
-						$megamenu_analytics_data['sub-menus-heading-enabled'][] = $enabled_heading;
-					}
-				}
-			}
-
-			update_option( 'ast_extension_data', $megamenu_analytics_data );
-		}
-
-		/**
-		 * Run scheduled job for BSF-Analytics.
-		 *
-		 * @since 3.9.3
-		 * @return void
-		 */
-		public function astra_addon_run_scheduled_analytic_job() {
-			if ( ! wp_next_scheduled( 'astra_addon_get_addon_usage' ) && ! wp_installing() ) {
-				wp_schedule_event( time(), 'daily', 'astra_addon_get_addon_usage' );
-			}
-		}
 	}
 
 	/**
@@ -334,4 +231,4 @@ if ( ! class_exists( 'Brainstorm_Update_Astra_Addon' ) ) :
 	 */
 	Brainstorm_Update_Astra_Addon::get_instance();
 
-endif;
+}

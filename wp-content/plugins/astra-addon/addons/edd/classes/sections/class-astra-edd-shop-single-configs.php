@@ -59,6 +59,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Single_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-single-product-title-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Product Title Font', 'astra-addon' ),
 					'section'   => 'section-edd-single',
 					'transport' => 'postMessage',
@@ -74,6 +75,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Single_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-single-product-content-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Product Content Font', 'astra-addon' ),
 					'section'   => 'section-edd-single',
 					'transport' => 'postMessage',
@@ -83,18 +85,9 @@ if ( ! class_exists( 'Astra_Edd_Shop_Single_Configs' ) ) {
 
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
-
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }
 
-
 new Astra_Edd_Shop_Single_Configs();
-
-
-
-
-

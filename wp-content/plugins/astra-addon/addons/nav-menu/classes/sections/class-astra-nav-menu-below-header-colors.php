@@ -52,10 +52,11 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Colors' ) ) {
 						'type'      => 'control',
 						'control'   => Astra_Theme_Extension::$group_control,
 						'title'     => __( 'Mega Menu Heading', 'astra-addon' ),
+						'is_font'   => true,
 						'section'   => 'section-sticky-header',
 						'transport' => 'postMessage',
 						'priority'  => 130,
-						'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						'context'   => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					),
 
@@ -69,4 +70,3 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Colors' ) ) {
 }
 
 new Astra_Nav_Menu_Below_Header_Colors();
-

@@ -49,11 +49,10 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 			add_action( 'astra_get_fonts', array( $this, 'add_fonts' ), 1 );
 
 			/**
-			* Metabox setup
-			*/
+			 * Metabox setup
+			 */
 			add_filter( 'astra_meta_box_options', array( $this, 'add_options' ) );
 			add_action( 'astra_meta_box_markup_disable_sections_after', array( $this, 'add_options_markup' ) );
-
 		}
 
 		/**
@@ -163,7 +162,7 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 			$advanced_footer_layout = astra_get_option( 'footer-adv' );
 			$advanced_footer_meta   = astra_get_option_meta( 'footer-adv-display' );
 
-			if ( apply_filters( 'astra_advanced_footer_disable', false ) || 'disabled' == $advanced_footer_layout || 'disabled' == $advanced_footer_meta ) {
+			if ( apply_filters( 'astra_advanced_footer_disable', false ) || 'disabled' === $advanced_footer_layout || 'disabled' === $advanced_footer_meta ) {
 				return;
 			}
 
@@ -187,8 +186,8 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 				 * Get options
 				 */
 				$footer_adv = astra_get_option( 'footer-adv' );
-				if ( 'disabled' != $footer_adv ) {
-					$advanced_footer = ( isset( $meta['footer-adv-display']['default'] ) ) ? $meta['footer-adv-display']['default'] : 'default';
+				if ( 'disabled' !== $footer_adv ) {
+					$advanced_footer = isset( $meta['footer-adv-display']['default'] ) ? $meta['footer-adv-display']['default'] : 'default';
 					?>
 				<span>
 					<input type="checkbox" id="footer-adv-display" name="footer-adv-display" value="disabled" <?php checked( $advanced_footer, 'disabled' ); ?> />
@@ -206,11 +205,11 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 		public function add_styles() {
 
 			$advanced_footer_layout = astra_get_option( 'footer-adv' );
-			if ( 'disabled' == $advanced_footer_layout ) {
+			if ( 'disabled' === $advanced_footer_layout ) {
 				return;
 			}
 
-			/*** Start Path Logic */
+			/* Start Path Logic */
 
 			/* Define Variables */
 			$uri  = ASTRA_ADDON_EXT_ADVANCED_FOOTER_URL . 'assets/css/';
@@ -239,11 +238,11 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 				$gen_path = $css_dir;
 			}
 
-			/*** End Path Logic */
+			/* End Path Logic */
 
 			Astra_Minify::add_css( $gen_path . 'style' . $file_prefix . '.css' );
 
-			if ( 'layout-2' == $advanced_footer_layout ) {
+			if ( 'layout-2' === $advanced_footer_layout ) {
 				return;
 			}
 
@@ -256,7 +255,7 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 		public function add_fonts() {
 
 			$advanced_footer_layout = astra_get_option( 'footer-adv' );
-			if ( 'disabled' == $advanced_footer_layout ) {
+			if ( 'disabled' === $advanced_footer_layout ) {
 				return;
 			}
 
@@ -303,6 +302,6 @@ if ( ! class_exists( 'Astra_Ext_Adv_Footer_Markup' ) ) {
 }
 
 /**
-*  Kicking this off by calling 'get_instance()' method
-*/
+ *  Kicking this off by calling 'get_instance()' method
+ */
 Astra_Ext_Adv_Footer_Markup::get_instance();

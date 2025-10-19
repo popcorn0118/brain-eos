@@ -27,9 +27,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		/**
 		 * Member Variable
 		 *
-		 * @var $_actions
+		 * @var $action
 		 */
-		public static $_action = 'advanced-hooks'; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+		public static $action = 'advanced-hooks';
 
 		/**
 		 * Member Variable
@@ -252,7 +252,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 
 			add_filter(
 				'block_parser_class',
-				function( $content ) {
+				static function( $content ) {
 					// Check if we're inside the main post content.
 					if ( is_singular() && in_the_loop() && is_main_query() ) {
 						return 'Astra_WP_Block_Parser';
@@ -285,8 +285,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		public function get_active_tab( $default = '' ) {
 			$current_tab = $default;
 
-			if ( ! empty( $_REQUEST['layout_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$current_tab = sanitize_text_field( $_REQUEST['layout_type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( ! empty( $_REQUEST['layout_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce is not required as this is just reading a sanitized URL parameter.
+				$current_tab = sanitize_text_field( $_REQUEST['layout_type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Sanitizing the request parameter for safe use.
 				if ( 'all' === $current_tab ) {
 					$current_tab = '';
 				}
@@ -338,7 +338,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			unset( $columns['date'] );
 
 			$columns['advanced_hook_action']     = __( 'Placement', 'astra-addon' );
-			$columns['advanced_hook_shortcode']  = __( 'Shortcode', 'astra-addon' ) . '<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="' . esc_attr__( 'Make sure to set display rule to post/page where you will be adding the Shortcode.', 'astra-addon' ) . '"></i>';
+			$columns['advanced_hook_shortcode']  = __( 'Shortcode', 'astra-addon' ) . '<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="' . esc_attr__( 'The shortcode is designed to include the custom layout wherever it is used, regardless of the display conditions. Ensure you add the shortcode to the desired post or page.', 'astra-addon' ) . '"></i>';
 			$columns['advanced_hook_quick_view'] = __( 'Quick View', 'astra-addon' );
 			$columns['enable_disable']           = __( 'Enable/Disable', 'astra-addon' );
 
@@ -374,7 +374,12 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					echo '<div> <label class="layout-status"> <span class="ast-layout-' . esc_attr( $post_id ) . '">[astra_custom_layout id=' . esc_attr( $post_id ) . ']</span> </label> <a href="javascript:void(0)" class="ast-copy-layout-shortcode" title="' . esc_attr__( 'Copy to Clipboard', 'astra-addon' ) . '" data-linked_span="ast-layout-' . esc_attr( $post_id ) . '"> <span class="dashicons dashicons-admin-page"></span> </a> </div>';
 					break;
 				case 'advanced_hook_quick_view':
-					echo '<a href="javascript:void(0)" data-layout_id="' . esc_attr( $post_id ) . '" title="Preview" class="advanced_hook_data_trigger"> <span class="dashicons dashicons-visibility"></span> </a>';
+					echo '<a href="javascript:void(0)" data-layout_id="' . esc_attr( $post_id ) . '" title="Preview" class="advanced_hook_data_trigger" style="box-shadow: none; outline: none;">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M1.66699 10.0003C1.66699 10.0003 4.16699 4.16699 10.0003 4.16699C15.8337 4.16699 18.3337 10.0003 18.3337 10.0003C18.3337 10.0003 15.8337 15.8337 10.0003 15.8337C4.16699 15.8337 1.66699 10.0003 1.66699 10.0003Z" stroke="#6F6B99" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke="#6F6B99" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					</a>';
 					break;
 				case 'enable_disable':
 					$switch_class = 'ast-custom-layout-switch ast-option-switch';
@@ -421,7 +426,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			}
 
 			$ruleset_markup = '<ul class="ast-layout-visibility-list">';
-			foreach ( $location_label as $key => $rule ) {
+			foreach ( $location_label as $rule ) {
 				$ruleset_markup .= '<li class="layout-list-item">' . esc_html( $rule ) . '</li>';
 			}
 			$ruleset_markup .= '</ul>';
@@ -481,7 +486,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			}
 
 			// Rest support true if it is a WordPress editor.
-			if ( isset( $_GET['wordpress_editor'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_GET['wordpress_editor'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not needed for this non-sensitive URL parameter check.
 				$rest_support = true;
 			}
 
@@ -516,7 +521,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 
 			$screen = get_current_screen();
 
-			if ( ( 'post-new.php' == $pagenow || 'post.php' == $pagenow ) && ASTRA_ADVANCED_HOOKS_POST_TYPE == $screen->post_type ) {
+			if ( ( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) && ASTRA_ADVANCED_HOOKS_POST_TYPE === $screen->post_type ) {
 				// Styles.
 				wp_enqueue_media();
 
@@ -581,7 +586,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				);
 			}
 
-			if ( ASTRA_ADVANCED_HOOKS_POST_TYPE == $screen->post_type && 'edit.php' === $pagenow ) {
+			if ( ASTRA_ADVANCED_HOOKS_POST_TYPE === $screen->post_type && 'edit.php' === $pagenow ) {
 				if ( SCRIPT_DEBUG ) {
 					wp_enqueue_script( 'advanced-hook-admin-list', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/unminified/advanced-hooks-list-page.js', array( 'wp-util' ), ASTRA_EXT_VER, false );
 					wp_enqueue_style( 'advanced-hook-admin-list', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/unminified/astra-advanced-hooks-admin-list.css', null, ASTRA_EXT_VER );
@@ -618,7 +623,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 
 			$custom_post_type = get_post_type( get_the_ID() );
 
-			if ( ASTRA_ADVANCED_HOOKS_POST_TYPE == $custom_post_type ) {
+			if ( ASTRA_ADVANCED_HOOKS_POST_TYPE === $custom_post_type ) {
 
 				$obj                           = get_post_type_object( $custom_post_type );
 				$singular_name                 = $obj->labels->singular_name;
@@ -633,7 +638,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					/* translators: %s: singular custom post type name */
 					4  => sprintf( __( '%s updated.', 'astra-addon' ), $singular_name ),
 					/* translators: %1$s: singular custom post type name ,%2$s: date and time of the revision */
-					5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'astra-addon' ), $singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'astra-addon' ), $singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not required for revision data.
 					/* translators: %s: singular custom post type name */
 					6  => sprintf( __( '%s published.', 'astra-addon' ), $singular_name ),
 					/* translators: %s: singular custom post type name */
@@ -688,6 +693,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				ASTRA_EXT_VER,
 				true
 			);
+			wp_set_script_translations( 'astra-custom-layout', 'astra-addon' );
 		}
 
 		/**
@@ -703,7 +709,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				return;
 			}
 
-			$responsive_visibility_status = ( 'array' == gettype( get_post_meta( get_the_ID(), 'ast-advanced-display-device', true ) ) ) ? true : false;
+			$responsive_visibility_status = 'array' === gettype( get_post_meta( get_the_ID(), 'ast-advanced-display-device', true ) ) ? true : false;
 
 			// UAG plugin slug.
 			$plugin_slug = 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php';
@@ -733,8 +739,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					'ResponsiveVisibilityStatus' => $responsive_visibility_status,
 					'siteurl'                    => get_option( 'siteurl' ),
 					'isWhitelabelled'            => Astra_Ext_White_Label_Markup::show_branding(),
-					'randomPreviewPost'          => $this->get_random_preview_post(),
 					'logo_url'                   => apply_filters( 'astra_admin_menu_icon', '' ),
+					'siteBuilderUrl'             => admin_url( 'admin.php?page=theme-builder' ),
 				)
 			);
 
@@ -786,38 +792,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 							),
 						),
 					),
-				)
-			);
-		}
-
-		/**
-		 * Get random preview post.
-		 *
-		 * @since 4.3.1
-		 */
-		public function get_random_preview_post() {
-			$args           = apply_filters(
-				'astra_addon_default_preview_post_query',
-				array(
-					'posts_per_page'      => 1,
-					'post_type'           => 'post',
-					'post_status'         => 'publish',
-					'ignore_sticky_posts' => 1,
-					'no_found_rows'       => 1,
-					'orderby'             => 'rand',
-				)
-			);
-			$single_product = new WP_Query( $args );
-			if ( ! $single_product->have_posts() ) {
-				return false;
-			}
-
-			$post_id = absint( isset( $single_product->posts[0]->ID ) ? $single_product->posts[0]->ID : '' );
-			return(
-				array(
-					'post_id'    => $post_id,
-					'post_type'  => 'post',
-					'post_title' => get_the_title( $post_id ),
 				)
 			);
 		}
@@ -1360,7 +1334,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				$title       = __( 'Site Builder', 'astra-addon' );
 				$tabs        = true;
 				$button_url  = '/post-new.php?post_type=astra-advanced-hook';
-				$kb_docs_url = 'https://wpastra.com/docs-category/astra-pro-modules/custom-layouts-module/?utm_source=wp&utm_medium=dashboard';
+				$kb_docs_url = 'https://wpastra.com/docs-category/site-builder/';
 				Astra_Addon_Admin_Loader::admin_dashboard_header( $title, $tabs, $button_url, $kb_docs_url );
 			}
 		}

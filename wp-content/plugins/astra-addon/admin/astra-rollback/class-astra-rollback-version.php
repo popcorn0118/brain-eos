@@ -8,14 +8,13 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit();
+	exit;
 }
 
 /**
  * Class Astra_Rollback_version.
  */
 class Astra_Rollback_Version {
-
 	/**
 	 * Version.
 	 *
@@ -53,7 +52,6 @@ class Astra_Rollback_Version {
 	protected $theme_slug;
 
 	/**
-	 *
 	 * Initializing Rollback.
 	 *
 	 * @since 3.6.1
@@ -119,7 +117,6 @@ class Astra_Rollback_Version {
 	}
 
 	/**
-	 *
 	 * Rollback to previous versions.
 	 *
 	 * @since 3.6.1
@@ -192,8 +189,19 @@ class Astra_Rollback_Version {
 	 * Get the astra white lable name.
 	 */
 	public static function astra_get_white_lable_name() {
+		static $theme_name = null;
 
-		$theme_name               = __( 'Astra', 'astra-addon' );
+		if ( null === $theme_name ) {
+			if ( did_action( 'init' ) ) {
+				$theme_name = __( 'Astra', 'astra-addon' );
+			} else {
+				add_action( 'init', static function() use ( &$theme_name ) {
+					$theme_name = __( 'Astra', 'astra-addon' );
+				}, 1 );
+				$theme_name = 'Astra';
+			}
+		}
+
 		$theme_whitelabelled_name = Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra', 'name', false );
 
 		if ( false !== $theme_whitelabelled_name ) {

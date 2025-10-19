@@ -47,6 +47,7 @@
 
 				if (!menu_click_listeners[i]) {
 					menu_click_listeners[i] = menu_toggle_all[i];
+					menu_toggle_all[i].removeEventListener('click', astraNavMenuToggle);
 					menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
 				}
 			}
@@ -65,7 +66,7 @@
                     if (astra_menu_toggle.length > 0) {
 
                         for (var j = 0; j < astra_menu_toggle.length; j++) {
-
+                            astra_menu_toggle[j].removeEventListener('click', AstraToggleSubMenu);
                             astra_menu_toggle[j].addEventListener('click', AstraToggleSubMenu, false);
                         }
                     }
@@ -159,8 +160,6 @@ astraNavMenuTogglePro = function ( event, body, mobileHeaderType, thisObj ) {
     }
 }
 
-
-
 const accountMenuToggle = function () {
     const checkAccountActionTypeCondition = astraAddon.hf_account_action_type && 'menu' === astraAddon.hf_account_action_type;
     const accountMenuClickCondition = checkAccountActionTypeCondition && astraAddon.hf_account_show_menu_on && 'click' === astraAddon.hf_account_show_menu_on;
@@ -208,14 +207,307 @@ const accountMenuToggle = function () {
     }
 }
 
+/**
+ * Color Switcher.
+ *
+ * @since 4.10.0
+ */
+const astraColorSwitcher = {
+	...astraAddon?.colorSwitcher, // Spreading Color Switcher options.
+
+	/**
+	 * Initializes the Color Switcher Widget.
+	 */
+	init: function () {
+		if ( ! this?.isInit ) {
+			return;
+		}
+
+		this.switcherButtons = document.querySelectorAll( '.ast-builder-color-switcher .ast-switcher-button' );
+
+		if ( ! this.switcherButtons?.length ) {
+			return;
+		}
+
+		this.switcherButtons?.forEach( ( switcherButton ) => {
+			switcherButton?.addEventListener( 'click', this.toggle ); // ✅ `this` refers to astraColorSwitcher
+		} );
+
+		if ( this.isDarkPalette && this.defaultMode === 'system' ) {
+			// Detect system preference and apply mode accordingly.
+			this.detectSystemColorScheme();
+		}
+
+		// Set initial logo state if switched
+		if ( this.isSwitched ) {
+			this.switchLogo();
+		}
+	},
+
+	/**
+	 * Detects the system's color scheme preference and sets the theme accordingly.
+	 */
+	detectSystemColorScheme: function () {
+		const storedPreference = this.getCookie( 'astraColorSwitcherState' );
+
+		// Bail early, if user has previously chosen a theme.
+		if ( storedPreference !== null ) {
+			return;
+		}
+
+		// Detect system preference.
+		const prefersDark = window.matchMedia( '(prefers-color-scheme: dark)' ).matches;
+
+		if ( prefersDark && ! this.isSwitched ) {
+			// Apply the detected or stored theme.
+			this.toggle();
+		}
+	},
+
+	/**
+	 * Toggle the palette.
+	 *
+	 * @param {Event} e Button click event object.
+	 */
+	toggle: function ( e ) {
+		e?.preventDefault();
+		const switcher = astraColorSwitcher;
+
+		// Toggle the state
+		switcher.isSwitched = ! switcher.isSwitched;
+
+		// Store state in cookie (expires in 90 days).
+		switcher.setCookie( 'astraColorSwitcherState', switcher.isSwitched, 90 );
+
+		if ( switcher?.forceReload ) {
+			window.location.reload();
+			return;
+		}
+
+		switcher.switchPaletteColors();
+		switcher.switchIcon();
+		switcher.switchLogo();
+
+		if ( switcher.isDarkPalette ) {
+			switcher.handleDarkModeCompatibility();
+		}
+	},
+
+	/**
+	 * Switch Palette Colors.
+	 */
+	switchPaletteColors: function () {
+		// Choose the correct palette based on `isSwitched` state.
+		const currentPalette = this.isSwitched ? this?.palettes?.switched : this?.palettes?.default;
+
+		// Apply the colors to CSS variables.
+		currentPalette?.forEach( ( color, index ) => {
+			document.documentElement.style.setProperty( `--ast-global-color-${ index }`, color );
+		} );
+	},
+
+	/**
+	 * Switch Icon.
+	 */
+	switchIcon: function () {
+		this.switcherButtons?.forEach( ( switcherButton ) => {
+			const [ defaultIcon, switchedIcon ] = switcherButton?.querySelectorAll( '.ast-switcher-icon' );
+
+			// Avoid icon switching if there is none or only one.
+			if ( defaultIcon && switchedIcon ) {
+				const [ first, second ] = this.isSwitched ? [ switchedIcon, defaultIcon ] : [ defaultIcon, switchedIcon ];
+
+				// Animate icon.
+				switcherButton?.classList.add( 'ast-animate' );
+
+				setTimeout( () => {
+					first?.classList.add( 'ast-current' );
+					second?.classList.remove( 'ast-current' );
+				}, 100 );
+
+				setTimeout( () => switcherButton?.classList.remove( 'ast-animate' ), 200 );
+			}
+
+			/// Switch aria attribute.
+			const ariaLabelTextKey = this.isSwitched ? 'defaultText' : 'switchedText';
+			switcherButton?.setAttribute(
+				'aria-label',
+				switcherButton?.dataset?.[ ariaLabelTextKey ] || 'Switch color palette.'
+			);
+		} );
+	},
+
+	/**
+	 * Switch Logo.
+	 */
+	switchLogo: function () {
+		// Handle color switcher logo switching
+		if ( this.isDarkPalette && this?.logos?.switched && this?.logos?.default ) {
+			this.switchColorSwitcherLogo();
+		}
+	},
+
+	/**
+	 * Switch Color Switcher Logo.
+	 * Handles logo switching for dark/light palette modes.
+	 */
+	switchColorSwitcherLogo: function () {
+		// Target only main logo, exclude sticky header and transparent header logos
+		const logoSelectors = [
+			'.custom-logo-link:not(.sticky-custom-logo):not(.transparent-custom-logo) .custom-logo',  // Main logo only
+			'.site-branding .site-logo-img img:not(.ast-sticky-header-logo)',  // Main site logo, not sticky
+			'.ast-site-identity .site-logo-img img:not(.ast-sticky-header-logo)', // Alternative main logo structure
+		];
+
+		let logoImages = [];
+		
+		// Try each selector to find main logo images only
+		for ( const selector of logoSelectors ) {
+			const foundImages = document.querySelectorAll( selector );
+			if ( foundImages.length > 0 ) {
+				// Filter out sticky and transparent header logos if they somehow get selected
+				logoImages = Array.from( foundImages).filter( ( img ) => {
+					// Exclude if parent contains sticky header or transparent header classes
+					return ! img.closest( '.ast-sticky-header-logo' ) && 
+						   ! img.closest( '.sticky-custom-logo' ) &&
+						   ! img.closest( '.transparent-custom-logo' ) &&
+						   ! img.classList.contains( 'ast-sticky-header-logo' );
+				} );
+
+				if ( logoImages.length > 0 ) {
+					break;
+				}
+			}
+		}
+
+		if ( ! logoImages.length ) {
+			return;
+		}
+
+		// Determine which logo to show based on current state
+		const targetSrc = this.isSwitched ? this.logos.switched : this.logos.default;
+		
+		if ( ! targetSrc ) {
+			return;
+		}
+
+		// Update each logo image
+		this.updateLogoImages( logoImages, targetSrc );
+	},
+
+	/**
+	 * Update Logo Images.
+	 */
+	updateLogoImages: function ( logoImages, targetSrc ) {
+		logoImages.forEach( ( logoImg ) => {
+			if ( logoImg && logoImg.src !== targetSrc ) {
+				// Preload image for smoother switching
+				const newImg = new Image();
+				newImg.onload = function() {
+					logoImg.src = targetSrc;
+					if ( logoImg.hasAttribute ( 'srcset' ) ) {
+						logoImg.removeAttribute( 'srcset' );
+					}
+					if ( logoImg.hasAttribute( 'data-src' ) ) {
+						logoImg.setAttribute( 'data-src', targetSrc );
+					}
+				};
+				newImg.onerror = function() {
+					logoImg.src = targetSrc; // Try anyway
+				};
+				newImg.src = targetSrc;
+			}
+		} );
+	},
+
+	/**
+	 * Handle Dark Mode Compatibility.
+	 */
+	handleDarkModeCompatibility: function () {
+		// Add the dark mode class.
+		document.body.classList.toggle( 'astra-dark-mode-enable' );
+
+		// Todo: Handle dark compatibility CSS.
+	},
+
+	/**
+	 * Helper function to set a cookie.
+	 */
+	setCookie: ( name, value, days ) => {
+		const expires = new Date();
+		expires.setTime( expires.getTime() + days * 24 * 60 * 60 * 1000 );
+		document.cookie = `${ name }=${ value }; expires=${ expires.toUTCString() }; path=/`;
+	},
+
+	/**
+	 * Helper function to get a cookie.
+	 */
+	getCookie: ( name ) => {
+		const cookies = document.cookie.split( '; ' );
+		for ( let cookie of cookies ) {
+			const [ key, val ] = cookie.split( '=' );
+			if ( key === name ) return val;
+		}
+		return null;
+	},
+};
+
+/**
+ * Account Login Popup Trigger
+ *
+ * Moved from theme's JS to addon to ensure the login popup JS always loads with the account component.
+ * Fixes cases where the JS was missing when the widget was added due to theme script loading order.
+ *
+ * @since 4.11.5 Moved from theme to addon
+ */
+var accountPopupTrigger = function () {
+	if ( typeof astraAddon === 'undefined' || 'login' !== astraAddon.hf_account_logout_action ) {
+		return;
+	}
+
+	// Account login form popup.
+	var header_account_trigger =  document.querySelectorAll( '.ast-account-action-login' );
+
+	if (!header_account_trigger.length) {
+		return;
+	}
+
+	const formWrapper = document.querySelector('#ast-hb-account-login-wrap');
+
+	if (!formWrapper) {
+		return;
+	}
+
+	const formCloseBtn = document.querySelector('#ast-hb-login-close');
+
+	header_account_trigger.forEach(function(_trigger) {
+		_trigger.addEventListener('click', function(e) {
+			e.preventDefault();
+
+			formWrapper.classList.add('show');
+		});
+	});
+
+	if (formCloseBtn) {
+		formCloseBtn.addEventListener('click', function(e) {
+			e.preventDefault();
+			formWrapper.classList.remove('show');
+		});
+	}
+};
+
 document.addEventListener( 'astPartialContentRendered', function() {
     accountMenuToggle();
+    accountPopupTrigger();
 });
 
 window.addEventListener( 'load', function() {
     accountMenuToggle();
+    accountPopupTrigger();
+    astraColorSwitcher.init();
 } );
 
 document.addEventListener( 'astLayoutWidthChanged', function() {
     accountMenuToggle();
+    accountPopupTrigger();
 } );

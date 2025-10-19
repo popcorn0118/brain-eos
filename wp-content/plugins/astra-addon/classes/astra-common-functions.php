@@ -6,6 +6,61 @@
  */
 
 /**
+ * Return theme options from astra-settings option key.
+ *
+ * This function exists in theme v4.8.9 though included here to prevent errors caused by version mismatches with the theme.
+ */
+if ( ! function_exists( 'astra_get_options' ) ) {
+
+	/**
+	 * Retrieve Astra theme options array.
+	 *
+	 * @return array The theme options array.
+	 *
+	 * @since 4.8.9
+	 */
+	function astra_get_options() {
+		// Ensure we're not interfering during WordPress installation.
+		if ( wp_installing() ) {
+			return array();
+		}
+
+		/**
+		 * Filter to bypass the cached Astra options.
+		 *
+		 * Example usage:
+		 *     add_filter( 'astra_get_options_nocache', '__return_true' );
+		 *
+		 * @since 4.8.9
+		 * @return bool Whether to bypass the cache. Default is false.
+		 */
+		if ( apply_filters( 'astra_get_options_nocache', false ) ) {
+			$astra_options = get_option( ASTRA_THEME_SETTINGS, array() );
+		} else {
+			// Use a static variable to cache the options for this request.
+			static $cached_astra_options = null;
+
+			// Fetch the options once and cache them in the static variable.
+			if ( is_null( $cached_astra_options ) || is_customize_preview() ) {
+				$cached_astra_options = is_callable( 'Astra_Theme_Options::get_astra_options' )
+					? Astra_Theme_Options::get_astra_options() :
+					get_option( ASTRA_THEME_SETTINGS );
+			}
+
+			$astra_options = $cached_astra_options;
+		}
+
+		/**
+		 * Filter the options array for Astra Settings.
+		 *
+		 * @since 4.8.9
+		 * @return array The theme options array.
+		 */
+		return apply_filters( 'astra_get_options', $astra_options );
+	}
+}
+
+/**
  * Return translated theme option.
  *
  * This function exists in theme v.4.7.4 though included here to prevent errors caused by version mismatches with the theme.
@@ -118,7 +173,6 @@ if ( ! function_exists( 'astra_responsive_font' ) ) {
 	 * @return mixed
 	 */
 	function astra_responsive_font( $font, $device = 'desktop', $default = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-		$css_val = '';
 
 		if ( isset( $font[ $device ] ) && isset( $font[ $device . '-unit' ] ) ) {
 			if ( '' != $default ) {
@@ -129,7 +183,7 @@ if ( ! function_exists( 'astra_responsive_font' ) ) {
 		} elseif ( is_numeric( $font ) ) {
 			$font_size = astra_get_css_value( $font );
 		} else {
-			$font_size = ( ! is_array( $font ) ) ? $font : '';
+			$font_size = ! is_array( $font ) ? $font : '';
 		}
 
 		return $font_size;
@@ -174,7 +228,7 @@ if ( ! function_exists( 'astra_responsive_spacing' ) ) {
 		} elseif ( is_numeric( $option ) ) {
 			$spacing = astra_get_css_value( $option );
 		} else {
-			$spacing = ( ! is_array( $option ) ) ? $option : '';
+			$spacing = ! is_array( $option ) ? $option : '';
 		}
 
 		if ( '' !== $prefix && '' !== $spacing ) {
@@ -184,20 +238,19 @@ if ( ! function_exists( 'astra_responsive_spacing' ) ) {
 	}
 }
 
-
 /**
  * Check Elementor widgets.
  */
 if ( ! function_exists( 'astra_check_elementor_widget' ) ) {
 
-		/**
-		 * Added Check if the cart widget exists in the Elementor meta data.
-		 *
-		 * @since 4.8.2
-		 * @param array  $elements_data
-		 * @param string $widget_name
-		 * @return bool
-		 */
+	/**
+	 * Added Check if the cart widget exists in the Elementor meta data.
+	 *
+	 * @since 4.8.2
+	 * @param array  $elements_data
+	 * @param string $widget_name
+	 * @return bool
+	 */
 	function astra_check_elementor_widget( $elements_data, $widget_name ) {
 		foreach ( $elements_data as $element ) {
 			if ( isset( $element['widgetType'] ) && $element['widgetType'] === $widget_name ) {
@@ -357,10 +410,10 @@ if ( ! function_exists( 'astra_get_responsive_background_obj' ) ) {
 		$bg_tab_img  = isset( $bg_obj_res['tablet']['background-image'] ) ? $bg_obj_res['tablet']['background-image'] : '';
 		$bg_desk_img = isset( $bg_obj_res['desktop']['background-image'] ) ? $bg_obj_res['desktop']['background-image'] : '';
 		$bg_color    = isset( $bg_obj['background-color'] ) ? $bg_obj['background-color'] : '';
-		$tablet_css  = ( isset( $bg_obj_res['tablet']['background-image'] ) && $bg_obj_res['tablet']['background-image'] ) ? true : false;
-		$desktop_css = ( isset( $bg_obj_res['desktop']['background-image'] ) && $bg_obj_res['desktop']['background-image'] ) ? true : false;
+		$tablet_css  = isset( $bg_obj_res['tablet']['background-image'] ) && $bg_obj_res['tablet']['background-image'] ? true : false;
+		$desktop_css = isset( $bg_obj_res['desktop']['background-image'] ) && $bg_obj_res['desktop']['background-image'] ? true : false;
 
-		$bg_type = ( isset( $bg_obj['background-type'] ) && $bg_obj['background-type'] ) ? $bg_obj['background-type'] : '';
+		$bg_type = isset( $bg_obj['background-type'] ) && $bg_obj['background-type'] ? $bg_obj['background-type'] : '';
 
 		if ( '' !== $bg_type ) {
 			switch ( $bg_type ) {
@@ -451,7 +504,7 @@ if ( ! function_exists( 'astra_get_responsive_background_obj' ) ) {
 /**
  * Search Form
  */
-if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
+if ( ! function_exists( 'astra_addon_get_search_form' ) ) {
 	/**
 	 * Display search form.
 	 *
@@ -472,7 +525,7 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 				<span class="screen-reader-text">' . _x( 'Search for:', 'label', 'astra-addon' ) . '</span>
 				<input type="search" class="search-field" placeholder="' . esc_attr( $astra_search_input_placeholder ) . '" value="' . get_search_query() . '" name="s" ' . $autocomplete_attr . ' />
 			</label>
-			<button type="submit" class="search-submit normal-search" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Icons::get_icons( 'search' ) . ' </i></button>
+			<button type="submit" class="search-submit normal-search" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Ext_Adv_Search_Markup::search_icon() . ' </i></button>
 		</form>';
 
 		/**
@@ -492,7 +545,106 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 			return $result;
 		}
 	}
-endif;
+}
+
+/**
+ * Icon Selector SVG.
+ */
+if ( ! function_exists( 'astra_icon_selector_svg' ) ) {
+	/**
+	 * Renders an SVG icon for SVG Icon Selector Control.
+	 *
+	 * @param array  $icon    The icon to be rendered. Contains type and value keys.
+	 * @param bool   $echo    Whether to echo the SVG markup directly or return it.
+	 * @param string $default The default icon to use if no icon is provided.
+	 *
+	 * @return string|null The SVG icon markup or null if SVG icons are not enabled or no icon is provided.
+	 * @since 4.10.0
+	 */
+	function astra_icon_selector_svg( $icon, $echo = false, $default = '' ) {
+		// Bail early if SVG icons are not enabled.
+		if ( ! Astra_Icons::is_svg_icons() || ! $icon ) {
+			return $echo ? null : '';
+		}
+
+		$svg     = '';
+		$classes = array( 'ast-icon' );
+
+		if ( isset( $icon['type'], $icon['value'] ) ) {
+			$type  = $icon['type'];
+			$value = $icon['value'];
+
+			if ( $type === 'custom' ) {
+				$svg       = do_shortcode( $value );
+				$classes[] = 'icon-' . $type;
+			} elseif ( $type !== 'none' && is_callable( 'Astra_Builder_UI_Controller::fetch_svg_icon' ) ) {
+				$svg       = Astra_Builder_UI_Controller::fetch_svg_icon( $value );
+				$classes[] = 'icon-' . $value;
+			}
+		}
+
+		if ( ! $svg && $default && is_callable( 'Astra_Builder_UI_Controller::fetch_svg_icon' ) ) {
+			$svg = Astra_Builder_UI_Controller::fetch_svg_icon( $default );
+		}
+
+		if ( $svg ) {
+			$svg = sprintf(
+				'<span class="%1$s">%2$s</span>',
+				implode( ' ', $classes ),
+				$svg
+			);
+		}
+
+		if ( $echo !== true ) {
+			return wp_kses( $svg, Astra_Addon_Kses::astra_addon_svg_kses_protocols() );
+		}
+
+		echo wp_kses( $svg, Astra_Addon_Kses::astra_addon_svg_kses_protocols() );
+	}
+}
+
+/**
+ * Global color palette names.
+ */
+if ( ! function_exists( 'astra_get_palette_names' ) ) {
+	/**
+	 * Function to get global color palette names.
+	 *
+	 * @return array color palette names.
+	 * @since 4.10.0
+	 */
+	function astra_get_palette_names() {
+		$color_palette_reorganize = is_callable( 'Astra_Dynamic_CSS::astra_4_8_9_compatibility' ) && Astra_Dynamic_CSS::astra_4_8_9_compatibility();
+		$default_palette_names    = array(
+			'palette_1' => 'Default',
+			'palette_2' => $color_palette_reorganize ? 'Oak' : 'Style 2',
+			'palette_3' => $color_palette_reorganize ? 'Lavender' : 'Style 3',
+			'palette_4' => 'Dark',
+		);
+
+		$color_palettes = get_option( 'astra-color-palettes', array() );
+
+		$palette_names = $default_palette_names;
+		if ( isset( $color_palettes['presetNames'] ) ) {
+			$palette_names = $color_palettes['presetNames'];
+
+			// Ensure all 4 palette names exist, use default if empty.
+			foreach ( $default_palette_names as $key => $default_name ) {
+				if ( empty( $palette_names[ $key ] ) ) {
+					$palette_names[ $key ] = $default_name;
+				}
+			}
+		}
+
+		/**
+		 * Filter the color palette names before returning them.
+		 *
+		 * @param array $palette_names The array of color palette names.
+		 * @return array The filtered array of color palette names.
+		 */
+		return apply_filters( 'astra_get_palette_names', $palette_names );
+	}
+}
 
 /**
  * Get instance of WP_Filesystem.
@@ -698,4 +850,88 @@ function astra_addon_check_reveal_effect_condition( $type = '' ) {
  */
 function astra_addon_4_6_0_compatibility() {
 	return is_callable( 'Astra_Dynamic_CSS::astra_4_6_0_compatibility' ) ? Astra_Dynamic_CSS::astra_4_6_0_compatibility() : false;
+}
+
+/**
+ * Determines if the specified palette key corresponds to a dark palette.
+ *
+ * @param string $palette_key The key of the palette to check. Defaults to 'current' which indicates the current global palette.
+ *
+ * @since 4.10.0
+ * @return bool Returns true if the palette key is associated with a dark palette, false otherwise.
+ */
+function astra_addon_is_dark_palette( $palette_key = 'current' ) {
+	if ( $palette_key === 'current' ) {
+		// Check if the 'is_dark_palette' method exists and use it to determine if the current palette is dark.
+		if ( method_exists( 'Astra_Global_Palette', 'is_dark_palette' ) ) {
+			return Astra_Global_Palette::is_dark_palette();
+		}
+
+		// If the 'is_dark_palette' method does not exist, try to get the active global palette key.
+		if ( method_exists( 'Astra_Global_Palette', 'astra_get_active_global_palette' ) ) {
+			$palette_key = Astra_Global_Palette::astra_get_active_global_palette();
+		}
+	}
+
+	return $palette_key === 'palette_4';
+}
+
+// Check if the function astra_parse_selector exists to avoid redeclaration.
+if ( ! function_exists( 'astra_parse_selector' ) ) {
+	/**
+	 * Parses selectors and conditionally removes plugin-specific selectors.
+	 * Usage:
+	 * ```
+	 * $selectors = '.class1, .class2, .class3';
+	 * $filtered  = astra_parse_selector( $selectors, 'wc' );
+	 * ```
+	 *
+	 * @param string       $selectors       Full selector string (comma-separated).
+	 * @param string|array $keywords  Keywords to filter out selectors. If a string is provided, it will be converted to an array.
+	 *
+	 * @return string Final selector string.
+	 * @since 4.11.5
+	 */
+	function astra_parse_selector( $selectors, $keywords = '' ) {
+		$selector_array     = explode( ',', $selectors );
+		$filtered_selectors = array();
+
+		// If $keywords is a string, convert it to an array.
+		if ( is_string( $keywords ) ) {
+			$keywords = array( $keywords );
+		}
+
+		foreach ( $selector_array as $selector ) {
+			$selector        = trim( $selector );
+			$ignore_selector = false;
+
+			foreach ( $keywords as $keyword ) {
+				switch ( $keyword ) {
+					case 'wc':
+					case 'woocommerce':
+						if ( ! defined( 'WC_VERSION' ) && strpos( $selector, 'woocommerce' ) !== false ) {
+							$ignore_selector = true;
+							break 2;
+						}
+						break;
+
+					case 'el':
+					case 'elementor':
+						if ( ! defined( 'ELEMENTOR_VERSION' ) && strpos( $selector, 'elementor' ) !== false ) {
+							$ignore_selector = true;
+							break 2;
+						}
+						break;
+
+					// Add more cases here for other plugins.
+				}
+			}
+
+			if ( ! $ignore_selector ) {
+				$filtered_selectors[] = $selector;
+			}
+		}
+
+		return implode( ', ', $filtered_selectors );
+	}
 }

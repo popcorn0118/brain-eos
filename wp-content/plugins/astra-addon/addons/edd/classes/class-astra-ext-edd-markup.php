@@ -69,7 +69,7 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 				// Edd archive page product style.
 				$shop_style                = astra_get_option( 'edd-archive-style' );
 				$product_archive_structure = astra_get_option( 'edd-archive-product-structure' );
-				if ( 'edd-archive-page-list-style' == $shop_style && in_array( 'image', $product_archive_structure ) ) {
+				if ( 'edd-archive-page-list-style' === $shop_style && in_array( 'image', $product_archive_structure ) ) {
 					remove_action( 'astra_edd_archive_image', 'astra_edd_archive_product_image' );
 					add_action( 'astra_edd_archive_before_block_wrap', 'astra_edd_archive_product_image' );
 
@@ -117,7 +117,6 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 			$font_family_product_content = astra_get_option( 'font-family-edd-product-content' );
 			$font_weight_product_content = astra_get_option( 'font-weight-edd-product-content' );
 			Astra_Fonts::add_font( $font_family_product_content, $font_weight_product_content );
-
 		}
 
 		/**
@@ -161,7 +160,7 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 			if ( $is_edd_archive_page ) {
 
 				$shop_style = astra_get_option( 'edd-archive-style' );
-				if ( 'edd-archive-page-list-style' == $shop_style ) {
+				if ( 'edd-archive-page-list-style' === $shop_style ) {
 					$classes[] = 'ast-' . $shop_style;
 				}
 			} elseif ( edd_is_checkout() ) {
@@ -211,7 +210,7 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 				$classes[] = astra_get_option( 'edd-archive-product-align' );
 				$classes[] = 'box-shadow-' . astra_get_option( 'edd-archive-product-shadow' );
 				$classes[] = 'box-shadow-' . astra_get_option( 'edd-archive-product-shadow-hover' ) . '-hover';
-				$class     = $class . ' ' . implode( ' ', $classes );
+				$class    .= ' ' . implode( ' ', $classes );
 			}
 			return $class;
 		}
@@ -284,7 +283,7 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 		 */
 		public function add_styles() {
 
-			/*** Start Path Logic */
+			/* Start Path Logic */
 
 			/* Define Variables */
 			$uri  = ASTRA_ADDON_EXT_EDD_URI . 'assets/css/';
@@ -313,7 +312,7 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 				$gen_path = $css_dir;
 			}
 
-			/*** End Path Logic */
+			/* End Path Logic */
 
 			/* Add style.css */
 			Astra_Minify::add_css( $gen_path . 'style' . $file_prefix . '.css' );
@@ -321,7 +320,7 @@ if ( ! class_exists( 'ASTRA_Ext_Edd_Markup' ) ) {
 			// Shop page style.
 			$shop_page_style = astra_get_option( 'edd-archive-style' );
 
-			if ( 'edd-archive-page-list-style' == $shop_page_style ) {
+			if ( 'edd-archive-page-list-style' === $shop_page_style ) {
 				$shop_page_style = Astra_Addon_Builder_Helper::apply_flex_based_css() ? $shop_page_style . '-grid' : $shop_page_style;
 				Astra_Minify::add_css( $gen_path . $shop_page_style . $file_prefix . '.css' );
 			}

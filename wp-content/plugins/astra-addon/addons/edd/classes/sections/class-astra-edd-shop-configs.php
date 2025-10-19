@@ -54,11 +54,11 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'choices'           => array(
 						'edd-archive-page-grid-style' => array(
 							'label' => __( 'Grid View', 'astra-addon' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-grid-view', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-grid-view', false ) : '',
 						),
 						'edd-archive-page-list-style' => array(
 							'label' => __( 'List View', 'astra-addon' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-list-view', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-list-view', false ) : '',
 						),
 					),
 				),
@@ -140,7 +140,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 						'step' => 1,
 						'max'  => 5,
 					),
-					'divider'     => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -196,7 +196,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 						'step' => 1,
 						'max'  => 200,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -242,6 +242,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-archive-product-title-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Product Title Font', 'astra-addon' ),
 					'section'   => 'section-edd-archive',
 					'transport' => 'postMessage',
@@ -256,6 +257,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-archive-product-price-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Product Price Font', 'astra-addon' ),
 					'section'   => 'section-edd-archive',
 					'transport' => 'postMessage',
@@ -270,6 +272,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-archive-product-content-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Product Content Font', 'astra-addon' ),
 					'section'   => 'section-edd-archive',
 					'transport' => 'postMessage',
@@ -295,13 +298,9 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 				),
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
-
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }
-
 
 new Astra_Edd_Shop_Configs();

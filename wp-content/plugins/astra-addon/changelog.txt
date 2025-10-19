@@ -1,5 +1,150 @@
 *** Astra Pro Changelog ***
 
+2025-10-07 - version 4.11.10
+* Improvement: Improved two-step checkout navigation buttons to work smoothly.
+* Fix: Corrected LifterLMS course grid display in Astra Pro to prevent individual course boxes from appearing shrunk in a three-column layout.
+* Fix: The "Sale" badge was incorrectly showing on single product pages when the Enable Sticky Product Image option was enabled, even if the product was not on sale.
+* Fix: Resolved a scrolling glitch that occurred after opening the sticky header menu when the Move Body option was enabled.
+
+2025-09-09 - version 4.11.9
+* New: Added support for Dark Mode logo.
+* Improvement: Enhanced the loading performance of the Quantity Plus and Minus buttons by using placeholders.
+
+2025-08-20 - version 4.11.8
+* Improvement: Improved accessibility in header builder elements.
+* Improvement: Fade out variation option buttons when a product variant combination doesn't exist, preventing fallback to the default image for valid selections.
+* Improvement: Enhanced accessibility by adding role="region" to <aside> elements in footer dynamic components.
+* Improvement: Introduce a filter "astra_blog_pro_filter_url_change" to change blog filter url change.
+* Fix: Resolved extra spacing issue in Quick View modal when "First Image Large" layout is enabled.
+
+2025-08-11 - version 4.11.7
+* Improvement: Enhanced WooCommerce My Account form reliability and readability by updating URL hashes to #create-account and #login.
+* Fix: Redirected WordPress logo in fullscreen editor to correct custom layout screen for Astra post types.
+* Fix: Resolved an issue with Cross sell product layout conflict with Elementor Pro widgets.
+* Fix: Fixed duplicate createaccount ID error in Modern Checkout when both Astra Modern Checkout and WooCommerce account login options are enabled simultaneously.
+
+2025-07-30 - version 4.11.6
+* Improvement: Enhanced accessibility by preventing focus on links inside hidden product gallery slides.
+* Improvement: Moved Account Login Popup JavaScript from the theme to the addon for more reliable widget functionality.
+* Fix: Fixed a CSS conflict between the Astra Addon and the CartFlows Instant Checkout template on the checkout page.
+
+2025-07-16 - version 4.11.5
+* Improvement: Prevented WooCommerce-related CSS selectors from being included in dynamic CSS when WooCommerce is not installed or activated, reducing unnecessary output and improving code cleanliness.
+* Fix: Resolved an issue where duplicate variation buttons appeared when using "Change Dropdown to Buttons" alongside the Variation Swatches plugin.
+
+2025-07-02 - version 4.11.4
+* Fix: Resolved an issue where the product was not added to the cart when using Astra Pro add to cart options.
+* Fix: Page Header - Resolved a UI issue where the selected Primary Menu was not visually reflected in the dropdown.
+* Fix: Resolved form sync issue on My Account page when using Elementor's WooCommerce Pages widget with Astra's modern login/registration.
+
+2025-07-01 - version 4.11.3
+* Improvement: Enhanced accessibility and semantics in infinite scroll pagination by using semantic, interactive elements for the "Load More" trigger and enabling full keyboard navigation support.
+* Fix: Mobile menu not properly closing when clicking anchor links (#) in fade/slide header animations.
+* Fix: Resolved overlapping issue in the Modern Cart layout when sidebar is enabled.
+* Fix: Resolved an issue with adding variable products when multiple "Add to Cart" instances are present.
+
+2025-06-17 - version 4.11.2
+* Improvement: Added shadow for better visibility of white logo images in the Sticky Header Logo Customizer control.
+* Fix: Ensured Dark Mode toggle works consistently by always including dark palette CSS in cached files.
+* Fix: Resolved an issue where the Account widget menu font was not applying on the frontend.
+* Fix: Resolved an issue with the Twitter icon appearing black in Social Sharing.
+* Fix: Resolved an issue where the box shadow control was not working on the blog archive page.
+
+2025-06-05 - version 4.11.1
+* New: Revamped the Astra Addon Dashboard using Force UI for a modern, cohesive user experience.
+* Fix: Resolved an issue where responsive outer and inner post spacing was not applied correctly.
+* Fix: Resolved RTL mega menu positioning by implementing right-edge calculation instead of left positioning.
+
+2025-05-07 - version 4.11.0
+* New: Introducing a new polished UI for the Astra Customizer, offering an improved user experience and refreshed design.
+* Improvement: Enhanced accessibility of post filters with keyboard support & screen reader announcements.
+* Improvement: Optimized product navigation queries to reduce database load.
+* Fix: Addressed an issue where the `Display for Users` condition was not applying from the Site Builder overview page.
+* Fix: Resolved conflict between Astra’s Modern Cart Layout and Elementor Pro Cart Widget that was breaking the column layout.
+
+2025-04-24 - version 4.10.1
+* Fix: WooCommerce – Resolved product gallery image glitches when changing variations on single product pages in WC v4.8.0+.
+* Fix: Resolved an issue where Site Builder exclusions were not working for specific category archive pages.
+* Fix: Addressed an issue where the Shop Filter button did not trigger the off-canvas flyout.
+* Fix: Resolved an issue affecting users who installed the ZIP file from the WooCommerce Marketplace.
+
+2025-04-15 - version 4.10.0
+* New: Header Builder – Introduced the Color Switcher widget, allowing visitors to toggle between two color palettes, including support for Dark Mode. ( https://wpastra.com/docs/color-switcher-widget/ )
+* Improvement: Compatibility with WordPress 6.8.
+* Improvement: Enhanced accessibility with keyboard support, screen reader announcements, and ARIA attributes for filters.
+* Improvement: Added support for detecting custom fields dynamically during add-to-cart requests.
+* Improvement: Adjusted top margin in the modern My Account page layout to ensure better compatibility with transparent headers.
+* Fix: Resolved a Customizer error related to divider widget CSS generation by adding proper object and type checks.
+
+2025-04-02 - version 4.9.2
+* Improvement: Added alphabetical sorting for next/previous product navigation with the `astra_woo_product_navigation_sort_args` filter for custom sorting. (https://wpastra.com/docs/product-navigation-with-custom-sorting/)
+* Fix: Resolved an issue where Banner Layout 2 was displaying on Single/Archive pages when Site Builder Templates were applied.
+
+2025-03-07 - version 4.9.1
+* Fix: Resolved critical error which was introduced in previous version (v4.9.0).
+
+2025-03-06 - version 4.9.0
+* New: Astra New color palette compatibility with Astra Addon features - (Beta Feature) (https://wpastra.com/docs/dark-colour-palette/)
+* Fix: Resolved an issue where the inside spacing of responsive blog posts was not applied correctly.
+* Fix: Resolved an issue where Social widget Alignment option not working properly when Stack option is used. 
+* Fix: Gracefully handled `astra_get_post_type` undefined function error caused by theme and addon version mismatch.
+
+2025-02-26 - version 4.8.14
+* Fix: Resolved an issue where product gallery thumbnails appeared blurry by ensuring the correct image size is used.
+* Fix: Resolved a UI issue where the "Re-enter New Password" field was displaying incorrectly.
+* Fix: Resolved a CSS conflict where the Stripe Checkout payment button affected the Astra Modern Checkout layout.
+* Fix: WooCommerce - Resolved UI issue in Astra Pro's Quick View feature where landscape images distorted the layout for variable products.
+* Fix: Resolved an issue where the WooCommerce Product Variation Switcher displayed the featured image instead of the selected variation’s image in Astra Pro's Gallery Layouts.
+* Fix: Resolved an issue causing double search icons to appear for some existing users.
+* Fix: Resolved an issue where custom layouts created using Theme Builder did not render on empty category archives.
+* Fix: Resolved an issue where extra field data on single product page was not being submitted when adding the product to the cart.
+
+2025-02-11 - version 4.8.13
+* New: Search Widget - Added support to search icon from the icon library or using a custom SVG code.
+* Improvement: Enhanced coupon field in Modern Cart Layout to display error notices for invalid or empty coupon submissions.
+
+2025-01-28 - version 4.8.12
+* Improvement: Enhanced accessibility of the Search Widget by addressing form label issues flagged by the WAVE tool.
+* Improvement: Enhanced Astra Real-Time Add to Cart functionality to make it compatible with WooCommerce Subscription's Proration feature.
+* Improvement: Added hash-based URL functionality to toggle between login and registration forms.
+* Improvement: Enhanced Search Widget markup rendering to occur only when the widget is present in the Header Builder with Header Cover and Full-Screen Search options.
+* Fix: String Translations not working correctly for Astra Customizer settings.
+* Fix: Resolved layout breakage in Astra Mega Menu to ensure proper display for both normal and custom width.
+
+2025-01-07 - version 4.8.11
+* Fix: Resolved fatal error introduced in v4.8.10.
+
+2025-01-07 - version 4.8.10
+* Fix: Resolved an issue where the query loop block wasn't displaying dynamic content correctly in Site Builder with Archive Template.
+* Fix: White label is not working for the Astra menu panel strings.
+* Fix: Resolved undefined array key warnings for 'tablet' and 'mobile' in dynamic CSS PHP files when the blog Reveal effect is enabled.
+* Fix: Resolved color inheritance issues between Account widget menu, and transparent header.
+
+2024-12-31 - version 4.8.9
+* Improvement: Color settings synced with updated global color palette from theme.
+* Improvement: Added post-type specific cached style file generation for better compatibility with plugins like Toolset Post Type using the Astra File Generation option.
+* Fix: Resolved an issue where nested submenus incorrectly inherited hover colors from the parent menu, despite having separate hover colors set.
+* Fix: Resolved an error encountered when translating media in WPML while using the Astra theme and Astra Pro plugin.
+* Fix: Resolved a fatal error on the order page that occurred when a product was removed from the website.
+* Fix: Resolved misalignment issues for Mega Menu submenu items in RTL mode when using a custom width.
+* Fix: Resolved inconsistent variation selection for products with custom attributes in URLs.
+* Fix: Resolved RTL compatibility issue with Masonry layout by adding dynamic alignment detection.
+* Fix: Resolved an issue where the Template Source dropdown was missing for Mega Menu templates.
+
+2024-12-16 - version 4.8.8
+* Improvement: Automatically enable the 'Site Builder' module when Astra Pro is activated on new installations.
+* Fix: There is a gap between the above and below header when the sticky header is active with a custom width set to the site logo.
+* Fix: Resolved translation issues with Site Builder and Mega Menu strings.
+* Fix: Resolved an issue where `_load_textdomain_just_in_time` function was incorrectly triggered for the `astra-addon` text domain.
+
+2024-11-26 - version 4.8.7
+* Improvement: Remove broken links from Site Builder and replace with proper links.
+* Security Fix: Updated DOMPurify library to prevent potential tampering issues.
+* Fix: Resolved submenu toggle button issue in the mobile header with Omnisend plugin active.
+* Fix: Resolved a conflict with the Dokan plugin where the Customer/Vendor Registration Toggle becomes disabled.
+* Fix: Showing blank font option in account widget design and general section.
+* Fix: RTL compatibility issue with products sale badge on single product page.
+
 2024-11-15 - version 4.8.6
 * Fix: Resolved an issue with duplicated content appearing due to Site Builder layouts.
 * Fix: Inconsistent spacing in WooCommerce variation product classes by updating class name concatenation for cleaner HTML markup.
@@ -1638,3 +1783,4 @@ v1.0.0-beta.3
 
 v1.0.0-beta.1
 - Initial Release
+

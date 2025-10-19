@@ -114,10 +114,11 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Colors' ) ) {
 						'control'    => Astra_Theme_Extension::$group_control,
 						'title'      => __( 'Mega Menu Heading', 'astra-addon' ),
 						'section'    => 'section-sticky-header',
+						'is_font'    => true,
 						'transport'  => 'postMessage',
 						'priority'   => 70,
 						'responsive' => false,
-						'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						'context'    => true === astra_addon_builder_helper()->is_header_footer_builder_active ?
 							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					),
 				);
@@ -125,9 +126,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Colors' ) ) {
 				$_configs = array_merge( $_configs, $_new_config );
 			}
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

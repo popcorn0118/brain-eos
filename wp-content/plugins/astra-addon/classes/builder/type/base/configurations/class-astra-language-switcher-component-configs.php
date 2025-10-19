@@ -239,6 +239,7 @@ class Astra_Language_Switcher_Component_Configs {
 					),
 					astra_addon_builder_helper()->design_tab_config,
 				),
+				'divider'     => array( 'ast_class' => 'ast-top-section-divider ' ),
 			),
 
 			// Section: Above Footer Border.
@@ -265,6 +266,7 @@ class Astra_Language_Switcher_Component_Configs {
 					),
 					astra_addon_builder_helper()->design_tab_config,
 				),
+				'divider'     => array( 'ast_class' => 'ast-top-section-divider ' ),
 			),
 
 		);
@@ -315,10 +317,8 @@ class Astra_Language_Switcher_Component_Configs {
 
 		$lang_config[] = $_configs;
 
-		$lang_config    = call_user_func_array( 'array_merge', $lang_config + array( array() ) );
-		$configurations = array_merge( $configurations, $lang_config );
-
-		return $configurations;
+		$lang_config = call_user_func_array( 'array_merge', $lang_config + array( array() ) );
+		return array_merge( $configurations, $lang_config );
 	}
 }
 

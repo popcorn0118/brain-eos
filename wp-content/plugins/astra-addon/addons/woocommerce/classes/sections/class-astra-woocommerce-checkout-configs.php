@@ -36,6 +36,20 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 		 * @return Array Astra Customizer Configurations with updated configurations.
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
+			// Help text for modern checkout.
+			$checkout_description = '';
+			if ( defined( 'CARTFLOWS_VER' ) ) {
+				$checkout_description = __( "Astra's modern checkout is disabled when CartFlows is active to prevent layout conflicts.", 'astra-addon' );
+			} elseif ( defined( 'ELEMENTOR_PRO_VERSION' ) && function_exists( 'wc_get_page_id' ) ) {
+				$checkout_page_id = wc_get_page_id( 'checkout' );
+				$elementor_data   = get_post_meta( $checkout_page_id, '_elementor_data', true );
+				if ( is_string( $elementor_data ) && ! empty( $elementor_data ) ) {
+					$elementor_data = json_decode( $elementor_data, true );
+					if ( astra_check_elementor_widget( $elementor_data, 'woocommerce-checkout-page' ) ) {
+						$checkout_description = __( "Astra's modern checkout is disabled when Elementor Checkout block is added on the checkout page to prevent layout conflicts.", 'astra-addon' );
+					}
+				}
+			}
 
 			$_configs = array(
 
@@ -84,7 +98,6 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'transport'  => 'postMessage',
 					'renderAs'   => 'text',
 					'responsive' => false,
-					'divider'    => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -113,29 +126,30 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 1920,
 					),
-					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
-				* Option: Checkout Layout.
-				*/
+				 * Option: Checkout Layout.
+				 */
 
 				array(
-					'name'       => ASTRA_THEME_SETTINGS . '[checkout-layout-type]',
-					'default'    => astra_get_option( 'checkout-layout-type' ),
-					'section'    => 'woocommerce_checkout',
-					'type'       => 'control',
-					'control'    => 'ast-selector',
-					'title'      => __( 'Checkout Layout', 'astra-addon' ),
-					'priority'   => 5,
-					'choices'    => array(
+					'name'        => ASTRA_THEME_SETTINGS . '[checkout-layout-type]',
+					'default'     => astra_get_option( 'checkout-layout-type' ),
+					'section'     => 'woocommerce_checkout',
+					'type'        => 'control',
+					'control'     => 'ast-selector',
+					'title'       => __( 'Checkout Layout', 'astra-addon' ),
+					'priority'    => 5,
+					'choices'     => array(
 						'default' => __( 'Default', 'astra-addon' ),
 						'modern'  => __( 'Modern', 'astra-addon' ),
 					),
-					'transport'  => 'refresh',
-					'renderAs'   => 'text',
-					'responsive' => false,
-					'divider'    => array( 'ast_class' => 'ast-top-section-divider' ),
+					'transport'   => 'refresh',
+					'renderAs'    => 'text',
+					'responsive'  => false,
+					'description' => $checkout_description,
+					'divider'     => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -170,7 +184,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 							'value'    => false,
 						),
 					),
-					'divider'    => array( 'ast_class' => 'ast-top-dotted-divider ast-bottom-dotted-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-top-divider ast-bottom-divider' ),
 				),
 
 				/**
@@ -384,7 +398,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 							'value'    => 'modern',
 						),
 					),
-					'divider'  => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'  => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/*
@@ -452,7 +466,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 5,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -466,7 +480,6 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'title'    => __( 'Two Step Checkout', 'astra-addon' ),
 					'control'  => Astra_Theme_Extension::$switch_control,
 					'priority' => 5,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -807,8 +820,8 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 				),
 
 				/**
-				* Option: Back to cart button text on checkout.
-				*/
+				 * Option: Back to cart button text on checkout.
+				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[checkout-back-to-cart-button-text]',
 					'default'  => astra_get_option( 'checkout-back-to-cart-button-text' ),
@@ -853,7 +866,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 5,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -870,6 +883,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'context'  => array(
 						astra_addon_builder_helper()->design_tab_config,
 					),
+					'divider'  => array( 'ast_class' => 'ast-top-section-spacing' ),
 				),
 
 				/**
@@ -905,7 +919,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'context'  => array(
 						astra_addon_builder_helper()->design_tab_config,
 					),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -929,18 +943,9 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
-
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }
 
-
 new Astra_Woocommerce_Checkout_Configs();
-
-
-
-
-

@@ -16,7 +16,6 @@ if ( ! class_exists( 'Astra_Addon_Builder_Header' ) ) {
 	 * Class Astra_Addon_Builder_Header.
 	 */
 	final class Astra_Addon_Builder_Header {
-
 		/**
 		 * Member Variable
 		 *
@@ -57,6 +56,7 @@ if ( ! class_exists( 'Astra_Addon_Builder_Header' ) ) {
 				}
 
 				add_action( 'astra_header_language_switcher', array( $this, 'header_language_switcher' ) );
+				add_action( 'astra_header_color_switcher', array( $this, 'header_color_switcher' ) );
 
 				add_action( 'astra_desktop_header_content', array( $this, 'render_desktop_column' ), 10, 2 );
 				add_action( 'astra_render_desktop_popup', array( $this, 'render_desktop_column' ), 10, 2 );
@@ -87,6 +87,15 @@ if ( ! class_exists( 'Astra_Addon_Builder_Header' ) ) {
 		 */
 		public function header_language_switcher() {
 			Astra_Addon_Builder_UI_Controller::render_language_switcher_markup( 'header-language-switcher', 'header' );
+		}
+
+		/**
+		 * Render header Color Switcher.
+		 *
+		 * @since 4.10.0
+		 */
+		public function header_color_switcher() {
+			Astra_Addon_Builder_UI_Controller::render_color_switcher_markup( 'header' );
 		}
 
 		/**

@@ -48,6 +48,7 @@ if ( ! class_exists( 'Astra_Edd_Checkout_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -121,22 +122,13 @@ if ( ! class_exists( 'Astra_Edd_Checkout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 1920,
 					),
-					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 				),
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
-
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }
 
-
 new Astra_Edd_Checkout_Configs();
-
-
-
-
-

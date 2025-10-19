@@ -58,7 +58,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Divider_Configs' ) ) {
 						'settings' => array(),
 						'priority' => 110,
 						'context'  => astra_addon_builder_helper()->design_tab,
-						'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+						'divider'  => array( 'ast_class' => 'ast-section-spacing ast-top-divider' ),
 					),
 					/**
 					 * Option: divider Color.
@@ -81,9 +81,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Divider_Configs' ) ) {
 			}
 
 			$divider_config = call_user_func_array( 'array_merge', $divider_config + array( array() ) );
-			$configurations = array_merge( $configurations, $divider_config );
-
-			return $configurations;
+			return array_merge( $configurations, $divider_config );
 		}
 	}
 }

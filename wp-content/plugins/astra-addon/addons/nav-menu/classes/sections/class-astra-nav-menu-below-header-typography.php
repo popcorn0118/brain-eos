@@ -47,6 +47,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Typography' ) ) {
 					'default'   => astra_get_option( 'below-header-megamenu-typography-styling' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
 					'section'   => 'section-below-header',
 					'transport' => 'postMessage',
@@ -158,9 +159,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Typography' ) ) {
 				),
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

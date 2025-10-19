@@ -34,15 +34,25 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 		 *
 		 * @since 3.3.0
 		 *
-		 * @return boolean should be svg or font.
+		 * @return bool should be svg or font.
 		 */
 		public static function is_svg_icons() {
-			$astra_settings                               = get_option( ASTRA_THEME_SETTINGS );
-			$astra_settings['can-update-astra-icons-svg'] = ( isset( $astra_settings['can-update-astra-icons-svg'] ) && false === $astra_settings['can-update-astra-icons-svg'] ) ? false : true;
+			$astra_settings                               = astra_get_options();
+			$astra_settings['can-update-astra-icons-svg'] = isset( $astra_settings['can-update-astra-icons-svg'] ) && false === $astra_settings['can-update-astra-icons-svg'] ? false : true;
 			if ( version_compare( ASTRA_THEME_VERSION, '3.3.0', '>=' ) ) {
 				return apply_filters( 'astra_is_svg_icons', $astra_settings['can-update-astra-icons-svg'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			}
 			return false;
+		}
+
+		/**
+		 * Returns an array of allowed SVG arguments.
+		 *
+		 * @return array An array of allowed SVG arguments.
+		 * @since 4.10.0
+		 */
+		public static function allowed_svg_args() {
+			return Astra_Addon_Kses::astra_addon_svg_kses_protocols();
 		}
 
 		/**
@@ -51,10 +61,10 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 		 *
 		 * @since 3.3.0
 		 *
-		 * @param string  $icon Key for the SVG you want to load.
-		 * @param boolean $is_echo whether to echo the output or return.
-		 * @param boolean $replace load close markup for SVG.
-		 * @param string  $menu_location Creates dynamic filter for passed parameter.
+		 * @param string $icon Key for the SVG you want to load.
+		 * @param bool   $is_echo whether to echo the output or return.
+		 * @param bool   $replace load close markup for SVG.
+		 * @param string $menu_location Creates dynamic filter for passed parameter.
 		 *
 		 * @return string SVG for passed key.
 		 */

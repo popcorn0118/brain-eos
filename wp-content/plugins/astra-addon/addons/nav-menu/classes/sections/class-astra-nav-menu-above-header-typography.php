@@ -47,6 +47,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Typography' ) ) {
 					'default'   => astra_get_option( 'above-header-typography-megamenu-styling' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
 					'section'   => 'section-above-header',
 					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
@@ -150,12 +151,9 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Typography' ) ) {
 				),
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }
 
 new Astra_Nav_Menu_Above_Header_Typography();
-

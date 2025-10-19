@@ -124,12 +124,12 @@
 	/**
 	 * Content <h1> to <h6> headings
 	 */
-	astra_css( 'astra-settings[h1-color]', 'color', 'h1, .entry-content h1' );
-	astra_css( 'astra-settings[h2-color]', 'color', 'h2, .entry-content h2' );
-	astra_css( 'astra-settings[h3-color]', 'color', 'h3, .entry-content h3' );
-	astra_css( 'astra-settings[h4-color]', 'color', 'h4, .entry-content h4' );
-	astra_css( 'astra-settings[h5-color]', 'color', 'h5, .entry-content h5' );
-	astra_css( 'astra-settings[h6-color]', 'color', 'h6, .entry-content h6' );
+	astra_css( 'astra-settings[h1-color]', 'color', 'h1, .entry-content :where(h1)' );
+	astra_css( 'astra-settings[h2-color]', 'color', 'h2, .entry-content :where(h2)' );
+	astra_css( 'astra-settings[h3-color]', 'color', 'h3, .entry-content :where(h3)' );
+	astra_css( 'astra-settings[h4-color]', 'color', 'h4, .entry-content :where(h4)' );
+	astra_css( 'astra-settings[h5-color]', 'color', 'h5, .entry-content :where(h5)' );
+	astra_css( 'astra-settings[h6-color]', 'color', 'h6, .entry-content :where(h6)' );
 
 	/**
 	 * Header
@@ -263,7 +263,7 @@
 	astra_css(
 		'astra-settings[header-account-menu-color]',
 		'color',
-		account_selector + ' .ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link'
+		account_selector + ' .main-header-menu .ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link'
 	);
 
 	// Menu - Hover Color
@@ -284,7 +284,7 @@
 	astra_css(
 		'astra-settings[header-account-menu-bg-obj]',
 		'background',
-		account_selector + ' .account-main-navigation ul, ' + account_selector + ' .account-woo-navigation ul,' + account_selector + ' .ast-account-nav-menu .menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link, ' + adv_account_selector + ' .account-main-navigation ul, ' + adv_account_selector + ' .account-woo-navigation ul,' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link'
+		account_selector + ' .account-main-navigation ul, ' + account_selector + ' .account-main-navigation .main-header-menu .menu-link' + account_selector + ' .account-woo-navigation ul,' + account_selector + ' .ast-account-nav-menu .menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link, ' + adv_account_selector + ' .account-main-navigation ul, ' + adv_account_selector + ' .account-woo-navigation ul,' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link'
 	);
 
 	// Menu - Hover Background
@@ -373,6 +373,14 @@
 			selector + ' .sub-menu .menu-item .menu-link:hover'
 		);
 
+		// Sub-Menu - Hover Color 
+		astra_color_responsive_css(
+			'astra-builder',
+			'astra-settings[header-' + prefix + '-submenu-h-color-responsive]',
+			'color',
+			selector + ' .sub-menu .menu-item:hover > .menu-link', selector + ' .inline-on-mobile .menu-item:hover > .ast-menu-toggle'
+		);
+
 		// Sub-Menu - Active Color
 		astra_color_responsive_css(
 			'astra-builder',
@@ -395,6 +403,14 @@
 			'astra-settings[header-' + prefix + '-submenu-h-bg-color-responsive]',
 			'background',
 			selector + ' .sub-menu .menu-item .menu-link:hover'
+		);
+
+		// Sub-Menu - Hover Background
+		astra_color_responsive_css(
+			'astra-builder',
+			'astra-settings[header-' + prefix + '-submenu-h-bg-color-responsive]',
+			'background',
+			selector + ' .sub-menu .menu-item:hover > .menu-link', selector + ' .inline-on-mobile .menu-item:hover > .ast-menu-toggle'
 		);
 
 		// Sub-Menu - Active Background
@@ -457,6 +473,14 @@
 		selector + '.ast-nav-menu .sub-menu .menu-item .menu-link:hover, ' + selector + ' .sub-menu .menu-item:hover > .ast-menu-toggle'
 	);
 
+	// Sub-Menu - Hover Color
+	astra_color_responsive_css(
+		'astra-builder',
+		'astra-settings[header-mobile-menu-submenu-h-color-responsive]',
+		'color',
+		selector + '.ast-nav-menu .sub-menu .menu-item:hover > .menu-link'
+	);
+
 	// Sub-Menu - Active Color
 	astra_color_responsive_css(
 		'astra-builder',
@@ -479,6 +503,14 @@
 		'astra-settings[header-mobile-menu-submenu-h-bg-color-responsive]',
 		'background',
 		selector + '.ast-nav-menu .sub-menu .menu-item .menu-link:hover'
+	);
+
+	// Sub-Menu - Hover Background
+	astra_color_responsive_css(
+		'astra-builder',
+		'astra-settings[header-' + prefix + '-submenu-h-bg-color-responsive]',
+		'background',
+		selector + ' .ast-nav-menu .sub-menu .menu-item:hover > .menu-link'
 	);
 
 	// Sub-Menu - Active Background

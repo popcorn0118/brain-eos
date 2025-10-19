@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'Astra_Mobile_Header' ) ) :
+if ( ! class_exists( 'Astra_Mobile_Header' ) ) {
 
 	/**
 	 * Astra_Mobile_Header
@@ -18,7 +18,6 @@ if ( ! class_exists( 'Astra_Mobile_Header' ) ) :
 	 * @since 1.4.0
 	 */
 	class Astra_Mobile_Header {
-
 		/**
 		 * Instance
 		 *
@@ -106,6 +105,7 @@ if ( ! class_exists( 'Astra_Mobile_Header' ) ) :
 				'ast-menu-toggle',
 				array(
 					'aria-expanded' => 'false',
+					'aria-label'    => 'Toggle menu',
 				),
 				$item
 			) . '><span class="screen-reader-text">' . esc_html__( 'Menu Toggle', 'astra' ) . '</span>' . Astra_Icons::get_icons( 'arrow' ) . '</button>';
@@ -175,7 +175,6 @@ if ( ! class_exists( 'Astra_Mobile_Header' ) ) :
 			);
 
 			return $html . $logo;
-
 		}
 
 		/**
@@ -225,4 +224,4 @@ if ( ! class_exists( 'Astra_Mobile_Header' ) ) :
 	 */
 	Astra_Mobile_Header::get_instance();
 
-endif;
+}

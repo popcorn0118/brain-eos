@@ -19,7 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.0.0
  */
 final class Astra_Addon_Builder_Customizer {
-
 	/**
 	 * Constructor
 	 *
@@ -30,6 +29,7 @@ final class Astra_Addon_Builder_Customizer {
 		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_preview_scripts' ) );
 
 		if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+			require_once ASTRA_EXT_DIR . 'classes/builder/type/base/configurations/class-astra-addon-base-configs.php';
 			return;
 		}
 
@@ -41,7 +41,6 @@ final class Astra_Addon_Builder_Customizer {
 		add_action( 'customize_register', array( $this, 'footer_configs' ), 5 );
 
 		add_filter( 'astra_flags_svgs', array( $this, 'astra_addon_flag_svgs' ), 1, 10 );
-
 	}
 
 	/**
@@ -59,12 +58,14 @@ final class Astra_Addon_Builder_Customizer {
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/configurations/class-astra-addon-button-component-configs.php';
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/configurations/class-astra-social-component-configs.php';
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/configurations/class-astra-language-switcher-component-configs.php';
+		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/configurations/class-astra-color-switcher-component-configs.php';
 
 		// Base Dynamic CSS Files.
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/dynamic-css/divider/class-astra-divider-component-dynamic-css.php';
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/dynamic-css/language-switcher/class-astra-language-switcher-component-dynamic-css.php';
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/dynamic-css/social-icon/class-astra-social-icon-component-dynamic-css.php';
 		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/dynamic-css/button/class-astra-addon-button-component-dynamic-css.php';
+		require_once ASTRA_EXT_DIR . 'classes/builder/type/base/dynamic-css/color-switcher/class-astra-color-switcher-component-dynamic-css.php';
 
 		$this->load_header_components();
 		$this->load_footer_components();
@@ -87,6 +88,7 @@ final class Astra_Addon_Builder_Customizer {
 		require_once $header_config_path . '/social-icon/class-astra-header-social-component-configs.php';
 		require_once $header_config_path . '/language-switcher/class-astra-header-language-switcher-configs.php';
 		require_once $header_config_path . '/off-canvas/class-astra-addon-offcanvas-configs.php';
+		require_once $header_config_path . '/color-switcher/class-astra-header-color-switcher-configs.php';
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 	}
 
@@ -124,6 +126,7 @@ final class Astra_Addon_Builder_Customizer {
 		require_once $header_components_path . '/social-icon/class-astra-header-social-component.php';
 		require_once $header_components_path . '/language-switcher/class-astra-header-language-switcher-component.php';
 		require_once $header_components_path . '/off-canvas/class-astra-addon-offcanvas-component.php';
+		require_once $header_components_path . '/color-switcher/class-astra-header-color-switcher-component.php';
 
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 	}
@@ -154,6 +157,10 @@ final class Astra_Addon_Builder_Customizer {
 	 * @since 3.0.0
 	 */
 	public function enqueue_customizer_preview_scripts() {
+		// Bail early if it is not astra customizer.
+		if ( is_callable( array( 'Astra_Customizer', 'is_astra_customizer' ) ) && ! Astra_Customizer::is_astra_customizer() ) {
+			return;
+		}
 
 		// Base Dynamic CSS.
 		wp_enqueue_script(
@@ -175,7 +182,6 @@ final class Astra_Addon_Builder_Customizer {
 		);
 	}
 
-
 	/**
 	 * Add Styles Callback
 	 *
@@ -183,7 +189,7 @@ final class Astra_Addon_Builder_Customizer {
 	 */
 	public function add_styles() {
 
-		/*** Start Path Logic */
+		/* Start Path Logic */
 
 		/* Define Variables */
 		$uri  = ASTRA_EXT_URI . 'classes/builder/assets/css/';
@@ -212,7 +218,7 @@ final class Astra_Addon_Builder_Customizer {
 			$gen_path = $css_dir;
 		}
 
-		/*** End Path Logic */
+		/* End Path Logic */
 
 		/* Add style.css */
 		Astra_Minify::add_css( $gen_path . 'style' . $file_prefix . '.css' );
@@ -230,9 +236,8 @@ final class Astra_Addon_Builder_Customizer {
 		ob_start();
 		// Include SVGs Json file.
 		include_once ASTRA_EXT_DIR . 'assets/flags/svgs.json';
-		$svg_icon_arr  = json_decode( ob_get_clean(), true );
-		$ast_flag_svgs = array_merge( $svg_arr, $svg_icon_arr );
-		return $ast_flag_svgs;
+		$svg_icon_arr = json_decode( ob_get_clean(), true );
+		return array_merge( $svg_arr, $svg_icon_arr );
 	}
 }
 

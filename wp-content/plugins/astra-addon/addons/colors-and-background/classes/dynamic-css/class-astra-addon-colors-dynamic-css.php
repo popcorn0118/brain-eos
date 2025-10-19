@@ -11,14 +11,12 @@
  * @since 1.7.0
  */
 class Astra_Addon_Colors_Dynamic_CSS {
-
 	/**
 	 *  Constructor
 	 */
 	public function __construct() {
 		add_filter( 'astra_addon_dynamic_css', array( $this, 'astra_ext_colors_dynamic_css' ) );
 	}
-
 
 	/**
 	 * Dynamic CSS
@@ -103,7 +101,6 @@ class Astra_Addon_Colors_Dynamic_CSS {
 		$footer_color        = astra_get_option( 'footer-color' );
 		$footer_link_color   = astra_get_option( 'footer-link-color' );
 		$footer_link_h_color = astra_get_option( 'footer-link-h-color' );
-		$header_break_point  = astra_header_break_point(); // Header Break Point.
 
 		/**
 		 * Normal Colors without responsive option.
@@ -135,22 +132,22 @@ class Astra_Addon_Colors_Dynamic_CSS {
 			/**
 			 * Content <h1> to <h6> headings
 			 */
-			'h1, .entry-content h1'            => array(
+			'h1, .entry-content :where(h1)'    => array(
 				'color' => esc_attr( $h1_color ),
 			),
-			'h2, .entry-content h2'            => array(
+			'h2, .entry-content :where(h2)'    => array(
 				'color' => esc_attr( $h2_color ),
 			),
-			'h3, .entry-content h3'            => array(
+			'h3, .entry-content :where(h3)'    => array(
 				'color' => esc_attr( $h3_color ),
 			),
-			'h4, .entry-content h4'            => array(
+			'h4, .entry-content :where(h4)'    => array(
 				'color' => esc_attr( $h4_color ),
 			),
-			'h5, .entry-content h5'            => array(
+			'h5, .entry-content :where(h5)'    => array(
 				'color' => esc_attr( $h5_color ),
 			),
-			'h6, .entry-content h6'            => array(
+			'h6, .entry-content :where(h6)'    => array(
 				'color' => esc_attr( $h6_color ),
 			),
 
@@ -250,7 +247,6 @@ class Astra_Addon_Colors_Dynamic_CSS {
 				'color' => esc_attr( $post_read_more_h_cover ),
 			),
 
-
 			/**
 			 *Blog / Archive Content Color
 			 */
@@ -264,7 +260,6 @@ class Astra_Addon_Colors_Dynamic_CSS {
 			$post_blog_bg_content_color_normal => array(
 				'background-color' => esc_attr( $post_blog_bg_content_color ),
 			),
-
 
 			/**
 			 * Footer
@@ -618,6 +613,6 @@ class Astra_Addon_Colors_Dynamic_CSS {
 }
 
 /**
-*  Kicking this off by calling 'get_instance()' method
-*/
+ *  Kicking this off by calling 'get_instance()' method
+ */
 new Astra_Addon_Colors_Dynamic_CSS();

@@ -87,12 +87,6 @@
   display: none;
 }
 
-.woocommerce.ast-woo-two-step-checkout form .ast-two-step-checkout > li:not(.flex-active-slide),
-.woocommerce-page.ast-woo-two-step-checkout form .ast-two-step-checkout > li:not(.flex-active-slide) {
-  height: 0;
-  display: none !important;
-}
-
 .woocommerce.ast-woo-two-step-checkout form #order_review,
 .woocommerce-page.ast-woo-two-step-checkout form #order_review {
   padding: 0;

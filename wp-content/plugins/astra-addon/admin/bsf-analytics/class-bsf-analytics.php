@@ -61,6 +61,25 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 			add_action( 'admin_init', array( $this, 'register_usage_tracking_setting' ) );
 
 			$this->includes();
+
+			$this->load_deactivation_survey_actions();
+		}
+
+		/**
+		 * Function to load the deactivation survey form actions.
+		 *
+		 * @since 1.1.6
+		 * @return void
+		 */
+		public function load_deactivation_survey_actions() {
+
+			// If not in a admin area then return it.
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			add_filter( 'uds_survey_vars', array( $this, 'add_slugs_to_uds_vars' ) );
+			add_action( 'admin_footer', array( $this, 'load_deactivation_survey_form' ) );
 		}
 
 		/**
@@ -94,16 +113,6 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 		}
 
 		/**
-		 * Get API URL for sending analytics.
-		 *
-		 * @return string API URL.
-		 * @since 1.0.0
-		 */
-		private function get_api_url() {
-			return defined( 'BSF_API_URL' ) ? BSF_API_URL : 'https://support.brainstormforce.com/';
-		}
-
-		/**
 		 * Enqueue Scripts.
 		 *
 		 * @since 1.0.0
@@ -131,8 +140,11 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 		 * @since 1.0.0
 		 */
 		public function send() {
+
+			$api_url = BSF_Analytics_Helper::get_api_url();
+
 			wp_remote_post(
-				$this->get_api_url() . 'wp-json/bsf-core/v1/analytics/',
+				$api_url . 'api/analytics/',
 				array(
 					'body'     => BSF_Analytics_Stats::instance()->get_stats(),
 					'timeout'  => 5,
@@ -197,6 +209,15 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 				return;
 			}
 
+			if( $this->is_tracking_enabled() ) {
+				return; // Don't need to display notice if any of our plugin already have the permission.
+			}
+
+			// If the user has opted out of tracking, don't show the notice till 7 days. 
+			if ( get_site_option( 'bsf_analytics_last_displayed_time' ) > time() -  ( 7 * DAY_IN_SECONDS ) ) {
+				return; // Don't display the notice if it was displayed recently.
+			}
+
 			foreach ( $this->entities as $key => $data ) {
 
 				$time_to_display = isset( $data['time_to_display'] ) ? $data['time_to_display'] : '+24 hours';
@@ -213,8 +234,14 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 				}
 
 				/* translators: %s product name */
-				$notice_string = __( 'Want to help make <strong>%1s</strong> even more awesome? Allow us to collect non-sensitive diagnostic data and usage information. ', 'astra-addon' );
-
+				$notice_string = sprintf(
+					__(
+						'Help us improve %1$s and our other products!<br><br>With your permission, we\'d like to collect <strong>non-sensitive information</strong> from your website — like your PHP version and which features you use — so we can fix bugs faster, make smarter decisions, and build features that actually matter to you. <em>No personal info. Ever.</em>',
+						'astra-addon'
+					),
+					'<strong>' . esc_html( $data['product_name'] ) . '</strong>'
+				);
+				
 				if ( is_multisite() ) {
 					$notice_string .= __( 'This will be applicable for all sites from the network.', 'astra-addon' );
 				}
@@ -240,22 +267,26 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 									</div>
 								</div>',
 							/* translators: %s usage doc link */
-							sprintf( $notice_string . '<span dir="%2s"><a href="%3s" target="_blank" rel="noreferrer noopener">%4s</a><span>', esc_html( $data['product_name'] ), $language_dir, esc_url( $usage_doc_link ), __( ' Know More.', 'astra-addon' ) ),
-							esc_url( add_query_arg(
-								array(
-									$key . '_analytics_optin' => 'yes',
-									$key . '_analytics_nonce' => wp_create_nonce( $key . '_analytics_optin' ),
-									'bsf_analytics_source' => $key,
+							sprintf( $notice_string . '<span dir="%1s"><a href="%2s" target="_blank" rel="noreferrer noopener">%3s</a><span><br><br>', $language_dir, esc_url( $usage_doc_link ), __( ' Know More.', 'astra-addon' ) ),
+							esc_url(
+								add_query_arg(
+									array(
+										$key . '_analytics_optin' => 'yes',
+										$key . '_analytics_nonce' => wp_create_nonce( $key . '_analytics_optin' ),
+										'bsf_analytics_source' => $key,
+									)
 								)
-							) ),
+							),
 							__( 'Yes! Allow it', 'astra-addon' ),
-							esc_url( add_query_arg(
-								array(
-									$key . '_analytics_optin' => 'no',
-									$key . '_analytics_nonce' => wp_create_nonce( $key . '_analytics_optin' ),
-									'bsf_analytics_source' => $key,
+							esc_url(
+								add_query_arg(
+									array(
+										$key . '_analytics_optin' => 'no',
+										$key . '_analytics_nonce' => wp_create_nonce( $key . '_analytics_optin' ),
+										'bsf_analytics_source' => $key,
+									)
 								)
-							) ),
+							),
 							MONTH_IN_SECONDS,
 							__( 'No Thanks', 'astra-addon' )
 						),
@@ -265,6 +296,8 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 						'display-with-other-notices' => true,
 					)
 				);
+
+				return;
 			}
 		}
 
@@ -298,7 +331,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 			}
 
 			wp_safe_redirect(
-				esc_url_raw( 
+				esc_url_raw(
 					remove_query_arg(
 						array(
 							$source . '_analytics_optin',
@@ -328,6 +361,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 		 */
 		private function optout( $source ) {
 			update_site_option( $source . '_analytics_optin', 'no' );
+			update_site_option( 'bsf_analytics_last_displayed_time', time() );
 		}
 
 		/**
@@ -336,7 +370,12 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 		 * @since 1.0.0
 		 */
 		private function includes() {
+			require_once __DIR__ . '/classes/class-bsf-analytics-helper.php';
 			require_once __DIR__ . '/class-bsf-analytics-stats.php';
+
+			// Loads all the modules.
+			require_once __DIR__ . '/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php';
+			require_once __DIR__ . '/modules/utm-analytics.php';
 		}
 
 		/**
@@ -350,6 +389,17 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 
 				if ( ! apply_filters( $key . '_tracking_enabled', true ) || $this->is_white_label_enabled( $key ) ) {
 					return;
+				}
+
+				/**
+				 * Introducing a new key 'hide_optin_checkbox, which allows individual plugin  to hide optin checkbox
+				 * If they are providing providing in-plugin option to manage this option.
+				 * from General > Settings page.
+				 * 
+				 * @since 1.1.14
+				 */
+				if( ! empty( $data['hide_optin_checkbox'] ) && true === $data['hide_optin_checkbox'] ) {
+					continue;
 				}
 
 				$usage_doc_link = isset( $data['usage_doc_link'] ) ? $data['usage_doc_link'] : $this->usage_doc_link;
@@ -468,7 +518,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 		}
 
 		/**
-		 * Send analaytics track event if tracking is enabled.
+		 * Send analytics track event if tracking is enabled.
 		 *
 		 * @since 1.0.0
 		 */
@@ -505,6 +555,50 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 					add_site_option( $option, $value );
 				}
 			}
+		}
+
+		/**
+		 * Function to load the deactivation survey form on the admin footer.
+		 *
+		 * This function checks if the Deactivation_Survey_Feedback class exists and if so, it loads the deactivation survey form.
+		 * The form is configured with specific settings for plugin. Example: For CartFlows, including the source, logo, plugin slug, title, support URL, description, and the screen on which to show the form.
+		 *
+		 * @since 1.1.6
+		 * @return void
+		 */
+		public function load_deactivation_survey_form() {
+
+			if ( class_exists( 'Deactivation_Survey_Feedback' ) ) {
+				foreach ( $this->entities as $key => $data ) {
+					// If the deactivation_survey info in available then only add the form.
+					if ( ! empty( $data['deactivation_survey'] ) && is_array( $data['deactivation_survey'] ) ) {
+						foreach ( $data['deactivation_survey'] as $key => $survey_args ) {
+							Deactivation_Survey_Feedback::show_feedback_form(
+								$survey_args
+							);
+						}
+					}
+				}
+			}
+		}
+
+		/**
+		 * Function to add plugin slugs to Deactivation Survey vars for JS operations.
+		 *
+		 * @param array $vars UDS vars array.
+		 * @return array Modified UDS vars array with plugin slugs.
+		 * @since 1.1.6
+		 */
+		public function add_slugs_to_uds_vars( $vars ) {
+			foreach ( $this->entities as $key => $data ) {
+				if ( ! empty( $data['deactivation_survey'] ) && is_array( $data['deactivation_survey'] ) ) {
+					foreach ( $data['deactivation_survey'] as $key => $survey_args ) {
+						$vars['_plugin_slug'] = isset( $vars['_plugin_slug'] ) ? array_merge( $vars['_plugin_slug'], array( $survey_args['plugin_slug'] ) ) : array( $survey_args['plugin_slug'] );
+					}
+				}
+			}
+
+			return $vars;
 		}
 	}
 }

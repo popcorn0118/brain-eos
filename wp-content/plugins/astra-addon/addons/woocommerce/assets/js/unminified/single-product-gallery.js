@@ -1,19 +1,114 @@
 document.addEventListener("DOMContentLoaded", function () {
-	triggerFirstSlide();
 	triggerGalleryImageMutation();
+	makeGalleryAccessible();
 });
 
-function triggerFirstSlide() {
-	const sliderTrigger = document.querySelector(
-		".woocommerce-product-gallery-thumbnails__wrapper div"
-	);
-	const variationWrap = jQuery(".single_variation_wrap");
+/**
+ * Function to make gallery images keyboard accessible
+ */
+function makeGalleryAccessible() {
+    // Select all gallery image wrappers
+    const galleryImages = document.querySelectorAll(
+        ".woocommerce-product-gallery-thumbnails__wrapper .ast-woocommerce-product-gallery__image"
+    );
 
-	if (variationWrap && sliderTrigger) {
-		variationWrap.on("show_variation", function (event, variation) {
-			sliderTrigger.click();
-		});
-	}
+    if (!galleryImages.length) {
+        return;
+    }
+
+    // Make each gallery image focusable and keyboard accessible
+    galleryImages.forEach((imageWrapper, index) => {
+        // Add tabindex to make the image wrapper focusable
+        imageWrapper.setAttribute('tabindex', '0');
+        
+        // Get image alt text for better accessibility
+        const image = imageWrapper.querySelector('img');
+        const imageAlt = image ? (image.getAttribute('alt') || `Product image ${index + 1}`) : `Product image ${index + 1}`;
+        
+        // Add aria-label for screen readers
+        imageWrapper.setAttribute('aria-label', `View ${imageAlt}`);
+        
+        // Add active state indicator for the currently selected image
+        if (imageWrapper.classList.contains('flex-active-slide')) {
+            imageWrapper.setAttribute('aria-current', 'true');
+        } else {
+            imageWrapper.setAttribute('aria-current', 'false');
+        }
+        
+        // Add keyboard event listener for Enter and Space keys
+        imageWrapper.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+                
+                // Update aria states for all images
+                galleryImages.forEach(img => {
+                    img.setAttribute('aria-current', 'false');
+                });
+                
+                // Set this image as the current one
+                this.setAttribute('aria-current', 'true');
+            }
+            
+            // Handle tab key on the last gallery image to ensure focus moves to the next element
+            if (e.key === 'Tab' && !e.shiftKey && index === galleryImages.length - 1) {
+                // Find the next focusable element after the gallery
+                const gallery = document.querySelector('.ast-single-product-thumbnails');
+                if (gallery) {
+                    // Get all focusable elements on the page
+                    const focusableElements = Array.from(
+                        document.querySelectorAll('a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])')
+                    ).filter(el => {
+                        // Filter out hidden elements
+                        const style = window.getComputedStyle(el);
+                        return style.display !== 'none' && style.visibility !== 'hidden';
+                    });
+                    
+                    // Find the index of the current element
+                    const currentIndex = focusableElements.indexOf(this);
+                    
+                    // Find the next focusable element
+                    if (currentIndex !== -1 && currentIndex < focusableElements.length - 1) {
+                        e.preventDefault();
+                        focusableElements[currentIndex + 1].focus();
+                    }
+                }
+            }
+        });
+        
+        // Update aria states when clicked
+        imageWrapper.addEventListener('click', function() {
+            galleryImages.forEach(img => {
+                img.setAttribute('aria-current', 'false');
+            });
+            
+            this.setAttribute('aria-current', 'true');
+        });
+    });
+    
+    // Make navigation buttons accessible if they exist
+    const prevButton = document.querySelector('.flex-prev');
+    const nextButton = document.querySelector('.flex-next');
+    
+    if (prevButton) {
+        prevButton.setAttribute('aria-label', 'Previous image');
+        if (prevButton.classList.contains('flex-disabled')) {
+            prevButton.setAttribute('aria-disabled', 'true');
+        } else {
+            prevButton.setAttribute('aria-disabled', 'false');
+            prevButton.setAttribute('tabindex', '0');
+        }
+    }
+    
+    if (nextButton) {
+        nextButton.setAttribute('aria-label', 'Next image');
+        if (nextButton.classList.contains('flex-disabled')) {
+            nextButton.setAttribute('aria-disabled', 'true');
+        } else {
+            nextButton.setAttribute('aria-disabled', 'false');
+            nextButton.setAttribute('tabindex', '0');
+        }
+    }
 }
 
 /**
@@ -25,7 +120,6 @@ function triggerGalleryImageMutation() {
     );
 
     if (!mainImageElement) {
-        console.warn('Main image element not found');
         return;
     }
 
@@ -62,7 +156,8 @@ function triggerGalleryImageMutation() {
                 const mutatedImgSrc = mutation.target?.getAttribute("data-src");
 
                 let foundInGallery = false;
-                for (let i = 0; i < galleryImages.length; i++) {
+                // Skipping the first image as it's the featured image, and starting the loop from the second image from where gallery images starts.
+                for (let i = 1; i < galleryImages.length; i++) {
                     const imageWrapper = galleryImages[i];
                     const image = imageWrapper?.querySelector("img");
                     if (!image) continue;
@@ -86,6 +181,10 @@ function triggerGalleryImageMutation() {
                                     (i - 4) * imageHeight
                                 );
                                 MoveSlide("next", prevButton, nextButton);
+                            } else {
+                                // Triggering the flexslider animation to change the image.
+                                // This is to ensure that the gallery slider updates correctly.
+                                jQuery( '.woocommerce-product-gallery' ).data( "flexslider" )?.flexAnimate( i );
                             }
 
                             isObserverProcessing = false;
@@ -100,9 +199,10 @@ function triggerGalleryImageMutation() {
                     observer.disconnect();
 
                     if (galleryImages[0]) {
-                        const img = galleryImages[0]
-                        img?.querySelector("img")?.setAttribute("src", selectedVariationImageSrc);
-                        img?.querySelector("img")?.setAttribute("data-original-src", mutatedImgSrc);
+                        const imageWrapper = galleryImages[0];
+                        imageWrapper?.querySelector("img")?.setAttribute("src", selectedVariationImageSrc);
+                        imageWrapper?.querySelector("img")?.setAttribute("data-original-src", mutatedImgSrc);
+                        imageWrapper?.click();
                     }
                     if (verticalGallery && typeof MoveSlide === "function") {
                         MoveSlide("prev", prevButton, nextButton);

@@ -55,7 +55,6 @@ class Astra_Divider_Component_Configs {
 		for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 			$_section = $section . $index;
-			$_prefix  = 'divider' . $index;
 
 			/**
 			 * These options are related to Header Section - divider.
@@ -83,7 +82,7 @@ class Astra_Divider_Component_Configs {
 					'type'        => 'section',
 					'priority'    => 50,
 					/* translators: %s Index */
-					'title'       => ( 1 === $number_of_divider ) ? __( 'Divider', 'astra-addon' ) : sprintf( __( 'Divider %s', 'astra-addon' ), $index ),
+					'title'       => 1 === $number_of_divider ? __( 'Divider', 'astra-addon' ) : sprintf( __( 'Divider %s', 'astra-addon' ), $index ),
 					'panel'       => 'panel-' . $builder_type . '-builder-group',
 					'clone_index' => $index,
 					'clone_type'  => $builder_type . '-divider',
@@ -173,7 +172,7 @@ class Astra_Divider_Component_Configs {
 						'step' => 1,
 						'max'  => 60,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
 					'suffix'            => 'px',
 					'context'           => astra_addon_builder_helper()->design_tab,
 				),
@@ -203,6 +202,7 @@ class Astra_Divider_Component_Configs {
 							'value'    => $divider_size_layout,
 						),
 					),
+					'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -219,7 +219,7 @@ class Astra_Divider_Component_Configs {
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
 					'title'             => __( 'Color', 'astra-addon' ),
 					'context'           => astra_addon_builder_helper()->design_tab,
-					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -234,7 +234,7 @@ class Astra_Divider_Component_Configs {
 					'priority' => 99,
 					'settings' => array(),
 					'context'  => astra_addon_builder_helper()->design_tab,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -350,9 +350,7 @@ class Astra_Divider_Component_Configs {
 		}
 
 		$divider_config = call_user_func_array( 'array_merge', $divider_config + array( array() ) );
-		$configurations = array_merge( $configurations, $divider_config );
-
-		return $configurations;
+		return array_merge( $configurations, $divider_config );
 	}
 }
 

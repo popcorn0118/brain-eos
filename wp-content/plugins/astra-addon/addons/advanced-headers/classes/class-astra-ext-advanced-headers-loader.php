@@ -27,9 +27,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 		/**
 		 * Member Variable
 		 *
-		 * @var $_action
+		 * @var $action
 		 */
-		public static $_action = 'advanced-headers'; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+		public static $action = 'advanced-headers';
 
 		/**
 		 *  Initiator
@@ -63,7 +63,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 			self::load_files();
 		}
 
-
 		/**
 		 * Add Custom Class to setting meta box
 		 *
@@ -88,7 +87,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 			include_once ASTRA_ADDON_EXT_ADVANCED_HEADERS_DIR . 'classes/astra-breadcrumbs.php';
 		}
 
-
 		/**
 		 * Return Advanced Headers layout options.
 		 *
@@ -107,9 +105,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 			if ( ! $advanced_headers_options ) {
 				return false;
 			}
-			$value = ( isset( $advanced_headers_options[ $option ] ) && '' !== $advanced_headers_options[ $option ] ) ? $advanced_headers_options[ $option ] : $default;
 
-			return $value;
+			return isset( $advanced_headers_options[ $option ] ) && '' !== $advanced_headers_options[ $option ] ? $advanced_headers_options[ $option ] : $default;
 		}
 
 		/**
@@ -128,9 +125,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 
 			$advanced_headers_options = self::get_advanced_headers_design();
 
-			$value = ( isset( $advanced_headers_options[ $option ] ) && '' !== $advanced_headers_options[ $option ] ) ? $advanced_headers_options[ $option ] : $default;
-
-			return $value;
+			return isset( $advanced_headers_options[ $option ] ) && '' !== $advanced_headers_options[ $option ] ? $advanced_headers_options[ $option ] : $default;
 		}
 
 		/**
@@ -144,9 +139,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 				return false;
 			}
 
-			$settings = get_post_meta( $ids, 'ast-advanced-headers-layout', true );
-
-			return $settings;
+			return get_post_meta( $ids, 'ast-advanced-headers-layout', true );
 		}
 
 		/**
@@ -160,9 +153,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 				return false;
 			}
 
-			$settings = get_post_meta( $ids, 'ast-advanced-headers-design', true );
-
-			return $settings;
+			return get_post_meta( $ids, 'ast-advanced-headers-design', true );
 		}
 
 		/**
@@ -212,8 +203,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 
 			$screen = get_current_screen();
 
-			if ( ( ( 'post-new.php' == $pagenow || 'post.php' == $pagenow ) && 'astra_adv_header' == $screen->post_type ) ||
-			( 'astra_adv_header' == $screen->post_type && 'edit.php' === $pagenow ) ) {
+			if ( ( ( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) && 'astra_adv_header' === $screen->post_type ) ||
+			( 'astra_adv_header' === $screen->post_type && 'edit.php' === $pagenow ) ) {
 				$rtl = '';
 				if ( is_rtl() ) {
 					$rtl = '-rtl';
@@ -275,7 +266,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 				);
 			}
 
-			if ( 'astra_adv_header' == $screen->post_type && 'edit.php' === $pagenow ) {
+			if ( 'astra_adv_header' === $screen->post_type && 'edit.php' === $pagenow ) {
 				wp_enqueue_style( 'astra-admin-font', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap', array(), ASTRA_EXT_VER ); // Styles.
 
 				if ( defined( 'ASTRA_THEME_ADMIN_URL' ) && ASTRA_THEME_ADMIN_URL ) {
@@ -311,7 +302,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 
 			$custom_post_type = get_post_type( get_the_ID() );
 
-			if ( 'astra_adv_header' == $custom_post_type ) {
+			if ( 'astra_adv_header' === $custom_post_type ) {
 
 				$obj                           = get_post_type_object( $custom_post_type );
 				$singular_name                 = $obj->labels->singular_name;
@@ -326,7 +317,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 					/* translators: %s: singular custom post type name */
 					4  => sprintf( __( '%s updated.', 'astra-addon' ), $singular_name ),
 					/* translators: %1$s: singular custom post type name ,%2$s: date and time of the revision */
-					5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'astra-addon' ), $singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'astra-addon' ), $singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not needed for revision data; it's a valid URL parameter used for displaying revision information.
 					/* translators: %s: singular custom post type name */
 					6  => sprintf( __( '%s published.', 'astra-addon' ), $singular_name ),
 					/* translators: %s: singular custom post type name */
@@ -369,7 +360,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Loader' ) ) {
 		 */
 		public function column_content( $column, $post_id ) {
 
-			if ( 'advanced_headers_display_rules' == $column ) {
+			if ( 'advanced_headers_display_rules' === $column ) {
 
 				$locations = get_post_meta( $post_id, 'ast-advanced-headers-location', true );
 				if ( ! empty( $locations ) ) {

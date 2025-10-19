@@ -38,7 +38,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 		 * @since 4.0.0
 		 */
 		private function get_font_extras_default( $font_extras_key, $line_height_key, $text_transform_key ) {
-			$astra_options = is_callable( 'Astra_Theme_Options::get_astra_options' ) ? Astra_Theme_Options::get_astra_options() : get_option( ASTRA_THEME_SETTINGS );
+			$astra_options = astra_get_options();
 
 			return array(
 				'line-height'         => ! isset( $astra_options[ $font_extras_key ] ) && isset( $astra_options[ $line_height_key ] ) ? $astra_options[ $line_height_key ] : '',
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Weight', 'astra-addon' ),
 					'priority'  => 14,
 					'connect'   => 'font-family-' . $_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -92,7 +92,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Family', 'astra-addon' ),
 					'priority'  => 13,
 					'connect'   => 'font-weight-' . $_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -137,7 +137,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'context'   => astra_addon_builder_helper()->general_tab,
 					'connect'   => ASTRA_THEME_SETTINGS . '[' . $_prefix . '-font-weight]',
 					'priority'  => 1,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -156,7 +156,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'connect'           => $_prefix . '-font-family',
 					'priority'          => 1,
 					'context'           => astra_addon_builder_helper()->general_tab,
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -189,7 +189,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'context'   => astra_addon_builder_helper()->general_tab,
 					'connect'   => ASTRA_THEME_SETTINGS . '[' . $_prefix . '-content-font-weight]',
 					'priority'  => 1,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -208,7 +208,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'connect'           => $_prefix . '-content-font-family',
 					'priority'          => 1,
 					'context'           => astra_addon_builder_helper()->general_tab,
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -254,8 +254,8 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 				$html_config[] = $this->get_typo_configs( 'section-hb-social-icons-' . $index, ASTRA_THEME_SETTINGS . '[section-hb-social-icons-' . $index . '-typography]' );
 				$html_config[] = $this->get_typo_configs( 'section-fb-social-icons-' . $index, ASTRA_THEME_SETTINGS . '[section-fb-social-icons-' . $index . '-typography]' );
 
-				$header_section = ( ! $astra_has_widgets_block_editor ) ? 'sidebar-widgets-header-widget-' . $index : 'astra-sidebar-widgets-header-widget-' . $index;
-				$footer_section = ( ! $astra_has_widgets_block_editor ) ? 'sidebar-widgets-footer-widget-' . $index : 'astra-sidebar-widgets-footer-widget-' . $index;
+				$header_section = ! $astra_has_widgets_block_editor ? 'sidebar-widgets-header-widget-' . $index : 'astra-sidebar-widgets-header-widget-' . $index;
+				$footer_section = ! $astra_has_widgets_block_editor ? 'sidebar-widgets-footer-widget-' . $index : 'astra-sidebar-widgets-footer-widget-' . $index;
 				$html_config[]  = $this->get_widget_typo_configs_by_builder_type( $header_section, 'header-widget-' . $index );
 				$html_config[]  = $this->get_widget_typo_configs_by_builder_type( $footer_section, 'footer-widget-' . $index );
 			}
@@ -339,7 +339,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Weight', 'astra-addon' ),
 					'priority'  => 14,
 					'connect'   => 'font-family-' . $_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -356,7 +356,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Family', 'astra-addon' ),
 					'priority'  => 13,
 					'connect'   => 'font-weight-' . $_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -393,8 +393,15 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'    => __( 'Font', 'astra-addon' ),
 					'priority' => 21,
 					'settings' => array(),
-					'context'  => astra_addon_builder_helper()->design_tab_config,
-					'divider'  => array(),
+					'context'  => array(
+						astra_addon_builder_helper()->design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[header-account-logout-action]',
+							'operator' => '==',
+							'value'    => 'login',
+						),
+					),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				// Option Group: Menu Typography.
@@ -404,6 +411,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'Menu Font', 'astra-addon' ),
+					'is_font'   => true,
 					'section'   => $_section,
 					'transport' => 'postMessage',
 					'divider'   => array( 'ast_class' => 'ast-bottom-spacing' ),
@@ -429,7 +437,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'control'   => 'ast-font',
 					'font_type' => 'ast-font-family',
 					'title'     => __( 'Font Family', 'astra-addon' ),
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 					'priority'  => 22,
 					'connect'   => $_section . '-menu-font-weight',
 					'context'   => astra_addon_builder_helper()->general_tab,
@@ -445,7 +453,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'control'           => 'ast-font',
 					'transport'         => 'postMessage',
 					'font_type'         => 'ast-font-weight',
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_font_weight' ),
 					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'priority'          => 22,
@@ -616,6 +624,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'default'   => astra_get_option( $hb_lswitcher_section . '-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Typography', 'astra-addon' ),
 					'section'   => $hb_lswitcher_section,
 					'transport' => 'postMessage',
@@ -645,7 +654,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Family', 'astra-addon' ),
 					'priority'  => 13,
 					'connect'   => 'font-weight-' . $hb_lswitcher_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -662,12 +671,12 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Weight', 'astra-addon' ),
 					'priority'  => 14,
 					'connect'   => 'font-family-' . $hb_lswitcher_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
-				* Option: Font Size
-				*/
+				 * Option: Font Size
+				 */
 				array(
 					'name'              => 'font-size-' . $hb_lswitcher_section,
 					'type'              => 'sub-control',
@@ -734,6 +743,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'default'   => astra_get_option( $fb_lswitcher_section . '-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Typography', 'astra-addon' ),
 					'section'   => $fb_lswitcher_section,
 					'transport' => 'postMessage',
@@ -763,7 +773,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Family', 'astra-addon' ),
 					'priority'  => 13,
 					'connect'   => 'font-weight-' . $fb_lswitcher_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -780,12 +790,12 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'title'     => __( 'Font Weight', 'astra-addon' ),
 					'priority'  => 14,
 					'connect'   => 'font-family-' . $fb_lswitcher_section,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
-				* Option: Font Size
-				*/
+				 * Option: Font Size
+				 */
 
 				array(
 					'name'              => 'font-size-' . $fb_lswitcher_section,
@@ -838,10 +848,8 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 				),
 			);
 
-			$html_config    = call_user_func_array( 'array_merge', $html_config + array( array() ) );
-			$configurations = array_merge( $configurations, $html_config );
-
-			return $configurations;
+			$html_config = call_user_func_array( 'array_merge', $html_config + array( array() ) );
+			return array_merge( $configurations, $html_config );
 		}
 	}
 }

@@ -104,9 +104,12 @@
 				gutter = gutter - 10;
 			}
 
-			var aboveHeaderSelector = document.querySelector('.ast-above-header-bar');
-			if ( 1 == astraAddon.header_above_stick && null !== aboveHeaderSelector ) {
-				aboveHeaderSelectorValue = aboveHeaderSelector.getBoundingClientRect().height + parseInt( aboveHeaderSelector.parentNode.getAttribute( 'data-stick-gutter' ) );
+			const aboveHeaderBar = document.querySelector( '.ast-above-header-bar' );
+			if ( astraAddon.header_above_stick === '1' && aboveHeaderBar !== null ) {
+				const aboveHeaderBarHeight = aboveHeaderBar.getBoundingClientRect().height + parseInt( aboveHeaderBar.parentNode.getAttribute( 'data-stick-gutter' ) );
+				if ( ( selector.hasClass( 'ast-stick-primary-below-wrapper' ) || ( selector.hasClass( 'ast-primary-header' ) ) ) && gutter > 0  ) {
+					gutter = aboveHeaderBarHeight;
+				}
 			}
 		}
 
@@ -233,7 +236,9 @@
 		}else{
 			if ( $('#masthead').length ) {
 				var masthead 			= $('#masthead');
-				var masthead_bottom 	= masthead.offset().top + masthead.outerHeight() + 100;
+				var masthead_bottom 	= 'none' == self.options.header_style
+					? masthead.offset().top
+					: masthead.offset().top + masthead.outerHeight() + 100;
 				var stick_upto_scroll 	= masthead_bottom || 0;
 			}
 		}
@@ -481,6 +486,7 @@
 
 			jQuery( document ).ready(function($) {
 				self.stick_me( self );
+				setTimeout( () => self.stick_me( self ), 0 );
 			} );
 		}
 	};
@@ -972,5 +978,34 @@
 	    });
 	}
 
+	/**
+	 * Handle mobile menu close behavior for fade/slide header animations
+	 * This code ensures that when a user clicks on an anchor link (#) in the mobile menu:
+	 * 1. The mobile menu is properly closed
+	 * 2. The toggle button state is reset
+	 * 3. The body class for open navigation is removed
+	 */
+	if ( astraAddon.header_animation_effect == 'fade' || astraAddon.header_animation_effect == 'slide' ){
+	document.querySelectorAll('#ast-hf-mobile-menu a[href^="#"]').forEach(link => {
+		link.addEventListener('click', function (e) {
+		  const mobileMenu = document.querySelector('.ast-main-header-bar-navigation.toggle-on');
+		  const toggleButtons = document.querySelectorAll('.ast-mobile-menu-trigger-minimal');
+	  
+		  setTimeout(() => {
+				if (mobileMenu) {
+					mobileMenu.style.display = "none";
+					mobileMenu.classList.remove("toggle-on");
+				}
+
+				toggleButtons.forEach((btn) => {
+					btn.classList.remove("toggled");
+					btn.setAttribute("aria-expanded", "false");
+				});
+
+				document.body.classList.remove("ast-main-header-nav-open");
+			}, 50);
+		});
+	  });
+	}
 
 }(jQuery, window));
