@@ -1,0 +1,282 @@
+/**
+Theme Name: Astra Child
+Author: Brainstorm Force
+Author URI: http://wpastra.com/about/
+Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: astra-child
+Template: astra
+*/
+
+/* .ast-primary-header-bar.ast-primary-header.main-header-bar.site-header-focus-item{
+	box-shadow: 0px 5px 10px 0px rgba(67, 67, 67, 0.05);
+    border-color: #DCDCDC;
+} */
+
+./* 商品列表 */
+.woocommerce-tool-headline{
+	color: #9E5C30 !important;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.8;
+	letter-spacing: 2.4px;
+}
+
+.wp-block-heading.woocommerce-tool-headline{
+	color: #9E5C30;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.8;
+	letter-spacing: 2.4px;
+	margin-bottom: 5px;
+}
+
+input#wp-block-search__input-1 {
+    border: 1px solid #BEBEBE;
+	font-size: 20px;
+}
+
+button.wp-block-search__button.has-icon.wp-element-button{
+	border-radius: 0px !important;
+}
+.woocommerce-product-list ul > li > ul{
+	margin-top: 15px;
+}
+.woocommerce-product-list ul li{
+	padding: 0;
+	color: #4E4E4E;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 1.8;
+	letter-spacing: 2px;
+}
+
+.woocommerce-product-list ul li .wc-block-product-categories-list-item-count{
+	float: right;
+}
+
+/*商品內頁*/
+.woocommerce.single #content{
+	background: #F5F5F5;
+}
+
+.woocommerce-product-details__short-description{
+	border-bottom: 1px solid #BEBEBE;
+    margin-bottom: 30px;
+}
+
+.woocommerce.single .summary .product_meta{
+	border-color: #BEBEBE;
+	margin-top: 10px;
+}
+
+.woocommerce.single .summary .quantity.buttons_added{
+	border: 1px solid #BEBEBE;
+	height: 53px;
+}
+
+.woocommerce-js div.product form.cart .button.single_add_to_cart_button {
+	border-radius: 4px;
+	background: linear-gradient(280deg, #9E5C30 0.08%, #DE915E 99.92%);
+	box-shadow: 2px 5px 8px 0px rgba(67, 67, 67, 0.10);
+}
+
+.woocommerce.single .summary .quantity.buttons_added .qty{
+	height: 51px!important;
+	min-height: 51px !important;
+}
+
+.woocommerce.single .summary .quantity .plus{
+	margin-right: 0;
+}
+
+.woocommerce-js h2{
+	color: #9E5C30;
+	font-weight: 700;
+	line-height: 1.8; /* 180% */
+	letter-spacing: 6.4px;
+}
+
+.woocommerce-js div.product .woocommerce-tabs ul.tabs:before{
+	background-color: #DBDBDB;
+	top: 1px;
+}
+
+/*文章列表*/
+
+.ast-pagination{
+	padding-top:0;
+}
+
+.ast-separate-container .ast-article-inner{
+	background:transparent;
+}
+
+.ast-separate-container .ast-separate-posts.ast-article-post{
+	border-bottom: 1px solid #BEBEBE;
+	background:transparent;
+}
+
+.ast-pagination .nav-links{
+	text-align: left;
+}
+
+.ast-pagination .page-numbers{
+	text-align: center;
+}
+
+.ast-pagination .next.page-numbers{
+	float: initial;
+}
+form.wp-block-search__button-inside.wp-block-search__icon-button.wp-block-search{
+	border: 1px solid #ccc;
+}
+.wp-block-search.wp-block-search__button-inside .wp-block-search__inside-wrapper{
+	outline-style: none;
+	border: none;
+	padding:0;
+}
+
+form.wp-block-search__button-inside.wp-block-search__icon-button.wp-block-search input#wp-block-search__input-1{
+	border: none;
+	font-size: 18px;
+}
+form.wp-block-search__button-inside.wp-block-search__icon-button.wp-block-search .wp-block-search__button, form.wp-block-search__button-inside.wp-block-search__icon-button.wp-block-search .wp-block-search__button:hover{
+	background: transparent;
+}
+
+form.wp-block-search__button-inside.wp-block-search__icon-button.wp-block-search .wp-block-search__button .search-icon{
+	fill: #ccc;
+}
+
+form.wp-block-search__button-inside.wp-block-search__icon-button.wp-block-search .wp-block-search__button:hover .search-icon{
+	opacity:0.5;
+}
+
+.blog .wp-block-heading.woocommerce-tool-headline{
+	margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+.blog.ast-separate-container.ast-right-sidebar #secondary{
+	border-left: 1px solid #ccc;
+	margin-left: 60px;
+}
+
+@media only screen and (max-width: 922px) {
+	.blog.ast-separate-container.ast-right-sidebar #secondary{
+		margin-left: 0px;
+		margin-top: 50px;
+		padding: 50px 0;
+        border: none;
+        border-left: none;
+        border-top: 1px solid #ccc;
+	}
+}
+
+.post-page-numbers.current .page-link,.ast-pagination .page-numbers.current {
+	background: var(--ast-global-color-3);
+	color: #ffffff;	
+}
+
+/* 相關文章 */
+.ast-related-posts-wrapper{
+	grid-column-gap: 40px;
+}
+.ast-related-post-cta.read-more .ast-related-post-link{
+	display: none;
+}
+
+.ast-related-post-content .entry-header .ast-related-post-title a{
+	color: var(--ast-global-color-3);
+}
+.ast-related-post-content .entry-meta, .ast-related-post-content .entry-meta *{
+	font-size:16px;
+}
+
+/*文章內頁*/
+header.entry-header:not(.related-entry-header) .entry-meta *{
+	font-size: 18px;
+	color: var(--ast-global-color-3);
+	font-weight: 400;
+}
+
+header.entry-header:not(.related-entry-header) .entry-title{
+	color: var(--ast-global-color-3);
+	font-size: 32px;
+	font-weight: 500;
+	letter-spacing: 3.2px;
+}
+
+header.entry-header:not(.related-entry-header) *{
+	color: var(--ast-global-color-3);
+}
+
+/*會員中心*/
+
+body.woocommerce-account #primary .entry-content{
+	margin-top: 0;
+	margin-bottom: 100px;
+}
+.woocommerce-account .woocommerce-MyAccount-navigation{
+	border: 1px solid #bebebe;
+	border-bottom: none;
+	border-right: 1px solid #bebebe;
+}
+.woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link{
+	border-bottom: 1px solid #bebebe !important;
+	background: #fafafa;
+	padding: 0 15px;
+}
+
+.woocommerce form .form-row .input-text, .woocommerce-page form .form-row .input-text {
+	border: 1px solid #bebebe;
+}
+
+.woocommerce-MyAccount-navigation-link--downloads{
+	display: none!important;
+}
+
+@media only screen and (max-width: 922px) {
+	.woocommerce-account .woocommerce-MyAccount-navigation ul{
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+/*購物車*/
+div#ast-checkout-wrap{
+	padding: 100px 30px;
+    background: #f5f5f5;
+}
+
+.wc-block-components-totals-coupon .wc-block-components-panel__button, body:not(.woocommerce-block-theme-has-button-styles) .wc-block-components-button:not(.is-link){
+	padding: 10px !important;
+	color: #ffffff;
+	background: #9e5c30;
+	line-height: 1.6;
+	border: 1px solid #9e5c30;
+}
+
+.wc-block-components-totals-coupon .wc-block-components-panel__button:hover,body:not(.woocommerce-block-theme-has-button-styles) .wc-block-components-button:not(.is-link):hover{
+	padding: 10px !important;
+	background: transparent;
+	color: #9e5c30;
+	line-height: 1.6;
+	border: 1px solid #9e5c30;
+}
+
+.wc-block-components-totals-coupon__form .wc-block-components-totals-coupon__button{
+	padding: 10px;
+}
+
+.wp-block-woocommerce-checkout.alignwide.wc-block-checkout {
+    padding: 50px 40px;
+}
+
+/*搜尋頁面*/
+.ast-article-post.remove-featured-img-padding .blog-layout-4 .post-content .ast-blog-featured-section:first-child .post-thumb-img-content,.ast-article-post.remove-featured-img-padding .blog-layout-4 .post-content .ast-blog-featured-section .post-thumb-img-content{
+	margin: 0;
+}

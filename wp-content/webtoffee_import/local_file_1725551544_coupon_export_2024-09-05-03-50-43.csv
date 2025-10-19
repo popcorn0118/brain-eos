@@ -1,0 +1,9 @@
+﻿ID,post_title,post_excerpt,post_status,post_date,post_author,discount_type,coupon_amount,individual_use,product_ids,product_SKUs,exclude_product_ids,exclude_product_SKUs,usage_count,usage_limit,usage_limit_per_user,limit_usage_to_x_items,date_expires,free_shipping,exclude_sale_items,product_categories,exclude_product_categories,minimum_amount,maximum_amount,customer_email
+191,TZ4F4F9X,黃安彤寄賣,publish,"2022-08-25 16:14:53",4,fixed_cart,100,no,,,,,0,1,0,0,,no,no,,,,,
+192,Dovewhite,白鴿寄賣,publish,"2022-08-25 16:18:11",4,fixed_cart,100,no,,,,,0,1,0,0,,no,no,,,,,
+232,emma001,鄭曲雯金級經銷商,publish,"2022-12-06 23:55:05",4,fixed_cart,100,no,,,,,0,1,0,0,,no,no,,,,,
+233,vivi001,張菀芝鑽石經銷商,publish,"2022-12-06 23:56:35",4,fixed_cart,100,no,,,,,0,1,0,0,,no,no,,,,,
+234,PQGXN67V,妙妙銀級代理,publish,"2022-12-07 00:00:21",4,fixed_cart,100,no,,,,,0,1,0,0,,no,no,,,,,
+235,sofina001,吳嘉雯金級代理,publish,"2022-12-07 00:03:57",4,fixed_cart,100,no,,,,,0,1,0,0,,no,no,,,,,
+451,yuri0325,yuri合作折扣碼,publish,"2024-07-05 17:33:04",4,fixed_cart,150,yes,,,,,0,0,1,0,,no,no,,,,,
+452,onefans,舊客回饋折扣,publish,"2024-07-08 16:55:52",4,fixed_cart,150,yes,,,,,0,0,1,0,,no,no,,,,,
