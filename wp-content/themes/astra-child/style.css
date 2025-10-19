@@ -15,8 +15,8 @@ Template: astra
     border-color: #DCDCDC;
 } */
 
-./* 商品列表 */
-.woocommerce-tool-headline{
+/* 商品列表 */
+/* .woocommerce-tool-headline{
 	color: #9E5C30 !important;
 	font-size: 24px;
 	font-weight: 700;
@@ -55,10 +55,10 @@ button.wp-block-search__button.has-icon.wp-element-button{
 
 .woocommerce-product-list ul li .wc-block-product-categories-list-item-count{
 	float: right;
-}
+} */
 
 /*商品內頁*/
-.woocommerce.single #content{
+/* .woocommerce.single #content{
 	background: #F5F5F5;
 }
 
@@ -102,7 +102,7 @@ button.wp-block-search__button.has-icon.wp-element-button{
 .woocommerce-js div.product .woocommerce-tabs ul.tabs:before{
 	background-color: #DBDBDB;
 	top: 1px;
-}
+} */
 
 /*文章列表*/
 
@@ -216,7 +216,7 @@ header.entry-header:not(.related-entry-header) *{
 
 /*會員中心*/
 
-body.woocommerce-account #primary .entry-content{
+/* body.woocommerce-account #primary .entry-content{
 	margin-top: 0;
 	margin-bottom: 100px;
 }
@@ -244,10 +244,10 @@ body.woocommerce-account #primary .entry-content{
 		display: flex;
 		flex-direction: column;
 	}
-}
+} */
 
 /*購物車*/
-div#ast-checkout-wrap{
+/* div#ast-checkout-wrap{
 	padding: 100px 30px;
     background: #f5f5f5;
 }
@@ -274,9 +274,9 @@ div#ast-checkout-wrap{
 
 .wp-block-woocommerce-checkout.alignwide.wc-block-checkout {
     padding: 50px 40px;
-}
+} */
 
 /*搜尋頁面*/
-.ast-article-post.remove-featured-img-padding .blog-layout-4 .post-content .ast-blog-featured-section:first-child .post-thumb-img-content,.ast-article-post.remove-featured-img-padding .blog-layout-4 .post-content .ast-blog-featured-section .post-thumb-img-content{
+/* .ast-article-post.remove-featured-img-padding .blog-layout-4 .post-content .ast-blog-featured-section:first-child .post-thumb-img-content,.ast-article-post.remove-featured-img-padding .blog-layout-4 .post-content .ast-blog-featured-section .post-thumb-img-content{
 	margin: 0;
-}
+} */
