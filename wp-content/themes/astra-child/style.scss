@@ -1,0 +1,406 @@
+/**
+Theme Name: astra-child
+Author: Brainstorm Force
+Author URI: http://wpastra.com/about/
+Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: astra-child
+Template: astra
+*/
+
+$primary: var(--e-global-color-primary);
+$plrimary-l: var( --e-global-color-9858b36 );
+$second: var( --e-global-color-secondary );
+$text: var( --e-global-color-text );
+$accent: var( --e-global-color-accent );
+$text-l: var( --e-global-color-fff2f2a );
+$text-d: var( --e-global-color-c841111 );
+$bg: var( --e-global-color-0729a00 );
+
+//共用
+@mixin arrow($direction, $color, $size) {  
+    content: '';
+    width: $size;
+    height: $size;
+    border-radius: 3px;
+    border-right: 3px solid $color;
+    border-bottom: 3px solid $color;
+    display: inline-block;
+    @if $direction == top {
+      transform: rotate(-135deg);
+    } @else if $direction == right {
+      transform: rotate(-45deg);
+    } @else if $direction == bottom {
+      transform: rotate(45deg);
+    } @else if $direction == left {
+      transform: rotate(135deg);
+    } @else {
+      transform: rotate(-135deg);
+    }
+}
+@mixin word-count($num) {
+    display:-webkit-box;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    -webkit-line-clamp: $num; // 想顯示的行數
+    -webkit-box-orient: vertical;
+  }
+body {
+  * {
+  }
+}
+a {
+    text-decoration: none;
+    &:focus {
+      outline: none;
+    }
+}
+/**
+Theme Name: Astra Child
+Author: Brainstorm Force
+Author URI: http://wpastra.com/about/
+Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: astra-child
+Template: astra
+*/
+@mixin word-count($num) {
+  display:-webkit-box;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  -webkit-line-clamp: $num; // 想顯示的行數
+  -webkit-box-orient: vertical;
+}
+
+/* 共用元素 */
+.btn .elementor-button {
+	min-width: 200px;
+	height: 54px;
+}
+
+.btn-text > .elementor-button {
+	/* min-width: 149px; */
+	width: 100% !important;
+	height: 57px;
+	justify-content: start;
+	display: flex;
+	align-items: center;
+}
+.btn-text > .elementor-button .elementor-button-icon svg {
+	width: 1.15em;
+	height: 1.15em;
+}
+.btn-text > .elementor-button .elementor-button-text::after {
+	content: '';
+	display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-top: 2px solid $text-d;
+  border-right: 2px solid $text-d;
+  transform: rotate(45deg);
+  margin: 0 0 1px 15px;
+}
+.btn-text > .elementor-button:hover .elementor-button-text::after {
+	border-top: 2px solid $primary;
+    border-right: 2px solid $primary;
+}
+
+a{
+	transition: .3s;
+	transition-duration: .3s;
+	transition-property:revert;
+	text-decoration:none!important;
+}
+  
+button{
+	transition: .3s;
+	transition-duration: .3s;
+	transition-property:revert;
+}
+
+.icon-shadow .elementor-icon{
+	box-shadow: 5px 5px 10px #00000012;
+}
+@media (max-width: 921px) {
+	.no-br br {
+		display: none;
+	}
+	.ast-builder-menu-mobile .main-navigation .menu-item.menu-item-has-children > .ast-menu-toggle {
+        top: 10px;
+		box-shadow: 0 0 0 transparent;
+	}
+	.ast-builder-menu-mobile .main-navigation .menu-item.menu-item-has-children > .ast-menu-toggle:hover,
+	.ast-builder-menu-mobile .main-navigation .menu-item.menu-item-has-children > .ast-menu-toggle:active,
+	.ast-builder-menu-mobile .main-navigation .menu-item.menu-item-has-children > .ast-menu-toggle:focus {
+		outline: unset;
+        border: 0;
+	}
+}
+
+@media (min-width: 922px) {
+	.main-header-menu .sub-menu {
+		width: 258px;
+	}
+	.main-header-menu .sub-menu li {
+		border-bottom: 1px solid #DCDCDC;
+		text-align: center;
+	}
+	.main-header-menu .sub-menu li:last-of-type {
+		border-bottom: 1px solid transparent;
+	}
+}
+
+
+/* 頁尾 */
+footer ul.menu {
+	margin: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	
+}
+footer ul.menu > li {
+	
+}
+footer ul.menu > li > a {
+	font-size: 16px;
+	color: var( --e-global-color-0729a00 );
+	font-weight: 300;
+	
+}
+footer ul.menu > li > a:hover {
+	opacity: 0.7;
+}
+footer .site-copyright {
+	font-weight: 300;
+	font-size: 16px;
+	color: var( --e-global-color-0729a00 );
+	letter-spacing: 1px;
+}
+footer .site-copyright .line {
+	margin: 0 2px;
+}
+@media (max-width: 570px) {
+	footer .site-copyright {
+		display: flex;
+		flex-direction: column;
+	}
+	footer .site-copyright .line {
+		display: none;
+	}
+	
+}
+#ast-scroll-top {
+	width: 40px;
+	height: 40px;
+	border: 1px solid #f5f5f5;
+	transition: 0.4s;
+}
+#ast-scroll-top .ast-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.footer-icons {
+	/* display: flex;
+	right: 10px;
+	bottom: 80px; */
+}
+.footer-icons .elementor-icon {
+	border: 1px solid #f5f5f5;
+}
+
+
+/* 案例輪播 共用 */
+$spacing: 32px;
+.case-carousel {
+  width: calc(100% + (#{$spacing} * 2));
+  transform: translateX(-$spacing);
+  list-style: none;
+	margin: 0 !important;
+	padding: 0 !important;
+  list-style: none;
+  // display: grid;
+  // grid-template-columns: repeat(3, 1fr);
+  .slick-track {
+    display: flex;
+    align-items: stretch;
+  }
+  .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    button {
+      width: 40px;
+      height: 40px;
+      background-color: $primary;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      border: 1px solid $second;
+      svg {
+        width: 10px;
+        path {
+          fill: var(--ast-global-color-5);
+        }
+      }
+      &:hover {
+        background-color: #4E815780;
+      }
+    }
+    &.slick-prev {
+      left: -20px;
+    }
+    &.slick-next {
+      right: -20px;
+      button {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+  .item {
+    height: auto;
+    padding: $spacing;
+    .info {
+      width: 100%;
+      border-radius: 24px;
+      box-shadow: 2px 5px 8px #0000001A;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      .img {
+        width: 100%;
+        aspect-ratio: 767 / 510;
+        display: block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .cont {
+        display: flex;
+        flex-direction: column;
+        padding: 30px 30px 115px 30px;
+        background-color: #fff;
+        gap: 12px;
+        transition: 0.4s;
+        height: 100%;
+        position: relative;
+        .date {
+          font-size: 14px;
+          color: #707070;
+        }
+        .meta {
+          display: flex;
+          gap: 10px;
+        }
+        .category, .tag {
+          color: $bg;
+          font-size: 14px;
+          font-weight: 600;
+          padding: 8px 12px;
+          border-radius: 12px;
+          background-color: $plrimary-l;
+          line-height: 1.9;
+        }
+        .title {
+          @include word-count(2);
+          color: $text-d;
+          line-height: 1.8;
+          margin-bottom: 0
+        }
+        .desc {
+          @include word-count(4);
+          font-size: 16px;
+          color: $text;
+          line-height: 1.8;
+        }
+        // hr {
+        //   background-color: #DCDCDC;
+        //   margin: 15px 0;
+        // }
+        .read-more {
+          border-top: 1px solid #DCDCDC;
+          padding-top: 25px;
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: calc(100% - 60px);
+          > a {
+            color: $primary;
+            font-size: 16px;
+            &::after {
+              content: '';
+              display: inline-block;
+              width: 9px;
+              height: 9px;
+              border-top: 2px solid $primary;
+              border-right: 2px solid $primary;
+              transform: rotate(45deg);
+              margin: 0 0 1px 15px;
+            }
+            &:hover {
+              opacity: 0.6;
+            }
+          }
+        }
+      }
+    }
+
+  }
+  @media (max-width: 1330px) {
+    .slick-arrow {
+      &.slick-prev {
+        left: 3%;
+      }
+      &.slick-next {
+        right: 3%;
+      }
+    }
+  }
+  @media (max-width: 580px) {
+    width: 100%;
+    transform: translateX(0);
+    .slick-arrow {
+      &.slick-prev {
+        left: -10px;
+      }
+      &.slick-next {
+        right: -10px;
+      }
+    }
+    .item {
+      padding: 20px 10px;
+      .info {
+        .cont {
+          padding: 20px 20px 100px 20px;
+          .desc {
+            @include word-count(2);
+          }
+          .read-more {
+            width: calc(100% - 40px);
+            bottom: 20px;
+          }
+        }
+      }
+      
+    }
+  }
+ 
+}
+
+
+	
