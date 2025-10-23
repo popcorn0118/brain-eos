@@ -18,7 +18,7 @@ if (empty($current_post_type)) {
 // 根據文章類型設定相關的分類法（taxonomy）
 $taxonomy_map = array(
     'post' => 'category',      // 一般文章使用 category
-    'case' => 'case-category',     // 案例使用 case-type
+    'case' => 'case-type',     // 案例使用 case-type
     'product' => 'product-category', // 產品使用 product-category（範例）
     // 可以根據需要添加更多文章類型和對應的分類法
 );
@@ -36,12 +36,12 @@ $current_tag_taxonomy = isset($tag_taxonomy_map[$current_post_type]) ? $tag_taxo
 
 // 根據文章類型設定 URL 基礎路徑
 $base_url_map = array(
-    'post' => 'blog',          // 一般文章
+    'post' => 'article',          // 一般文章
     'case' => 'cases',         // 案例
     'product' => 'products',   // 產品（範例）
 );
 
-$base_url = isset($base_url_map[$current_post_type]) ? $base_url_map[$current_post_type] : 'blog';
+$base_url = isset($base_url_map[$current_post_type]) ? $base_url_map[$current_post_type] : 'article';
 
 // 獲取 URL 參數（根據文章類型調整參數名稱）
 $category_param = $current_post_type === 'case' ? 'case-type' : 'category';
