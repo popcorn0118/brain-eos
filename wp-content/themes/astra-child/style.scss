@@ -635,6 +635,9 @@ body.page-template-page-list, body.archive {
       color:$bg;
       background-color: $primary;
     }
+    &.prev {
+      transform: rotate(180deg);
+    }
     &.next {
       margin-bottom: 50px;
     }

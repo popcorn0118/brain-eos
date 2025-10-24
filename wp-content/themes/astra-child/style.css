@@ -694,6 +694,10 @@ body.page-template-page-list .ast-container .page-main .list-layout .sidebar-col
   background-color: var(--e-global-color-primary);
 }
 /* line 638, style.scss */
+.pagination .page-numbers.prev {
+  transform: rotate(180deg);
+}
+/* line 641, style.scss */
 .pagination .page-numbers.next {
   margin-bottom: 50px;
 }

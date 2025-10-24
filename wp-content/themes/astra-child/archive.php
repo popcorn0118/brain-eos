@@ -1,65 +1,30 @@
 <?php
 /**
  * Archive (Category/Tag/Tax/CPT Archive)
- * 結構與 class 與 page-list.php 一樣；僅「加上」archive 相關 class
+ * 與 page-list.php 結構一致；僅「加上」archive 相關 class 與 Banner 邏輯。
  */
 
 get_header();
 
-/** =========================
- * Banner：沿用 page-list.php 的結構與 class（page-hero / ph-container / page-title / page-subtitle）
- * - 若是分類/標籤/自訂分類：從「Term ACF」讀 img_bg / sub_title
- * - 不是 Term（例如 CPT 歸檔）則 subtitle 留白（或你之後接 Options）
- * ========================= */
-$qo       = get_queried_object();
-$bg_url   = '';
-// $subtitle = '';
+/** ─────────────────────────────────────────────────────────
+ * 小工具：將 ACF 圖片欄位值（ID / array / URL）解析為 URL
+ * ───────────────────────────────────────────────────────── */
+$resolve_img_url = function ($src) {
+  if (!$src) return '';
+  if (is_array($src))       return $src['url'] ?? '';
+  if (is_numeric($src))     return wp_get_attachment_image_url($src, 'full') ?: '';
+  return esc_url_raw($src);
+};
 
-if ($qo && isset($qo->taxonomy) && isset($qo->term_id)) {
-  $bg = get_field('img_bg', $qo);
-  if ($bg) {
-    if (is_array($bg))        $bg_url = $bg['url'] ?? '';
-    elseif (is_numeric($bg))  $bg_url = wp_get_attachment_image_url($bg, 'full');
-    else                      $bg_url = $bg;
-  }
-//   $subtitle = get_field('sub_title', $qo) ?: '';
-}
+/** ─────────────────────────────────────────────────────────
+ * 基本物件與 post_type 判定（先決定 post_type，後面才用得到）
+ * ───────────────────────────────────────────────────────── */
+$qo = get_queried_object();
+$post_type = 'post';
 
-// $archive_title = get_the_archive_title();
-if (is_category()) {
-    $archive_title = single_cat_title('', false);
-  } elseif (is_tag()) {
-    $archive_title = single_tag_title('', false);
-  } elseif (is_tax()) {
-    $archive_title = single_term_title('', false);
-  } elseif (is_post_type_archive()) {
-    $archive_title = post_type_archive_title('', false);
-  } elseif (is_author()) {
-    $archive_title = get_the_author();
-  } elseif (is_date()) {
-    // 顯示日期可自訂
-    $archive_title = get_the_date(get_option('date_format'));
-  } else {
-    $archive_title = wp_strip_all_tags(get_the_archive_title());
-  }
-
-  $prefix = '';
-  if ( is_category() || is_tax( $cfg_tax['tax_cat'] ) ) {
-    $prefix = '分類：';
-  } elseif ( is_tag() || is_tax( $cfg_tax['tax_tag'] ) ) {
-    $prefix = '標籤：';
-  }
-
-/** ======================================
- * 對齊 page-list.php 的 $slug（用於 list-{$slug}）
- * - post  → article
- * - case  → cases
- * - 其他  → 以 post_type 名稱帶入
- * ====================================== */
-$post_type = null;
 if (is_post_type_archive()) {
   $pt = get_query_var('post_type');
-  $post_type = is_array($pt) ? reset($pt) : ( $pt ?: 'post' );
+  $post_type = is_array($pt) ? reset($pt) : ($pt ?: 'post');
 } elseif (is_tax() || is_category() || is_tag()) {
   if (!empty($qo->taxonomy)) {
     $tx = get_taxonomy($qo->taxonomy);
@@ -68,88 +33,108 @@ if (is_post_type_archive()) {
     }
   }
 }
-if (!$post_type) $post_type = 'post';
 
-// 映射為 page-list.php 使用的 slug
+/** ─────────────────────────────────────────────────────────
+ * 對齊 page-list.php 的代稱（slug）與 taxonomy 設定
+ * ───────────────────────────────────────────────────────── */
 $slug_map = [
   'post' => 'article',
   'case' => 'cases',
 ];
 $slug = $slug_map[$post_type] ?? sanitize_html_class($post_type);
-$target_slug = $slug_map[$post_type] ?? sanitize_html_class($post_type);
 
-// 若 term 沒圖，就依代稱（article/cases）抓對應 Page 的 ACF 圖片 img_bg
-if (empty($bg_url) && $slug && ($p = get_page_by_path($slug))) {
-    $bg = get_field('img_bg', $p->ID);
-    if ($bg) {
-      if (is_array($bg)) {
-        $bg_url = $bg['url'] ?? '';
-      } elseif (is_numeric($bg)) {
-        $bg_url = wp_get_attachment_image_url($bg, 'full');
-      } else {
-        $bg_url = $bg; // 已是 URL
-      }
-    }
-  }
-  
-
-// taxonomy 對應
 $tax_map = [
   'post' => ['tax_cat' => 'category',  'tax_tag' => 'post_tag'],
   'case' => ['tax_cat' => 'case-type', 'tax_tag' => 'case-tag'],
 ];
 $cfg_tax = $tax_map[$post_type] ?? $tax_map['post'];
 
-/** =========================
- * 組裝「加上去」的 archive 相關 class
- * ========================= */
+/** ─────────────────────────────────────────────────────────
+ * Banner：優先用 Term ACF 的 img_bg；沒有就回退到同代稱 Page 的 img_bg
+ * ───────────────────────────────────────────────────────── */
+$bg_url = '';
+if ($qo && isset($qo->taxonomy, $qo->term_id)) {
+  $bg_url = $resolve_img_url(get_field('img_bg', $qo));
+}
+if (!$bg_url && ($p = get_page_by_path($slug))) {
+  $bg_url = $resolve_img_url(get_field('img_bg', $p->ID));
+}
+
+/** ─────────────────────────────────────────────────────────
+ * Archive Title 與前綴（分類 / 標籤）
+ * ───────────────────────────────────────────────────────── */
+if (is_category()) {
+  $archive_title = single_cat_title('', false);
+} elseif (is_tag()) {
+  $archive_title = single_tag_title('', false);
+} elseif (is_tax()) {
+  $archive_title = single_term_title('', false);
+} elseif (is_post_type_archive()) {
+  $archive_title = post_type_archive_title('', false);
+} elseif (is_author()) {
+  $archive_title = get_the_author();
+} elseif (is_date()) {
+  $archive_title = get_the_date(get_option('date_format'));
+} else {
+  $archive_title = wp_strip_all_tags(get_the_archive_title());
+}
+
+$prefix = '';
+if (is_category() || (is_tax() && is_tax($cfg_tax['tax_cat']))) {
+  $prefix = '分類：';
+} elseif (is_tag() || (is_tax() && is_tax($cfg_tax['tax_tag']))) {
+  $prefix = '標籤：';
+}
+
+/** ─────────────────────────────────────────────────────────
+ * 組裝 archive class（給版型/樣式掛鉤）
+ * ───────────────────────────────────────────────────────── */
 $archive_classes = ['is-archive', 'post-type-' . sanitize_html_class($post_type)];
-if (is_category())            $archive_classes[] = 'is-category';
-elseif (is_tag())             $archive_classes[] = 'is-tag';
-elseif (is_tax())             $archive_classes[] = 'is-tax';
-elseif (is_author())          $archive_classes[] = 'is-author';
-elseif (is_date())            $archive_classes[] = 'is-date';
+
+if (is_category())              $archive_classes[] = 'is-category';
+elseif (is_tag())               $archive_classes[] = 'is-tag';
+elseif (is_tax())               $archive_classes[] = 'is-tax';
+elseif (is_author())            $archive_classes[] = 'is-author';
+elseif (is_date())              $archive_classes[] = 'is-date';
 elseif (is_post_type_archive()) $archive_classes[] = 'is-post-type-archive';
 
-// 若為 term 頁，再補 taxonomy / term slug（方便樣式/選單高亮）
-if (!empty($qo->taxonomy)) {
-  $archive_classes[] = 'tax-' . sanitize_html_class($qo->taxonomy);
-}
-if (!empty($qo->slug)) {
-  $archive_classes[] = 'term-' . sanitize_html_class($qo->slug);
-}
+if (!empty($qo->taxonomy)) $archive_classes[] = 'tax-' . sanitize_html_class($qo->taxonomy);
+if (!empty($qo->slug))     $archive_classes[] = 'term-' . sanitize_html_class($qo->slug);
+
 $archive_class_str = implode(' ', array_unique($archive_classes));
 
-
+/** ─────────────────────────────────────────────────────────
+ * 代稱 Page（提供「返回 XXX」用）
+ * ───────────────────────────────────────────────────────── */
+$slug_page = get_page_by_path($slug);
 ?>
 
 <section class="page-hero" <?php echo $bg_url ? 'style="background-image:url(' . esc_url($bg_url) . ')"' : ''; ?>>
   <div class="ph-container">
-    <h1 class="page-title"><?php echo $prefix; ?><?php echo esc_html( $archive_title ); ?></h1>
-    
+    <h1 class="page-title"><?php echo esc_html($prefix . $archive_title); ?></h1>
+
     <h4 class="page-subtitle">
-        <?php if ( $target_slug && ($p = get_page_by_path($target_slug)) ) : ?>
-            <a href="<?php echo esc_url( get_permalink($p->ID) ); ?>">
-            返回<?php echo esc_html( get_the_title($p->ID) ); ?>
-            </a>
-        <?php endif; ?>
+      <?php if ($slug_page): ?>
+        <a href="<?php echo esc_url(get_permalink($slug_page->ID)); ?>">
+          返回<?php echo esc_html(get_the_title($slug_page->ID)); ?>
+        </a>
+      <?php endif; ?>
     </h4>
-    
   </div>
 </section>
 
 <main class="page-main list-<?php echo esc_attr($slug); ?> <?php echo esc_attr($archive_class_str); ?>">
   <div class="ph-container list-layout">
     <div class="content-col">
-      <?php if (have_posts()) : ?>
+      <?php if (have_posts()): ?>
         <ul class="list">
-          <?php while (have_posts()) : the_post(); ?>
+          <?php while (have_posts()): the_post(); ?>
             <?php
               // 分類／標籤（有才顯示）
               $cats = get_the_terms(get_the_ID(), $cfg_tax['tax_cat']);
               $tags = get_the_terms(get_the_ID(), $cfg_tax['tax_tag']);
 
-              // 摘要或內文
+              // 摘要（不在 PHP 截字；交給 CSS ellipsis）
               $excerpt = get_post_field('post_excerpt', get_the_ID());
               if (!$excerpt) {
                 $content = get_post_field('post_content', get_the_ID());
@@ -157,9 +142,8 @@ $archive_class_str = implode(' ', array_unique($archive_classes));
                 $excerpt = wp_strip_all_tags($content, true);
               }
 
-              // 精選圖
+              // 精選圖（若需預設圖可在此加 fallback）
               $thumb_html = get_the_post_thumbnail(get_the_ID(), 'full');
-
             ?>
             <li class="item">
               <article class="card">
@@ -174,7 +158,7 @@ $archive_class_str = implode(' ', array_unique($archive_classes));
 
                   <span class="line"></span>
 
-                  <?php if (!is_wp_error($cats) && !empty($cats)) : ?>
+                  <?php if (!is_wp_error($cats) && !empty($cats)): ?>
                     <div class="cats">
                       <?php foreach ($cats as $t): ?>
                         <a href="<?php echo esc_url(get_term_link($t)); ?>" class="cat"><?php echo esc_html($t->name); ?></a>
@@ -182,7 +166,7 @@ $archive_class_str = implode(' ', array_unique($archive_classes));
                     </div>
                   <?php endif; ?>
 
-                  <?php if (!is_wp_error($tags) && !empty($tags)) : ?>
+                  <?php if (!is_wp_error($tags) && !empty($tags)): ?>
                     <div class="tags">
                       <?php foreach ($tags as $t): ?>
                         <a href="<?php echo esc_url(get_term_link($t)); ?>" class="tag"><?php echo esc_html($t->name); ?></a>
@@ -191,10 +175,7 @@ $archive_class_str = implode(' ', array_unique($archive_classes));
                   <?php endif; ?>
                 </div>
 
-                <h3 class="title">
-                  <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                </h3>
-
+                <h3 class="title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                 <p class="desc"><?php echo esc_html($excerpt); ?></p>
 
                 <div class="more">
@@ -225,20 +206,18 @@ $archive_class_str = implode(' ', array_unique($archive_classes));
     <!-- 側欄 -->
     <aside class="sidebar-col">
       <section class="widget widget-search">
-        <form role="search" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
           <label class="screen-reader-text" for="search-field">搜尋關鍵字</label>
-
           <input
             type="search"
             id="search-field"
             class="search-field"
             name="s"
             placeholder="請輸入搜尋關鍵詞..."
-            value="<?php echo esc_attr( get_search_query() ); ?>"
+            value="<?php echo esc_attr(get_search_query()); ?>"
             autocomplete="off"
             required
           >
-
           <button type="submit" class="search-submit" aria-label="開始搜尋">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 8C15 9.38447 14.5895 10.7378 13.8203 11.889C13.0511 13.0401 11.9579 13.9373 10.6788 14.4672C9.3997 14.997 7.99224 15.1356 6.63437 14.8655C5.2765 14.5954 4.02922 13.9287 3.05026 12.9497C2.07129 11.9708 1.4046 10.7235 1.13451 9.36563C0.86441 8.00777 1.00303 6.6003 1.53285 5.32122C2.06266 4.04213 2.95987 2.94888 4.11101 2.17971C5.26216 1.41054 6.61553 1 8 1C9.85652 1 11.637 1.7375 12.9497 3.05025C14.2625 4.36301 15 6.14348 15 8Z" stroke="#434343" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.0004 16.9999L12.6504 12.6499" stroke="#434343" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -274,9 +253,9 @@ $archive_class_str = implode(' ', array_unique($archive_classes));
             'hide_empty' => true,
           ]);
           if (!is_wp_error($terms) && $terms):
-            foreach ($terms as $t):
-              echo '<li><a href="'.esc_url(get_term_link($t)).'">'.esc_html($t->name).'</a> <span class="count">('.intval($t->count).')</span></li>';
-            endforeach;
+            foreach ($terms as $t) {
+              echo '<li><a href="' . esc_url(get_term_link($t)) . '">' . esc_html($t->name) . '</a> <span class="count">(' . intval($t->count) . ')</span></li>';
+            }
           else:
             echo '<li>尚無分類</li>';
           endif;
