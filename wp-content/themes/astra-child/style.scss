@@ -46,7 +46,15 @@ $bg: var( --e-global-color-0729a00 );
     text-overflow:ellipsis;
     -webkit-line-clamp: $num; // 想顯示的行數
     -webkit-box-orient: vertical;
-  }
+}
+// 漸層背景色（無外部圖片）
+// $dir: 方向，如 to right / to bottom / 45deg
+// $from, $to: 兩個顏色
+@mixin gradient-bg($from, $to, $dir: to bottom) {
+  background-color: $from;                // Fallback
+  background-image: linear-gradient($dir, $from, $to);
+}
+
 body {
   * {
   }
@@ -56,24 +64,6 @@ a {
     &:focus {
       outline: none;
     }
-}
-/**
-Theme Name: Astra Child
-Author: Brainstorm Force
-Author URI: http://wpastra.com/about/
-Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
-Version: 1.0.0
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: astra-child
-Template: astra
-*/
-@mixin word-count($num) {
-  display:-webkit-box;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  -webkit-line-clamp: $num; // 想顯示的行數
-  -webkit-box-orient: vertical;
 }
 
 /* 共用元素 */
@@ -304,7 +294,9 @@ $spacing: 32px;
         }
         .meta {
           display: flex;
+          flex-wrap: wrap;
           gap: 10px;
+          margin-top: 15px;
         }
         .category, .tag {
           color: $bg;
@@ -383,7 +375,7 @@ $spacing: 32px;
       }
     }
     .item {
-      padding: 20px 10px;
+      padding: 20px;
       .info {
         .cont {
           padding: 20px 20px 100px 20px;
@@ -396,11 +388,257 @@ $spacing: 32px;
           }
         }
       }
-      
     }
   }
  
 }
 
+//文章列表共用
+body.page-template-page-list, body.archive {
+  .ast-archive-entry-banner {
+    display: none;
+  }
+  .ast-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    padding: 0;
+    .page-hero {
+      min-height: 596px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding: 0 24px;
+      @media (max-width: 768px) {
+        min-height: 350px;
+      }
+      &::before {
+        @include gradient-bg(rgba(#FEFEFE, 0.4), $bg);
+        content: '';
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        position: absolute;
+      }
+      .ph-container {
+        max-width: 100%;
+        min-height: 196px;
+        width: 1240px;
+        margin: 60px auto 0 auto;
+        position: relative;
+        border-bottom: 1px solid $primary;
+        .page-title {
+          font-family: 'Noto Sans TC';
+          margin-bottom: 30px;
+        }
+        .page-subtitle {
+          font-weight: 400;
+        }
+        @media (max-width: 768px) {
+          margin: 150px auto 30px auto;
+          min-height: 140px;
+          .page-title {
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+    .page-main{
+      padding: 0 24px;
+      margin-bottom: 100px;
+      .list-layout {
+        max-width: 100%;
+        width: 1240px;
+        margin: 0 auto;
+        display: flex;
+        .content-col {
+          width: 65%;
+          padding-right: 7%;
+          border-right: 1px solid #BEBEBE;
+          .list {
+            margin: 0;
+            list-style: none;
+            .item {
+              border-bottom: 1px solid #BEBEBE;
+              padding-bottom: 40px;
+              margin-bottom: 50px;
+              .card {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+              }
+              .meta {
+                display: flex;
+                align-items: center;
+                * {
+                  font-size: 18px;
+                  color: $text-d;
+                }
+                .date {
+
+                }
+                .line {
+                  width: 1px;
+                  height: 16px;
+                  background-color: $text;
+                  margin: 3px 12px 0 12px;
+                }
+                .cats, .tags {
+                  display: flex;
+                  > a {
+                    font-size: 16px;
+                    &::after {
+                      content: '、';
+                    }
+                    &:last-of-type {
+                      &::after {
+                        display: none;
+                      }
+                    }
+                  }
+                  .tag {
+                    &:first-of-type {
+                      &::before {
+                        content: '、';
+                      }
+                    }
+                  }
+                }
+              }
+              .title {
+                @include word-count(2);
+                margin-bottom: 0;
+                > a {
+                  color: #1A1A1A;
+                  font-weight: 400;
+                  line-height: 1.8;
+                }
+              }
+              .desc {
+                @include word-count(3);
+                color: #4E4E4E;
+                margin: 0;
+              }
+              .more {
+                margin-top: 10px;
+                .btn-readmore {
+                  font-size: 16px;
+                  color: $primary;
+                  &:hover {
+                    opacity: 0.7;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .sidebar-col {
+          width: 35%;
+          padding-left: 7%;
+          display: flex;
+          flex-direction: column;
+          gap: 50px;
+          .search-form {
+            display: flex;
+            height: 67px;
+            border: 1px solid #BEBEBE;
+            .search-field {
+              height: 100%;
+              border: 0;
+              border-radius: 0;
+              font-size: 18px;
+              font-family: 'Noto Sans TC';
+              color: $text;
+            }
+            .search-submit {
+              background-color: transparent;
+              border: 0;
+              box-shadow: 0 0 0 transparent;
+            }
+          }
+          .widget {
+            .widget-title {
+              color: $primary;
+            }
+            ul {
+              margin: 0;
+              list-style-type: none;
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+              > li {
+                @include word-count(2);
+                * {
+                  color: $text-d;
+                }
+                &:hover {
+                  * {
+                    color: $second;
+                  }
+                }
+              }
+            }
+            &.widget-cats {
+              ul {
+                > li {
+                  display: flex;
+                  justify-content: space-between;
+                }
+              }
+            }
+          }
+        }
+      }
+      @media (max-width: 768px) {
+        margin-top: 20px;
+        margin-bottom: 50px;
+        .list-layout {
+          flex-direction: column;
+          .content-col, .sidebar-col {
+            width: 100%;
+            padding: 0;
+          }
+          .content-col {
+            border-right: 0;
+            // margin-bottom: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.pagination {
+  // border-top: 1px solid #BEBEBE;
+  // padding-top: 30px;
+  // margin-top: 30px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  width: 100%;
+  .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 4px;
+    color: $primary;
+    svg {
+      fill: $primary;
+    }
+    &.current {
+      color:$bg;
+      background-color: $primary;
+    }
+    &.next {
+      margin-bottom: 50px;
+    }
+  }
+}
 
 	
