@@ -612,6 +612,151 @@ body.page-template-page-list, body.archive {
   }
 }
 
+//文章單頁
+body.single {
+  #content {
+    overflow: hidden;
+  }
+  //相關文章
+  .ast-single-related-posts-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .ast-related-posts-title-section, .ast-related-posts-wrapper {
+      width: 1240px;
+      max-width: 100%;
+    }
+    .ast-related-posts-title {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+    .ast-related-posts-wrapper {
+      gap: 40px;
+      > article {
+        .entry-title a {
+          @include word-count(2);
+          color: #1A1A1A;
+          font-weight: 400;
+          font-size: 20px;
+        }
+        .entry-meta * {
+          color: $text-d;
+          font-weight: 400;
+          font-size: 16px;
+        }
+        .ast-related-post-excerpt {
+          color:#4E4E4E;
+          font-weight: 400;
+          font-size: 16px;
+        }
+        .read-more {
+          display: none;
+        }
+      }
+    }
+    
+  }
+  //文章 上一篇、下一篇
+  .post-navigation {
+    padding: 80px 0 30px 0;
+    .ast-post-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .ahfb-svg-iconset {
+      position: relative;
+      display: block;
+      width: 16px;
+      svg {
+        display: none;
+      }
+      &::before, &::after {
+        content: '';
+        position: absolute;
+        display: block;
+      }
+      &::before {
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg) translateY(-50%);
+        border-top: 1px solid #4B4B4B;
+        border-right: 1px solid #4B4B4B;
+        top: 50%;
+        right: 2px;
+      }
+      &::after {
+        width: 16px;
+        height: 1px;
+        border-top: 1px solid #4B4B4B;
+      }
+    }
+    .nav-links {
+        a {
+          * {
+            color: #4B4B4B;
+            font-size: 18px;
+            font-weight: 400;
+          }
+          &:hover {
+            * {
+              color: $primary;
+            }
+            .ahfb-svg-iconset {
+              &::before {
+                border-top: 1px solid $primary;
+                border-right: 1px solid $primary;
+              }
+              &::after {
+                border-top: 1px solid $primary;
+              }
+            }
+            
+          }
+        }
+        
+      }
+      .nav-previous {
+        .ast-post-nav {
+          display: flex;
+          justify-content: start;
+          .ahfb-svg-iconset {
+            transform: scaleX(-1);
+          }
+        }
+      }
+        
+      .nav-next {
+        .ast-post-nav {
+          display: flex;
+          justify-content: end;
+        }
+      }
+
+      @media (max-width: 544px) {
+        .nav-previous, .nav-next {
+          > a {
+            padding: 0;
+          }
+          display: flex;
+          align-items: center;
+          .ast-post-nav {
+            margin: 0;
+          }
+        }
+        .nav-next {
+          justify-content: end;
+        }
+        
+      }
+      
+      
+    }
+}
+
+
 //搜尋頁
 body.search {
   .ast-archive-entry-banner {
