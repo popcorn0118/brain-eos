@@ -406,10 +406,6 @@ footer .site-copyright .line {
   }
 }
 
-/* line 398, style.scss */
-body.page-template-page-list .ast-archive-entry-banner, body.archive .ast-archive-entry-banner {
-  display: none;
-}
 /* line 401, style.scss */
 body.page-template-page-list .ast-container, body.archive .ast-container {
   display: flex;
@@ -667,14 +663,61 @@ body.page-template-page-list .ast-container .page-main .list-layout .sidebar-col
   }
 }
 
-/* line 615, style.scss */
+/* line 617, style.scss */
+body.search .ast-archive-entry-banner {
+  position: relative;
+}
+/* line 619, style.scss */
+body.search .ast-archive-entry-banner::before {
+  background-color: rgba(254, 254, 254, 0.4);
+  background-image: linear-gradient(to bottom, rgba(254, 254, 254, 0.4), var(--e-global-color-0729a00));
+  content: '';
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+/* line 628, style.scss */
+body.search .ast-archive-entry-banner .ast-container {
+  position: relative;
+  border-bottom: 1px solid var(--e-global-color-primary);
+  padding: 0 0 40px 0;
+}
+/* line 636, style.scss */
+body.search .ast-row > article .post-thumb-img-content {
+  margin: 0 !important;
+}
+/* line 641, style.scss */
+body.search .no-results.not-found {
+  min-height: 300px;
+}
+/* line 643, style.scss */
+body.search .no-results.not-found #search-field {
+  border: 1px solid #BEBEBE;
+  height: 67px;
+  background-color: transparent;
+}
+/* line 648, style.scss */
+body.search .no-results.not-found .search-submit {
+  height: 100%;
+  box-shadow: 0 0 0 transparent;
+  font-size: 24px;
+}
+/* line 653, style.scss */
+body.search .no-results.not-found .search-submit .ast-icon svg {
+  margin-top: -3px;
+  fill: var(--e-global-color-c841111);
+}
+
+/* line 664, style.scss */
 .pagination {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 25px;
   width: 100%;
 }
-/* line 623, style.scss */
+/* line 672, style.scss */
 .pagination .page-numbers {
   display: inline-flex;
   align-items: center;
@@ -684,20 +727,20 @@ body.page-template-page-list .ast-container .page-main .list-layout .sidebar-col
   border-radius: 4px;
   color: var(--e-global-color-primary);
 }
-/* line 631, style.scss */
+/* line 680, style.scss */
 .pagination .page-numbers svg {
   fill: var(--e-global-color-primary);
 }
-/* line 634, style.scss */
+/* line 683, style.scss */
 .pagination .page-numbers.current {
   color: var(--e-global-color-0729a00);
   background-color: var(--e-global-color-primary);
 }
-/* line 638, style.scss */
+/* line 687, style.scss */
 .pagination .page-numbers.prev {
   transform: rotate(180deg);
 }
-/* line 641, style.scss */
+/* line 690, style.scss */
 .pagination .page-numbers.next {
   margin-bottom: 50px;
 }
