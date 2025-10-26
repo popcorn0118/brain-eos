@@ -51,7 +51,7 @@ $bg: var( --e-global-color-0729a00 );
 // $dir: 方向，如 to right / to bottom / 45deg
 // $from, $to: 兩個顏色
 @mixin gradient-bg($from, $to, $dir: to bottom) {
-  background-color: $from;                // Fallback
+  // background-color: $from;                // Fallback
   background-image: linear-gradient($dir, $from, $to);
 }
 
@@ -72,31 +72,63 @@ a {
 	height: 54px;
 }
 
-.btn-text > .elementor-button {
-	/* min-width: 149px; */
-	width: 100% !important;
-	height: 57px;
-	justify-content: start;
-	display: flex;
-	align-items: center;
+.btn-text {
+  > .elementor-button {
+    /* min-width: 149px; */
+    width: 100% !important;
+    height: 57px;
+    justify-content: start;
+    display: flex;
+    align-items: center;
+    .elementor-button-icon svg {
+      width: 1.15em;
+      height: 1.15em;
+    }
+    .elementor-button-text::after {
+      content: '';
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-top: 2px solid $text-d;
+      border-right: 2px solid $text-d;
+      transform: rotate(45deg);
+      margin: 0 0 1px 15px;
+    }
+    &:hover {
+      .elementor-button-text::after {
+        border-top: 2px solid $primary;
+          border-right: 2px solid $primary;
+      }
+    }
+  }
 }
-.btn-text > .elementor-button .elementor-button-icon svg {
-	width: 1.15em;
-	height: 1.15em;
-}
-.btn-text > .elementor-button .elementor-button-text::after {
-	content: '';
-	display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-top: 2px solid $text-d;
-  border-right: 2px solid $text-d;
-  transform: rotate(45deg);
-  margin: 0 0 1px 15px;
-}
-.btn-text > .elementor-button:hover .elementor-button-text::after {
-	border-top: 2px solid $primary;
-    border-right: 2px solid $primary;
+
+.btn-text-html {
+  // border-top: 1px solid #DCDCDC;
+  // padding-top: 25px;
+  // position: absolute;
+  // bottom: 30px;
+  // left: 50%;
+  // transform: translateX(-50%);
+  // width: calc(100% - 60px);
+  > a {
+    color: $primary;
+    font-size: 16px;
+    &::after {
+      content: '';
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-top: 2px solid $primary;
+      border-right: 2px solid $primary;
+      transform: rotate(45deg);
+      margin: 0 0 1px 15px;
+    }
+    &:hover {
+      color: $primary !important;
+      opacity: 0.6;
+    }
+  }
 }
 
 a{
@@ -110,6 +142,74 @@ button{
 	transition: .3s;
 	transition-duration: .3s;
 	transition-property:revert;
+}
+
+//slick
+.slick-track {
+  display: flex;
+  align-items: stretch;
+}
+.slick-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  button {
+    width: 40px;
+    height: 40px;
+    // background-color: $primary;
+    // border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    // border: 1px solid $second;
+    svg {
+      width: 10px;
+      path {
+        fill: var(--ast-global-color-5);
+      }
+    }
+    &:hover {
+      // background-color: #4E815780;
+    }
+  }
+  &.slick-prev {
+    left: -20px;
+  }
+  &.slick-next {
+    right: -20px;
+    button {
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+// 每頁 Hero 的綠色背景色塊 or 漸層
+.left-block-bg {
+  .e-con-inner {
+    position: relative;
+    z-index: 2;
+  }
+  &::after {
+    content: '';
+    display: block;
+    width: 25%;
+    height: 100%;
+    background-color: $second;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  &.gradient {
+    &::after {
+      background-color: transparent;
+      @include gradient-bg(#B6E0BBB2, #B6E0BB33);
+    }
+    
+  }
 }
 
 .icon-shadow .elementor-icon{
@@ -221,23 +321,13 @@ $spacing: 32px;
   // display: grid;
   // grid-template-columns: repeat(3, 1fr);
   .slick-track {
-    display: flex;
-    align-items: stretch;
+
   }
   .slick-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
+
     button {
-      width: 40px;
-      height: 40px;
       background-color: $primary;
       border-radius: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
       border: 1px solid $second;
       svg {
         width: 10px;
@@ -246,7 +336,7 @@ $spacing: 32px;
         }
       }
       &:hover {
-        background-color: #4E815780;
+        // background-color: #4E815780;
       }
     }
     &.slick-prev {
@@ -331,23 +421,6 @@ $spacing: 32px;
           left: 50%;
           transform: translateX(-50%);
           width: calc(100% - 60px);
-          > a {
-            color: $primary;
-            font-size: 16px;
-            &::after {
-              content: '';
-              display: inline-block;
-              width: 9px;
-              height: 9px;
-              border-top: 2px solid $primary;
-              border-right: 2px solid $primary;
-              transform: rotate(45deg);
-              margin: 0 0 1px 15px;
-            }
-            &:hover {
-              opacity: 0.6;
-            }
-          }
         }
       }
     }
@@ -391,6 +464,113 @@ $spacing: 32px;
     }
   }
  
+}
+
+// 關於我們頁面 > 專業醫療團隊 輪播區塊
+.team-carousel {
+  margin: 0;
+  padding: 0 !important;
+  .slick-track {
+    // gap: 40px;
+  }
+  .slick-arrow {
+    button {
+      background-color: transparent;
+      border: 0;
+      box-shadow: 0 0 0 transparent;
+      svg {
+        width: 24px;
+        height: 24px;
+        path {
+          fill: $text; 
+        }
+      }
+      
+      &:hover, &:focus {
+        background-color: transparent;
+        svg path {
+          fill: $primary; 
+        }
+      }
+    }
+    &.slick-prev {
+      left: -50px;
+    }
+    &.slick-next {
+      right: -50px;
+    }
+    
+    @media (max-width: 921px) {
+      &.slick-prev {
+        left: -30px;
+      }
+      &.slick-next {
+        right: -30px;
+      }
+    }
+    @media (max-width: 600px) {
+      &.slick-prev {
+        left: -20px;
+      }
+      &.slick-next {
+        right: -20px;
+      }
+    }
+  }
+  .item {
+    height: auto;
+    padding: 28px 28px 32px 28px;
+    @media (max-width: 921px) {
+      padding: 20px 20px 30px 20px;
+    }
+    @media (max-width: 600px) {
+      padding: 10px 15px;
+    }
+    .info {
+      box-shadow: 2px 5px 8px 0 rgba(#000, 0.1);
+      .img {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        height: auto;
+        aspect-ratio: 490 / 588;
+      }
+      .cont {
+        padding: 30px 30px 115px 30px;
+        position: relative;
+        .head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          @media (max-width: 921px) {
+            flex-direction: column;
+            align-items: start;
+          }
+        }
+        .name {
+          color: $primary;
+        }
+        .name_en {
+          color: $text-d;
+        }
+        .desc {
+          @include word-count(2);
+          font-size: 16px;
+          color: $text;
+        }
+        .read-more {
+          border-top: 1px solid #DCDCDC;
+          padding-top: 25px;
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: calc(100% - 60px);
+        }
+      }
+    }
+  }
+  
 }
 
 //文章列表共用
