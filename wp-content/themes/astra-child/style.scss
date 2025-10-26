@@ -573,6 +573,78 @@ $spacing: 32px;
   
 }
 
+// 醫師單頁
+body.team-template {
+  .single-team {
+    @include gradient-bg(#FEFEFED9, $bg );
+    padding: 230px 24px 0 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh;
+    @media (max-width: 768px) {
+      padding: 160px 24px 0 24px;
+    }
+    .cont {
+      width: 1200px;
+      max-width: 100%;
+      margin: 0 auto;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      .left {
+        width: 400px;
+        position: sticky;
+        top: 30px;
+        .team-header {
+          padding-top: 30px;
+          * {
+            color: $text-d;
+          }
+          .team-title {
+            display: flex;
+            gap: 25px;
+            font-size: 32px;
+          }
+          .job-title {
+            font-size: 24px;
+          }
+        }
+        .name-en {
+          font-size: 20px;
+          color: $text;
+        }
+      }
+      .right {
+        width: calc(100% - 400px);
+        padding-left: 13%;
+       
+      }
+      @media (max-width: 921px) {
+        .left {
+          width: 40%;
+        }
+        .right {
+          width: 60%;
+          padding-left: 8%;
+        }
+      }
+      @media (max-width: 768px) {
+        flex-direction: column;
+        .left {
+          width: 100%;
+        }
+        .right {
+          width: 100%;
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}
+
 //文章列表共用
 body.page-template-page-list, body.archive {
   // .ast-archive-entry-banner {

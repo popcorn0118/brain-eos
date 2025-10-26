@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: 共用列表
+ * Template Name: 共用文章列表
  * Description: 共用列表頁，依頁面 slug 切換 post_type/每頁數/taxonomy 等
  */
 
