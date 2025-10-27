@@ -1,0 +1,42 @@
+<?php 
+
+/* =================================
+
+  關於我們頁面 > 專業醫療團隊 > 專業證照區塊
+  "<?php require get_theme_file_path( 'inc/custom-team-certificates.php' ); ?>"
+  "[astra_custom_layout id=4136]"
+
+ * ================================== */
+
+
+// $certificates = get_field('certificates', $post_id) ?: [];
+// if ($certificates) {
+//   echo '<div class="cert-list">';
+//   foreach ($certificates as $img) {
+//     $id = is_array($img) ? (int)($img['ID'] ?? 0) : (int)$img;
+//     if (!$id) continue;
+//     echo wp_get_attachment_image($id, 'large', false, [
+//       'class'   => 'cert-img',
+//       'loading' => 'lazy',
+//       'decoding'=> 'async',
+//     ]);
+//   }
+//   echo '</div>';
+// }
+?>
+
+<ul class="team-certificates">
+	<?php 	
+		$post_id = get_the_ID();
+		$certificates = get_field('certificates', $post_id) ? : '';
+		foreach ($certificates as $img):
+	?>
+		<li class="item">
+			<img src="<?php echo $img['link']; ?>" class="" alt="<?php echo $img['alt'] ? $img['alt'] : $img['title']; ?>">
+		</li>		
+	<?php endforeach?>
+	
+</ul>
+
+
+	

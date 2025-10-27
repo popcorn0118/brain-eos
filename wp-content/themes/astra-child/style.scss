@@ -130,6 +130,19 @@ a {
     }
   }
 }
+.nav-left {
+  .elementor-image-carousel-wrapper {
+    .swiper-pagination {
+      text-align: left;
+      bottom: -8px !important;
+      .swiper-pagination-bullet {
+        &:first-of-type {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
 
 a{
 	transition: .3s;
@@ -647,6 +660,23 @@ body.team-template {
       }
     }
   }
+  // 醫師專業證照
+  .team-certificates {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 64px;
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 44px;
+    }
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+  }
 }
 
 //文章列表共用
@@ -683,7 +713,7 @@ body.page-template-page-list, body.archive {
       .ph-container {
         max-width: 100%;
         min-height: 196px;
-        width: 1240px;
+        width: 1200px;
         margin: 60px auto 0 auto;
         position: relative;
         border-bottom: 1px solid $primary;
