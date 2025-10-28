@@ -225,6 +225,13 @@ button{
   }
 }
 
+.elementor-widget-social-icons.opacity {
+  .elementor-social-icon:hover {
+    opacity: .7;
+  }
+}
+
+
 .icon-shadow .elementor-icon{
 	box-shadow: 5px 5px 10px #00000012;
 }
