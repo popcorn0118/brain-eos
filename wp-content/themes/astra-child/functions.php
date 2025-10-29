@@ -102,6 +102,24 @@ function create_post_type() {
 		)
 	);
 
+	register_post_type( 'service',
+		array(
+			'labels' 				=> array(
+				'name' 				=> __( '服務項目' ),
+				'singular_name' 	=> __( '服務項目' )
+			),
+			'public' 				=> true,
+			'has_archive' 			=> true,
+			'menu_icon' 			=> 'dashicons-welcome-write-blog',
+			'supports' 				=> array('title', 'editor', 'thumbnail', 'excerpt', 'revisions'),
+			'taxonomies' 			=> array('service-type', 'service-tag'),
+			'capability_type' 		=> 'page',
+			'map_meta_cap'			=> true,
+			// 'show_in_rest'      	=> true, // To use Gutenberg editor.
+			// 'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments', 'taxonomies'  ),
+		)
+	);
+
 	flush_rewrite_rules();
 }
 add_action( 'init', 'create_post_type' );
