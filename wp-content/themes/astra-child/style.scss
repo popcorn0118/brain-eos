@@ -184,6 +184,54 @@ button{
 	transition-property:revert;
 }
 
+//表格共用樣式
+$sp: 8px;
+.table-style {
+  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  table {
+    min-width: 768px;     
+    background: transparent;
+    border: 0;   
+    // width: 100%;
+    // table-layout: auto !important;   /* 由內容決定欄寬 */
+    // display: inline-table !important; /* 收縮到內容寬 */
+    // width: max-content !important;    /* 以內容為主，不強制 100% */
+  }
+  td, th {
+    border: 1px solid $bg;
+    background-color: #F5F5F5;
+    border-width: 0 $sp $sp 0;
+    padding: 16px 24px;
+    // white-space: normal;
+    // overflow-wrap: anywhere;
+    // hyphens: auto;
+    @media (max-width: 768px) {
+      width: auto !important;
+    }
+  }
+  thead {
+    td {
+      background-color: $second;
+    }
+  }
+  tr  {
+    td, th {
+      &:last-of-type {
+        border-right: 0;
+      }
+    }
+  }
+  tbody tr:last-of-type td {
+    border-bottom: 0;
+  }
+  strong {
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
+
 //slick
 .slick-track {
   display: flex;
@@ -263,7 +311,12 @@ button{
 	box-shadow: 5px 5px 10px #00000012;
 }
 
-
+.no-margin-ul-ol {
+  ul, ol {
+    margin: 0;
+    margin-left: 30px;
+  }
+}
 @media (max-width: 921px) {
 	.no-br br {
 		display: none;
