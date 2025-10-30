@@ -9,20 +9,6 @@
  * ================================== */
 
 
-// $certificates = get_field('certificates', $post_id) ?: [];
-// if ($certificates) {
-//   echo '<div class="cert-list">';
-//   foreach ($certificates as $img) {
-//     $id = is_array($img) ? (int)($img['ID'] ?? 0) : (int)$img;
-//     if (!$id) continue;
-//     echo wp_get_attachment_image($id, 'large', false, [
-//       'class'   => 'cert-img',
-//       'loading' => 'lazy',
-//       'decoding'=> 'async',
-//     ]);
-//   }
-//   echo '</div>';
-// }
 ?>
 
 <ul class="team-certificates">

@@ -142,6 +142,20 @@ a {
       opacity: 0.6;
     }
   }
+  &.left {
+    > a {
+      // font-size: 18px;
+      // color: $text-d;
+      display: flex;
+      align-items: center;
+      flex-direction: row-reverse;
+      justify-content: start;
+      &::after {
+        transform: rotate(-135deg);
+        margin: 4px 15px 1px 0px;
+      }
+    }
+  }
 }
 .nav-left {
   .elementor-image-carousel-wrapper {
@@ -860,6 +874,86 @@ body.team-template {
         color: $text-d;
         font-weight: 400;
         margin-bottom: 0;
+      }
+    }
+  }
+}
+//服務項目內頁
+.single-service {
+  // header {
+  //   display: none;
+  // }
+  // .entry-content {
+  //   margin-bottom: 0;
+  // }
+  // .post-navigation {
+  //   display: none;
+  // }
+  .service-header {
+    display: flex;
+    align-items: center;
+    
+    .left, .img {
+      width: 50%;
+    }
+    .left {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+      padding-top: 15px;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+      .back-btn {
+        > a {
+          font-size: 18px;
+          color: $text-d;
+          &::after {
+            border-top: 2px solid $text-d;
+            border-right: 2px solid $text-d;
+          }
+          &:hover {
+            &::after {
+              border-top: 2px solid $primary;
+              border-right: 2px solid $primary;
+            }
+          }
+        }
+      }
+      .title-warp {
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
+        padding-top: 56px;
+        border-top: 1px solid $primary;
+        @media (max-width: 768px) {
+          gap: 10px;
+        }
+        * {
+          margin: 0;
+        }
+        .title-en {
+          font-weight: 400;
+        }
+      }
+    }
+    .img {
+      
+      img {
+        border-radius: 8px;
+      }
+      &.mobile {
+        display: none;
+        @media (max-width: 768px) {
+          display: block;
+          width: 100%;
+        }
+      }
+      &.desk {
+        display: block;
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
     }
   }
