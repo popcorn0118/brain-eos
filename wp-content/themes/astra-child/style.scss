@@ -1360,6 +1360,7 @@ body.single {
       }
     }
     .nav-links {
+      justify-content: space-between;
         a {
           * {
             color: #4B4B4B;
@@ -1385,6 +1386,7 @@ body.single {
         
       }
       .nav-previous {
+        width: 45% !important;
         .ast-post-nav {
           display: flex;
           justify-content: start;
@@ -1392,9 +1394,13 @@ body.single {
             transform: scaleX(-1);
           }
         }
+        &::after {
+          width: 0;
+        }
       }
         
       .nav-next {
+        width: 45% !important;
         .ast-post-nav {
           display: flex;
           justify-content: end;
@@ -1421,6 +1427,17 @@ body.single {
       
       
     }
+  //返回文章列表按鈕
+  .nav-back-wrap {
+    text-align: center;
+    margin: -67px 0 33px 0;
+    @media (max-width: 544px) {
+      margin: 0 0 20px;
+      .nav-back {
+        font-size: 18px;
+      }
+    }
+  }
 }
 
 

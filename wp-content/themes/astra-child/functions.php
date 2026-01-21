@@ -176,3 +176,23 @@ function create_custom_taxonomy() {
 add_action( 'init', 'create_custom_taxonomy', 0 );
 
 
+//文章單頁顯示"返回文章"按鈕
+add_action( 'astra_entry_after', 'add_back_to_archive_btn', 11 );
+function add_back_to_archive_btn() {
+
+    // 只在單篇顯示
+    if ( ! is_singular() ) {
+        return;
+    }
+
+    $archive_link = home_url( '/article/' );
+
+    echo '<div class="nav-back-wrap" aria-label="Back to list">';
+    echo '<a class="nav-back" href="' . esc_url( $archive_link ) . '">返回列表</a>';
+    echo '</div>';
+}
+
+
+
+
+
