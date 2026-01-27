@@ -1287,6 +1287,28 @@ body.single {
     .ast-related-posts-wrapper {
       gap: 40px;
       > article {
+        .ast-related-post-content {
+          .post-thumb-img-content {
+            > a {
+              display: block;
+              width: 100%;
+              aspect-ratio: 1 / 1;
+              overflow: hidden;
+              @media (max-width: 544px) {
+                aspect-ratio: auto;
+              }
+            }
+        
+            > a > img {
+              aspect-ratio: unset;
+              display: block;
+              width: 100%;
+              height: 100%;        
+              object-fit: contain;     
+              object-position: center;
+            }
+          }
+        }
         .entry-title a {
           @include word-count(2);
           color: #1A1A1A;
