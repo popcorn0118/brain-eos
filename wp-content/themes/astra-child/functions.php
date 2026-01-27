@@ -176,7 +176,7 @@ function create_custom_taxonomy() {
 add_action( 'init', 'create_custom_taxonomy', 0 );
 
 
-//文章單頁顯示"返回文章"按鈕
+// 文章單頁顯示"返回文章"按鈕
 add_action( 'astra_entry_after', 'add_back_to_archive_btn', 11 );
 function add_back_to_archive_btn() {
 
@@ -185,7 +185,15 @@ function add_back_to_archive_btn() {
         return;
     }
 
-    $archive_link = home_url( '/article/' );
+    $post_type = get_post_type();
+
+    if ( $post_type === 'post' ) {
+        $archive_link = home_url( '/article/' );
+    } elseif ( $post_type === 'case' ) {
+        $archive_link = home_url( '/cases/' );
+    } else {
+        return; // 都不是就不顯示
+    }
 
     echo '<div class="nav-back-wrap" aria-label="Back to list">';
     echo '<a class="nav-back" href="' . esc_url( $archive_link ) . '">返回列表</a>';
