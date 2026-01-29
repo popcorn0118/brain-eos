@@ -275,6 +275,243 @@ $sp: 8px;
   }
 }
 
+// contact form 7 表單
+.wpcf7 {
+  .text, label {
+    color: #4E4E4E;
+    font-size: 18px !important;
+    @media (max-width:544px) {
+      font-size: 16px !important;
+    }
+  }
+  label {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: inline-block;
+    line-height: 1.6;
+  }
+  .required {
+    color: #FF0000;
+  }
+  .custom-error {
+    color: #dc3232;
+    font-size: 1em;
+    margin-top: -28px;
+    display: block;
+  }
+  input:not([type="checkbox"], [type="radio"], [type="submit"]), select, textarea {
+    border: 1px solid #BEBEBE;
+    border-radius: 4px !important;
+    background-color: transparent !important;
+    color: $text;
+    font-size: 18px;
+    min-height: 53px;
+    &:disabled {
+      background-color: #f9f9f9 !important;
+    }
+    &:focus {
+      border: 1px solid #BEBEBE !important;
+    }
+  }
+  textarea {
+    height: 200px;
+  }
+  $check-color: $primary;
+  $check-size: 20px;
+  input[type="checkbox"] {
+    min-width: unset;
+    appearance: none;
+    flex-shrink: 0;
+    -webkit-appearance: none;
+    width: $check-size;
+    height: $check-size;
+    border: 1px solid #BEBEBE;
+    border-radius: 2px !important;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+    transition: background-color 0.2s, border-color 0.2s;
+    &:checked {
+      background-color: $check-color !important;
+      border-color: $check-color;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+    &.disabled {
+      opacity:0.3;
+      + .wpcf7-list-item-label {
+        opacity:0.3;
+      }
+    }
+  }
+  input[type="radio"], .contact-line [type="checkbox"] {
+    min-width: unset;
+    appearance: none;
+    flex-shrink: 0;
+    -webkit-appearance: none;
+    width: $check-size;
+    height: $check-size;
+    border: 1px solid #BEBEBE;
+    border-radius: 100% !important;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+    transition: background-color 0.2s, border-color 0.2s;
+    &:checked {
+      border-color: $check-color;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 12px;
+        height: 12px;
+        background-color: $check-color;
+        transform: translate(-50%, -50%);
+        border-radius: 100%;
+      }
+    }
+    &.disabled {
+      opacity:0.3;
+      + .wpcf7-list-item-label {
+        opacity:0.3;
+      }
+    }
+  }
+  .contact-line [type="checkbox"] {
+    &:checked {
+      background-color: transparent !important;
+      &::after {
+        border: 0;
+      }
+    }
+  }
+  //date特殊處理：在IOS上會爆寬
+  input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 65px;
+  }
+  .wpcf7-form-control-wrap {
+    // line-height: 1;
+  }
+  .wpcf7-radio, .wpcf7-checkbox {
+    flex-wrap: wrap;
+  }
+  .wpcf7-form-control {
+    // line-height: 1;
+    display: flex;
+    gap: 1em;
+    &.wpcf7-checkbox {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px 33px;
+    }
+    .wpcf7-list-item {
+      margin-left: 0;
+      label {
+        margin-bottom: 0;
+        display: inline-flex;
+        align-items: center;
+      }
+      &.first {
+        margin-left: 0;
+      }
+      .wpcf7-list-item-label {
+        color: $text;
+        font-size: 18px;
+        margin-left: 15px;
+        margin-bottom: 3px;
+      }
+    }
+    
+  }
+  .submit-warp > p {
+    display: flex;
+    align-items: center;
+  }
+  .wpcf7-submit {
+    // @include btn();
+    min-width: 200px;
+    height: 58px;
+    font-size: 18px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    background-color: $plrimary-l !important;
+    color: #FEFEFE !important;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px;
+    letter-spacing: 2px;
+    font-weight: 400;
+    &:hover {
+      color: $text !important;
+      background-color: $second !important;
+    }
+  }
+  .item {
+    margin-bottom: 40px;
+    p {
+        margin: 0;
+    }
+    &.flex {
+      display: flex;
+      gap: 20px;
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 50px 0;
+      }
+    }
+    &.w50 {
+      width: 50%;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+    }
+    &.contact {
+      .warp > p {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        br {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.wpcf7-response-output {
+  position: absolute !important;
+  left: 0;
+  bottom: -190px;
+  margin-left: 0 !important;
+  width: 100%;
+  @media (max-width: 768px) {
+    bottom: -219px;
+  }
+}
+
 // 每頁 Hero 的綠色背景色塊 or 漸層
 .left-block-bg {
   .e-con-inner {

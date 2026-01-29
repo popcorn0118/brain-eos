@@ -201,6 +201,22 @@ function add_back_to_archive_btn() {
 }
 
 
+/**聯絡表單"希望的聯絡方式"判斷 */
+add_filter('wpcf7_validate', 'cf7_contact_at_least_one', 10, 2);
+function cf7_contact_at_least_one($result, $tags) {
 
+    $phone = isset($_POST['contact-phone']) ? trim((string) $_POST['contact-phone']) : '';
+    $email = isset($_POST['contact-email']) ? trim((string) $_POST['contact-email']) : '';
+
+    // contact-line 是 checkbox，送出會是陣列：$_POST['contact-line'] = ['xxx']
+    $has_line = ! empty($_POST['contact-line']); 
+
+    if ($phone === '' && $email === '' && ! $has_line) {
+        // 綁在其中一個欄位上
+        $result->invalidate('contact-line', '聯絡電話 / Email / Line 請至少填寫或勾選一項');
+    }
+
+    return $result;
+}
 
 
